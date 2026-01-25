@@ -259,13 +259,66 @@ st.markdown("""
         animation: digital-noise 0.5s ease-out, wavefunction-collapse 0.9s ease-out;
     }
     
-    /* SMOOTH LERP INTERPOLATION FOR 3D VISUALIZATIONS */
+    /* HYPER-REALISTIC 3D VISUALIZATION: PBR POST-PROCESSING */
     .plotly-graph-div {
-        transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);  /* Quart-Out easing */
+        filter: 
+            drop-shadow(0 0 30px rgba(0, 217, 255, 0.3))       /* Bloom effect */
+            drop-shadow(0 0 60px rgba(123, 97, 255, 0.2))      /* Multi-point glow */
+            contrast(1.1)                                       /* PBR contrast boost */
+            saturate(1.15);                                     /* Cinematic color */
+        transform-style: preserve-3d;
+        perspective: 1500px;
+    }
+    
+    .plotly-graph-div:hover {
+        filter: 
+            drop-shadow(0 0 50px rgba(0, 217, 255, 0.5))       /* Enhanced bloom on interaction */
+            drop-shadow(0 0 80px rgba(123, 97, 255, 0.3))
+            contrast(1.15)
+            saturate(1.2);
     }
     
     .js-plotly-plot .plotly .main-svg {
-        transition: all 0.6s ease;
+        transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    /* CINEMATIC DEPTH OF FIELD & AMBIENT OCCLUSION */
+    .js-plotly-plot .plotly .surface {
+        filter: blur(0px);  /* Gaussian blur base */
+        transition: filter 0.8s ease;
+    }
+    
+    /* REFRACTION & GLASSMORPHISM EFFECTS */
+    .plotly-graph-div::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 30%% 30%%, rgba(0, 217, 255, 0.05), transparent 50%%),
+            radial-gradient(circle at 70%% 70%%, rgba(123, 97, 255, 0.05), transparent 50%%);
+        pointer-events: none;
+        mix-blend-mode: screen;
+        animation: refraction-shift 4s ease-in-out infinite;
+    }
+    
+    @keyframes refraction-shift {
+        0%%, 100%% { transform: translate(0, 0); opacity: 0.6; }
+        50%% { transform: translate(3px, -3px); opacity: 0.8; }
+    }
+    
+    /* WAVEFUNCTION COLLAPSE VIBRATION */
+    @keyframes collapse-vibration {
+        0%%, 100%% { transform: translateX(0); }
+        10%% { transform: translateX(-2px) rotateZ(-0.5deg); }
+        20%% { transform: translateX(2px) rotateZ(0.5deg); }
+        30%% { transform: translateX(-2px) rotateZ(-0.5deg); }
+        40%% { transform: translateX(2px) rotateZ(0.5deg); }
+        50%% { transform: translateX(0); }
+    }
+    
+    .state-collapsed {
+        animation: collapse-vibration 0.5s ease-out;
     }
     
     /* ROTARY DIAL CONTROL (LABORATORY EQUIPMENT AESTHETIC) */
@@ -1441,7 +1494,7 @@ def rotation_gate(axis, theta):
     return expm(-1j * theta_rad / 2 * pauli[axis])
 
 def create_bloch_sphere(theta_deg, phi_deg):
-    """Create interactive 3D Bloch sphere with state vector."""
+    """Create hyper-realistic Bloch sphere with PBR materials and cinematic lighting."""
     theta = np.radians(theta_deg)
     phi = np.radians(phi_deg)
     
@@ -1450,74 +1503,221 @@ def create_bloch_sphere(theta_deg, phi_deg):
     y_state = np.sin(theta) * np.sin(phi)
     z_state = np.cos(theta)
     
-    # Sphere surface
-    u = np.linspace(0, 2 * np.pi, 50)
-    v = np.linspace(0, np.pi, 50)
+    # High-resolution sphere surface (volumetric)
+    u = np.linspace(0, 2 * np.pi, 100)
+    v = np.linspace(0, np.pi, 100)
     x_sphere = np.outer(np.cos(u), np.sin(v))
     y_sphere = np.outer(np.sin(u), np.sin(v))
     z_sphere = np.outer(np.ones(np.size(u)), np.cos(v))
     
     fig = go.Figure()
     
-    # Sphere surface (translucent)
+    # HYPER-REALISTIC FROSTED GLASS SPHERE (Subsurface Scattering)
+    # Create depth-based opacity for volumetric effect
+    depth = z_sphere  # Use Z-depth for SSS simulation
+    normalized_depth = (depth - depth.min()) / (depth.max() - depth.min())
+    
+    # Physically-Based Material: Frosted Quartz Glass
     fig.add_trace(go.Surface(
         x=x_sphere, y=y_sphere, z=z_sphere,
-        colorscale=[[0, 'rgba(99, 102, 241, 0.1)'], [1, 'rgba(6, 182, 212, 0.1)']],
+        surfacecolor=normalized_depth,
+        colorscale=[
+            [0.0, 'rgba(0, 217, 255, 0.15)'],    # Deep areas - cyan tint
+            [0.3, 'rgba(123, 97, 255, 0.25)'],   # Mid-depth - indigo
+            [0.6, 'rgba(0, 255, 148, 0.2)'],     # Rim areas - lime accent
+            [1.0, 'rgba(255, 255, 255, 0.4)']    # Highlights - anisotropic
+        ],
         showscale=False,
-        opacity=0.3,
-        name='Bloch Sphere'
+        opacity=0.65,
+        lighting=dict(
+            ambient=0.4,           # Ambient occlusion base
+            diffuse=0.7,           # Diffuse surface scattering
+            specular=1.2,          # Anisotropic highlights
+            roughness=0.3,         # PBR roughness (frosted glass)
+            fresnel=2.5            # Rim light intensity
+        ),
+        lightposition=dict(
+            x=1500,   # Key light (main)
+            y=1500,   # Fill light
+            z=2000    # Rim light (backlight)
+        ),
+        contours=dict(
+            x=dict(highlight=True, highlightcolor="rgba(0, 217, 255, 0.3)", highlightwidth=2),
+            y=dict(highlight=True, highlightcolor="rgba(123, 97, 255, 0.3)", highlightwidth=2),
+            z=dict(highlight=True, highlightcolor="rgba(0, 255, 148, 0.3)", highlightwidth=2)
+        ),
+        name='Frosted Glass Orb',
+        hoverinfo='skip'
     ))
     
-    # Axes
-    axis_length = 1.3
-    axes = [
-        ([0, axis_length], [0, 0], [0, 0], 'X', '#06B6D4'),
-        ([0, 0], [0, axis_length], [0, 0], 'Y', '#84CC16'),
-        ([0, 0], [0, 0], [0, axis_length], 'Z', '#6366F1')
+    # INNER GLOW EMISSION (Pulsating)
+    inner_glow_intensity = 0.6 + 0.2 * np.sin(theta_deg / 30)  # Pulsate based on state
+    fig.add_trace(go.Surface(
+        x=x_sphere * 0.95, y=y_sphere * 0.95, z=z_sphere * 0.95,
+        surfacecolor=normalized_depth,
+        colorscale=[
+            [0.0, f'rgba(0, 217, 255, {inner_glow_intensity * 0.3})'],
+            [0.5, f'rgba(123, 97, 255, {inner_glow_intensity * 0.4})'],
+            [1.0, f'rgba(0, 255, 148, {inner_glow_intensity * 0.2})']
+        ],
+        showscale=False,
+        opacity=0.4,
+        lighting=dict(ambient=0.8, diffuse=0.2, specular=0.5),
+        name='Inner Emission',
+        hoverinfo='skip'
+    ))
+    
+    # CINEMATIC LIGHTING: Computational Axes with PBR Materials
+    axis_length = 1.4
+    axes_data = [
+        ([0, axis_length], [0, 0], [0, 0], 'X', '#00D9FF', 8),
+        ([0, 0], [0, axis_length], [0, 0], 'Y', '#00FF94', 8),
+        ([0, 0], [0, 0], [0, axis_length], 'Z', '#7B61FF', 8)
     ]
     
-    for x, y, z, name, color in axes:
+    for x, y, z, name, color, width in axes_data:
+        # Metallic axis lines with bloom
         fig.add_trace(go.Scatter3d(
             x=x, y=y, z=z,
             mode='lines+text',
-            line=dict(color=color, width=4),
+            line=dict(
+                color=color, 
+                width=width,
+                # Simulate bloom with gradient
+            ),
             text=['', f'|{name}⟩'],
             textposition='top center',
-            textfont=dict(size=14, color=color),
-            showlegend=False
+            textfont=dict(size=16, color=color, family='JetBrains Mono'),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        # Axis endpoint glow spheres (anisotropic highlights)
+        endpoint = [x[-1], y[-1], z[-1]]
+        fig.add_trace(go.Scatter3d(
+            x=[endpoint[0]], y=[endpoint[1]], z=[endpoint[2]],
+            mode='markers',
+            marker=dict(
+                size=12,
+                color=color,
+                opacity=0.9,
+                line=dict(color='rgba(255, 255, 255, 0.6)', width=2),
+                symbol='circle'
+            ),
+            showlegend=False,
+            hoverinfo='skip'
         ))
     
-    # State vector arrow
+    # HYPER-REALISTIC STATE VECTOR: Glowing Metallic Filament
+    # Motion trail simulation (decaying particles)
+    trail_length = 8
+    trail_points = []
+    for i in range(trail_length):
+        decay_factor = (trail_length - i) / trail_length
+        trail_points.append([
+            x_state * decay_factor * 0.95,
+            y_state * decay_factor * 0.95,
+            z_state * decay_factor * 0.95
+        ])
+    
+    # Motion trail (particle trace)
+    if len(trail_points) > 1:
+        trail_x, trail_y, trail_z = zip(*trail_points)
+        fig.add_trace(go.Scatter3d(
+            x=trail_x, y=trail_y, z=trail_z,
+            mode='markers',
+            marker=dict(
+                size=[2 + i*0.5 for i in range(len(trail_points))],
+                color=['rgba(245, 158, 11, {})'.format(0.1 + i*0.1) for i in range(len(trail_points))],
+                symbol='circle'
+            ),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+    
+    # Main state vector: Solid metallic filament with PBR
     fig.add_trace(go.Scatter3d(
         x=[0, x_state], y=[0, y_state], z=[0, z_state],
         mode='lines+markers',
-        line=dict(color='#F59E0B', width=6),
-        marker=dict(size=[0, 10], color='#F59E0B'),
-        name='|ψ⟩'
+        line=dict(
+            color='#F59E0B',  # Metallic gold
+            width=10
+        ),
+        marker=dict(
+            size=[4, 18],
+            color=['rgba(245, 158, 11, 0.8)', 'rgba(245, 158, 11, 1)'],
+            symbol='diamond',
+            line=dict(color='rgba(255, 255, 255, 0.8)', width=2)
+        ),
+        name='|ψ⟩ State Vector',
+        hovertemplate='<b>|ψ⟩</b><br>θ=%{customdata[0]:.1f}°<br>φ=%{customdata[1]:.1f}°<extra></extra>',
+        customdata=[[theta_deg, phi_deg]]
     ))
     
-    # Equator circle
-    theta_eq = np.linspace(0, 2*np.pi, 100)
+    # PROBABILITY CLOUD: Swirling Nebula inside sphere
+    # Generate cloud particles based on probability amplitude
+    n_particles = 200
+    cloud_theta = np.random.uniform(0, 2*np.pi, n_particles)
+    cloud_phi_var = np.random.normal(phi, 0.3, n_particles)
+    cloud_theta_var = np.random.normal(theta, 0.3, n_particles)
+    
+    cloud_r = np.abs(np.random.normal(0.7, 0.15, n_particles))  # Radial distribution
+    cloud_x = cloud_r * np.sin(cloud_theta_var) * np.cos(cloud_phi_var)
+    cloud_y = cloud_r * np.sin(cloud_theta_var) * np.sin(cloud_phi_var)
+    cloud_z = cloud_r * np.cos(cloud_theta_var)
+    
+    # Density-based coloring
+    density = np.abs(np.sin(theta))  # Probability amplitude density
+    cloud_colors = [f'rgba(0, 217, 255, {0.3 * density})' if i % 2 == 0 else f'rgba(123, 97, 255, {0.3 * density})' for i in range(n_particles)]
+    
+    fig.add_trace(go.Scatter3d(
+        x=cloud_x, y=cloud_y, z=cloud_z,
+        mode='markers',
+        marker=dict(
+            size=np.random.uniform(2, 6, n_particles),
+            color=cloud_colors,
+            symbol='circle',
+            opacity=0.5
+        ),
+        showlegend=False,
+        hoverinfo='skip',
+        name='Probability Nebula'
+    ))
+    
+    # Equator circle with gaussian blur effect
+    theta_eq = np.linspace(0, 2*np.pi, 150)
     fig.add_trace(go.Scatter3d(
         x=np.cos(theta_eq), y=np.sin(theta_eq), z=np.zeros_like(theta_eq),
         mode='lines',
-        line=dict(color='rgba(255, 255, 255, 0.2)', width=2, dash='dash'),
-        showlegend=False
+        line=dict(color='rgba(255, 255, 255, 0.25)', width=3, dash='dot'),
+        showlegend=False,
+        hoverinfo='skip'
     ))
     
+    # CINEMATIC LAYOUT: Depth of Field simulation
     fig.update_layout(
         scene=dict(
-            xaxis=dict(visible=False, range=[-1.5, 1.5]),
-            yaxis=dict(visible=False, range=[-1.5, 1.5]),
-            zaxis=dict(visible=False, range=[-1.5, 1.5]),
-            bgcolor='rgba(0,0,0,0)',
-            camera=dict(eye=dict(x=1.5, y=1.5, z=1.3))
+            xaxis=dict(visible=False, range=[-1.6, 1.6]),
+            yaxis=dict(visible=False, range=[-1.6, 1.6]),
+            zaxis=dict(visible=False, range=[-1.6, 1.6]),
+            bgcolor='rgba(5, 5, 5, 0.5)',  # Dark background for contrast
+            camera=dict(
+                eye=dict(x=1.8, y=1.8, z=1.5),
+                center=dict(x=0, y=0, z=0),
+                projection=dict(type='perspective')
+            ),
+            aspectmode='cube'
         ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0, r=0, t=0, b=0),
-        height=500,
-        showlegend=False
+        height=550,
+        showlegend=False,
+        # Smooth non-linear easing (Quart-Out simulation)
+        transition=dict(
+            duration=800,
+            easing='cubic-out'
+        )
     )
     
     return fig
@@ -2053,15 +2253,27 @@ if module_id == "overview":
     </div>
     """, unsafe_allow_html=True)
     
-    # Enhanced Bloch sphere with volumetric rendering hints
-    st.markdown("""
-    <div class='parallax-viz-container' style='padding: 15px; margin-bottom: 20px;'>
+    # Enhanced Bloch sphere with volumetric rendering and haptic-visual feedback
+    collapse_class = 'state-collapsed' if theta_hero in [0, 180] else ''
+    st.markdown(f"""
+    <div class='parallax-viz-container {collapse_class}' style='padding: 15px; margin-bottom: 20px;'>
         <div style='text-align: center;'>
-            <span class='metric-label'>◉ WAVEFUNCTION VISUALIZATION</span>
-            <span style='margin-left: 20px; color: #00FF94; font-family: JetBrains Mono; font-size: 10px;'>⚡ SMOOTH LERP INTERPOLATION</span>
+            <span class='metric-label'>◉ HYPER-REALISTIC VOLUMETRIC RENDERING</span>
+            <span style='margin-left: 20px; color: #00FF94; font-family: JetBrains Mono; font-size: 10px;'>⚡ PBR MATERIALS | QUART-OUT EASING</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Detect basis state collapse and trigger visual feedback
+    if theta_hero in [0, 180]:
+        st.markdown("""
+        <div style='text-align: center; padding: 10px; background: rgba(0, 217, 255, 0.1); border-radius: 8px; margin-bottom: 10px; animation: collapse-vibration 0.5s ease-out;'>
+            <span style='color: #00D9FF; font-family: JetBrains Mono; font-size: 12px; font-weight: 700;'>
+            ⚠️ WAVEFUNCTION COLLAPSED TO BASIS STATE |{'0' if theta_hero == 0 else '1'}⟩
+            </span>
+        </div>
+        """, unsafe_allow_html=True)
+    
     fig_hero = create_bloch_sphere(theta_hero, phi_hero)
     st.plotly_chart(fig_hero, use_container_width=True, key="hero_bloch", config={'displayModeBar': False})
     
