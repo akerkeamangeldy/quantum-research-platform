@@ -1395,6 +1395,322 @@ elif module_id == "vqe":
         </div>
         """.format(2**2), unsafe_allow_html=True)  # 2 qubits for H₂
 
+elif module_id == "qaoa":
+    # Add energy field effect for optimization landscape
+    add_energy_field()
+    
+    st.markdown("<div class='vqe-landscape'>", unsafe_allow_html=True)
+    st.markdown("# QAOA: Quantum Approximate Optimization Algorithm")
+    st.markdown('<span class="research-status status-active">Combinatorial Optimization</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Quantum Combinatorial Optimization</h3>
+        <p>QAOA is a hybrid quantum-classical algorithm designed for solving combinatorial optimization 
+        problems. It uses a parametrized quantum circuit with alternating cost and mixer Hamiltonians 
+        to find approximate solutions to NP-hard problems.</p>
+        
+        <p><strong>Key Concept:</strong> QAOA prepares quantum states that encode solutions to optimization 
+        problems by evolving under problem-specific and mixing Hamiltonians, with parameters optimized 
+        classically to maximize solution quality.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Problem Selection
+    st.markdown("### Problem Type")
+    problem_type = st.selectbox(
+        "Select Optimization Problem",
+        ["MaxCut", "Number Partitioning", "Graph Coloring"],
+        help="Choose the combinatorial optimization problem to solve"
+    )
+    
+    if problem_type == "MaxCut":
+        st.markdown("""
+        <div class='research-card'>
+            <h3>MaxCut Problem</h3>
+            <p>Given a graph, partition vertices into two sets to maximize the number of edges 
+            between the sets. This is a canonical NP-hard problem in combinatorial optimization.</p>
+            
+            <p><strong>Cost Hamiltonian:</strong> $H_C = \\sum_{(i,j) \\in E} \\frac{1}{2}(1 - Z_i Z_j)$</p>
+            <p><strong>Mixer Hamiltonian:</strong> $H_M = \\sum_{i} X_i$</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Graph configuration
+        col1, col2 = st.columns(2)
+        with col1:
+            num_nodes = st.slider("Number of Nodes", 3, 6, 4, help="Number of vertices in the graph")
+        with col2:
+            p_layers = st.slider("QAOA Layers (p)", 1, 5, 2, help="Number of QAOA layers")
+        
+        # Generate random graph (adjacency matrix)
+        np.random.seed(42)
+        adj_matrix = np.random.randint(0, 2, size=(num_nodes, num_nodes))
+        adj_matrix = np.triu(adj_matrix, k=1)  # Upper triangular
+        adj_matrix = adj_matrix + adj_matrix.T  # Make symmetric
+        
+        # Display graph
+        st.markdown("#### Graph Structure")
+        fig_graph = go.Figure()
+        
+        # Create graph layout (circular)
+        theta = np.linspace(0, 2*np.pi, num_nodes, endpoint=False)
+        x_pos = np.cos(theta)
+        y_pos = np.sin(theta)
+        
+        # Draw edges
+        edge_traces = []
+        for i in range(num_nodes):
+            for j in range(i+1, num_nodes):
+                if adj_matrix[i, j] == 1:
+                    edge_traces.append(
+                        go.Scatter(
+                            x=[x_pos[i], x_pos[j]], 
+                            y=[y_pos[i], y_pos[j]],
+                            mode='lines',
+                            line=dict(color='#6366F1', width=2),
+                            hoverinfo='skip',
+                            showlegend=False
+                        )
+                    )
+        
+        for trace in edge_traces:
+            fig_graph.add_trace(trace)
+        
+        # Draw nodes
+        fig_graph.add_trace(
+            go.Scatter(
+                x=x_pos, y=y_pos,
+                mode='markers+text',
+                marker=dict(size=30, color='#06B6D4', line=dict(color='white', width=2)),
+                text=[f'{i}' for i in range(num_nodes)],
+                textposition='middle center',
+                textfont=dict(size=14, color='white'),
+                hoverinfo='text',
+                hovertext=[f'Node {i}' for i in range(num_nodes)],
+                showlegend=False
+            )
+        )
+        
+        fig_graph.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            xaxis=dict(visible=False, range=[-1.5, 1.5]),
+            yaxis=dict(visible=False, range=[-1.5, 1.5]),
+            height=400,
+            margin=dict(l=20, r=20, t=20, b=20)
+        )
+        
+        st.plotly_chart(fig_graph, use_container_width=True)
+        
+        # QAOA Circuit Parameters
+        st.markdown("#### QAOA Parameters")
+        
+        if st.button("Run QAOA Optimization", type="primary"):
+            with st.spinner("Running QAOA optimization..."):
+                # Initialize parameters
+                gamma_init = np.random.uniform(0, 2*np.pi, p_layers)
+                beta_init = np.random.uniform(0, np.pi, p_layers)
+                params = np.concatenate([gamma_init, beta_init])
+                
+                # Cost function for MaxCut
+                def maxcut_cost(bitstring, adj_matrix):
+                    cost = 0
+                    for i in range(len(bitstring)):
+                        for j in range(i+1, len(bitstring)):
+                            if adj_matrix[i, j] == 1 and bitstring[i] != bitstring[j]:
+                                cost += 1
+                    return cost
+                
+                # QAOA expectation value (classical simulation)
+                def qaoa_expectation(params, adj_matrix, p_layers):
+                    n = len(adj_matrix)
+                    gamma = params[:p_layers]
+                    beta = params[p_layers:]
+                    
+                    # Initialize equal superposition
+                    state = np.ones(2**n) / np.sqrt(2**n)
+                    
+                    # Apply QAOA layers
+                    for layer in range(p_layers):
+                        # Cost Hamiltonian evolution
+                        for i in range(n):
+                            for j in range(i+1, n):
+                                if adj_matrix[i, j] == 1:
+                                    # Apply exp(-i*gamma*ZZ)
+                                    for k in range(2**n):
+                                        bits = format(k, f'0{n}b')
+                                        if bits[i] != bits[j]:
+                                            state[k] *= np.exp(-1j * gamma[layer] * 0.5)
+                                        else:
+                                            state[k] *= np.exp(1j * gamma[layer] * 0.5)
+                        
+                        # Mixer Hamiltonian evolution (X rotations)
+                        new_state = np.zeros(2**n, dtype=complex)
+                        for k in range(2**n):
+                            bits = format(k, f'0{n}b')
+                            for i in range(n):
+                                # Flip bit i
+                                flipped_bits = list(bits)
+                                flipped_bits[i] = '1' if bits[i] == '0' else '0'
+                                flipped_idx = int(''.join(flipped_bits), 2)
+                                new_state[k] += np.cos(beta[layer]) * state[k]
+                                new_state[flipped_idx] += -1j * np.sin(beta[layer]) * state[k]
+                        state = new_state / np.linalg.norm(new_state)
+                    
+                    # Calculate expectation value
+                    expectation = 0
+                    for k in range(2**n):
+                        prob = np.abs(state[k])**2
+                        bitstring = format(k, f'0{n}b')
+                        cost = maxcut_cost(bitstring, adj_matrix)
+                        expectation += prob * cost
+                    
+                    return -expectation  # Negative for minimization
+                
+                # Optimization history
+                history = []
+                
+                def callback(params):
+                    energy = -qaoa_expectation(params, adj_matrix, p_layers)
+                    history.append(energy)
+                
+                # Optimize
+                from scipy.optimize import minimize
+                result = minimize(
+                    lambda p: qaoa_expectation(p, adj_matrix, p_layers),
+                    params,
+                    method='COBYLA',
+                    callback=callback,
+                    options={'maxiter': 100}
+                )
+                
+                optimal_params = result.x
+                optimal_energy = -result.fun
+                
+                # Get final state and probabilities
+                n = len(adj_matrix)
+                gamma_opt = optimal_params[:p_layers]
+                beta_opt = optimal_params[p_layers:]
+                
+                state = np.ones(2**n) / np.sqrt(2**n)
+                for layer in range(p_layers):
+                    for i in range(n):
+                        for j in range(i+1, n):
+                            if adj_matrix[i, j] == 1:
+                                for k in range(2**n):
+                                    bits = format(k, f'0{n}b')
+                                    if bits[i] != bits[j]:
+                                        state[k] *= np.exp(-1j * gamma_opt[layer] * 0.5)
+                                    else:
+                                        state[k] *= np.exp(1j * gamma_opt[layer] * 0.5)
+                    
+                    new_state = np.zeros(2**n, dtype=complex)
+                    for k in range(2**n):
+                        bits = format(k, f'0{n}b')
+                        for i in range(n):
+                            flipped_bits = list(bits)
+                            flipped_bits[i] = '1' if bits[i] == '0' else '0'
+                            flipped_idx = int(''.join(flipped_bits), 2)
+                            new_state[k] += np.cos(beta_opt[layer]) * state[k]
+                            new_state[flipped_idx] += -1j * np.sin(beta_opt[layer]) * state[k]
+                    state = new_state / np.linalg.norm(new_state)
+                
+                probabilities = np.abs(state)**2
+                
+                # Find best solution
+                best_bitstring = ""
+                best_cost = 0
+                for k in range(2**n):
+                    bitstring = format(k, f'0{n}b')
+                    cost = maxcut_cost(bitstring, adj_matrix)
+                    if cost > best_cost:
+                        best_cost = cost
+                        best_bitstring = bitstring
+                
+                # Display results
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.markdown("""
+                    <div class='metric-box'>
+                        <h3>{:.0f}</h3>
+                        <p>MaxCut Value</p>
+                    </div>
+                    """.format(optimal_energy), unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown("""
+                    <div class='metric-box'>
+                        <h3>{}</h3>
+                        <p>Optimal Partition</p>
+                    </div>
+                    """.format(best_bitstring), unsafe_allow_html=True)
+                
+                with col3:
+                    st.markdown("""
+                    <div class='metric-box'>
+                        <h3>{}</h3>
+                        <p>Iterations</p>
+                    </div>
+                    """.format(len(history)), unsafe_allow_html=True)
+                
+                # Convergence plot
+                st.markdown("#### Optimization Convergence")
+                fig_conv = go.Figure()
+                fig_conv.add_trace(
+                    go.Scatter(
+                        x=list(range(len(history))),
+                        y=history,
+                        mode='lines+markers',
+                        line=dict(color='#6366F1', width=2),
+                        marker=dict(size=6),
+                        name='MaxCut Value'
+                    )
+                )
+                fig_conv.update_layout(
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    xaxis_title='Iteration',
+                    yaxis_title='MaxCut Value',
+                    font=dict(color='#E5E7EB'),
+                    height=400
+                )
+                st.plotly_chart(fig_conv, use_container_width=True)
+                
+                # Probability distribution
+                st.markdown("#### Solution Probability Distribution")
+                bitstrings = [format(k, f'0{n}b') for k in range(2**n)]
+                costs = [maxcut_cost(bs, adj_matrix) for bs in bitstrings]
+                
+                fig_prob = go.Figure()
+                colors = ['#84CC16' if c == best_cost else '#6366F1' for c in costs]
+                fig_prob.add_trace(
+                    go.Bar(
+                        x=bitstrings,
+                        y=probabilities,
+                        marker_color=colors,
+                        hovertemplate='Bitstring: %{x}<br>Probability: %{y:.3f}<br>Cost: ' + 
+                                    np.array(costs).astype(str) + '<extra></extra>'
+                    )
+                )
+                fig_prob.update_layout(
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    xaxis_title='Bitstring',
+                    yaxis_title='Probability',
+                    font=dict(color='#E5E7EB'),
+                    height=400
+                )
+                st.plotly_chart(fig_prob, use_container_width=True)
+                
+                st.success(f"✅ Found MaxCut solution: {best_bitstring} with cut value {best_cost}")
+    
+    elif problem_type == "Number Partitioning":
+        st.info("Number Partitioning implementation coming soon!")
+    
+    elif problem_type == "Graph Coloring":
+        st.info("Graph Coloring implementation coming soon!")
+
 elif module_id == "qml":
     # Add neural network background
     add_neural_network_bg()
