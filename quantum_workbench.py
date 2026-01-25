@@ -1066,6 +1066,218 @@ elif module_id == "interference":
     
     st.plotly_chart(fig_pattern, use_container_width=True, key="interference_pattern")
 
+elif module_id == "entanglement":
+    st.markdown("<div class='bloch-energy'>", unsafe_allow_html=True)
+    st.markdown("# Entanglement & Bell States")
+    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Quantum Entanglement</h3>
+        <p>Entanglement is a uniquely quantum correlation where measurement outcomes of separated 
+        particles are correlated in ways that cannot be explained by classical physics. It's the 
+        foundation of quantum communication, teleportation, and quantum advantage.</p>
+        
+        <p><strong>Bell States:</strong> The four maximally entangled two-qubit states:</p>
+        <ul>
+            <li>$|\\Phi^+\\rangle = \\frac{1}{\\sqrt{2}}(|00\\rangle + |11\\rangle)$</li>
+            <li>$|\\Phi^-\\rangle = \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$</li>
+            <li>$|\\Psi^+\\rangle = \\frac{1}{\\sqrt{2}}(|01\\rangle + |10\\rangle)$</li>
+            <li>$|\\Psi^-\\rangle = \\frac{1}{\\sqrt{2}}(|01\\rangle - |10\\rangle)$</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Bell State Selection
+    st.markdown("### Bell State Preparation")
+    bell_state = st.selectbox(
+        "Select Bell State",
+        ["Φ⁺ (|00⟩ + |11⟩)", "Φ⁻ (|00⟩ - |11⟩)", "Ψ⁺ (|01⟩ + |10⟩)", "Ψ⁻ (|01⟩ - |10⟩)"]
+    )
+    
+    # Create Bell state
+    if bell_state.startswith("Φ⁺"):
+        state = np.array([1, 0, 0, 1]) / np.sqrt(2)
+        circuit_desc = "H on q0, CNOT(q0, q1)"
+    elif bell_state.startswith("Φ⁻"):
+        state = np.array([1, 0, 0, -1]) / np.sqrt(2)
+        circuit_desc = "H on q0, Z on q0, CNOT(q0, q1)"
+    elif bell_state.startswith("Ψ⁺"):
+        state = np.array([0, 1, 1, 0]) / np.sqrt(2)
+        circuit_desc = "H on q0, X on q1, CNOT(q0, q1)"
+    else:  # Ψ⁻
+        state = np.array([0, 1, -1, 0]) / np.sqrt(2)
+        circuit_desc = "H on q0, X on q1, Z on q1, CNOT(q0, q1)"
+    
+    # Display circuit
+    st.markdown(f"**Circuit:** `{circuit_desc}`")
+    
+    # State vector visualization
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### State Vector")
+        basis_labels = ['|00⟩', '|01⟩', '|10⟩', '|11⟩']
+        amplitudes_real = np.real(state)
+        amplitudes_imag = np.imag(state)
+        
+        fig_amp = go.Figure()
+        fig_amp.add_trace(go.Bar(
+            x=basis_labels,
+            y=amplitudes_real,
+            name='Real',
+            marker_color='#6366F1'
+        ))
+        fig_amp.add_trace(go.Bar(
+            x=basis_labels,
+            y=amplitudes_imag,
+            name='Imaginary',
+            marker_color='#06B6D4'
+        ))
+        
+        fig_amp.update_layout(
+            yaxis_title='Amplitude',
+            barmode='group',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='white'),
+            height=350
+        )
+        st.plotly_chart(fig_amp, use_container_width=True)
+    
+    with col2:
+        st.markdown("#### Probability Distribution")
+        probabilities = np.abs(state)**2
+        
+        fig_prob = go.Figure()
+        fig_prob.add_trace(go.Bar(
+            x=basis_labels,
+            y=probabilities,
+            marker_color='#84CC16'
+        ))
+        
+        fig_prob.update_layout(
+            yaxis_title='Probability',
+            yaxis=dict(range=[0, 0.6]),
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='white'),
+            height=350
+        )
+        st.plotly_chart(fig_prob, use_container_width=True)
+    
+    # Entanglement Measures
+    st.markdown("### Entanglement Quantification")
+    
+    # Calculate reduced density matrices
+    rho_full = np.outer(state, state.conj())
+    
+    # Trace out qubit 1 to get reduced density matrix for qubit 0
+    rho_0 = np.zeros((2, 2), dtype=complex)
+    rho_0[0, 0] = rho_full[0, 0] + rho_full[1, 1]
+    rho_0[0, 1] = rho_full[0, 2] + rho_full[1, 3]
+    rho_0[1, 0] = rho_full[2, 0] + rho_full[3, 1]
+    rho_0[1, 1] = rho_full[2, 2] + rho_full[3, 3]
+    
+    # Calculate von Neumann entropy
+    eigenvalues = np.linalg.eigvalsh(rho_0)
+    eigenvalues = eigenvalues[eigenvalues > 1e-10]  # Remove numerical zeros
+    entropy = -np.sum(eigenvalues * np.log2(eigenvalues))
+    
+    # Calculate concurrence for two-qubit states
+    # Flip state: σ_y ⊗ σ_y
+    sigma_y = np.array([[0, -1j], [1j, 0]])
+    sigma_yy = np.kron(sigma_y, sigma_y)
+    state_tilde = sigma_yy @ state.conj()
+    
+    # Concurrence
+    concurrence = np.abs(np.vdot(state, state_tilde))
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{entropy:.3f}</h3>
+            <p>Entanglement Entropy</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{concurrence:.3f}</h3>
+            <p>Concurrence</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        is_entangled = "Yes" if entropy > 0.01 else "No"
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{is_entangled}</h3>
+            <p>Entangled?</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Bell Inequality Violation
+    st.markdown("### Bell Inequality (CHSH)")
+    st.markdown("""
+    <div class='research-card'>
+        <p>The CHSH inequality: $|S| \\leq 2$ for local hidden variable theories.</p>
+        <p>Quantum mechanics predicts $S = 2\\sqrt{2} \\approx 2.828$ for Bell states,
+        violating the inequality and ruling out local realism.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Simulate CHSH measurements
+    if st.button("Run CHSH Test", type="primary"):
+        # Measurement angles
+        a0, a1 = 0, np.pi/2
+        b0, b1 = np.pi/4, -np.pi/4
+        
+        # Calculate expectation values
+        def chsh_expectation(state, theta_a, theta_b):
+            # Measurement operators
+            A = np.cos(theta_a) * np.kron(pauli_z(), np.eye(2)) + np.sin(theta_a) * np.kron(pauli_x(), np.eye(2))
+            B = np.cos(theta_b) * np.kron(np.eye(2), pauli_z()) + np.sin(theta_b) * np.kron(np.eye(2), pauli_x())
+            AB = A @ B
+            return np.real(state.conj() @ AB @ state)
+        
+        E_a0b0 = chsh_expectation(state, a0, b0)
+        E_a0b1 = chsh_expectation(state, a0, b1)
+        E_a1b0 = chsh_expectation(state, a1, b0)
+        E_a1b1 = chsh_expectation(state, a1, b1)
+        
+        S = E_a0b0 + E_a0b1 + E_a1b0 - E_a1b1
+        
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{abs(S):.3f}</h3>
+            <p>CHSH Parameter |S|</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Log experiment
+        experiment = {
+            "timestamp": datetime.now().isoformat(),
+            "module": "Entanglement",
+            "test": "CHSH Inequality",
+            "bell_state": bell_state,
+            "chsh_parameter": float(abs(S)),
+            "violation": bool(abs(S) > 2),
+            "entanglement_entropy": float(entropy),
+            "concurrence": float(concurrence)
+        }
+        st.session_state.experiment_log.append(experiment)
+        
+        if abs(S) > 2:
+            st.success(f"✅ Bell inequality violated! |S| = {abs(S):.3f} > 2")
+            st.info("This demonstrates quantum entanglement and rules out local hidden variable theories!")
+        else:
+            st.info(f"No violation detected: |S| = {abs(S):.3f} ≤ 2")
+        
+        st.info("💾 Experiment logged! Visit 'Reproducibility & Export' to download results.")
+
 elif module_id == "noise":
     st.markdown("<div class='noise-static'>", unsafe_allow_html=True)
     st.markdown("# Noise, Decoherence & Density Matrix Formalism")
@@ -1703,7 +1915,22 @@ elif module_id == "qaoa":
                 )
                 st.plotly_chart(fig_prob, use_container_width=True)
                 
+                # Log experiment
+                experiment = {
+                    "timestamp": datetime.now().isoformat(),
+                    "module": "QAOA",
+                    "problem": "MaxCut",
+                    "num_nodes": num_nodes,
+                    "qaoa_layers": p_layers,
+                    "optimal_cut_value": int(best_cost),
+                    "optimal_partition": best_bitstring,
+                    "iterations": len(history),
+                    "convergence": history
+                }
+                st.session_state.experiment_log.append(experiment)
+                
                 st.success(f"✅ Found MaxCut solution: {best_bitstring} with cut value {best_cost}")
+                st.info("💾 Experiment logged! Visit 'Reproducibility & Export' to download results.")
     
     elif problem_type == "Number Partitioning":
         st.info("Number Partitioning implementation coming soon!")
@@ -2218,6 +2445,487 @@ elif module_id == "export":
             )
         else:
             st.warning("No experiments to export.")
+
+elif module_id == "qec":
+    st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
+    st.markdown("# Quantum Error Correction: Surface Codes")
+    st.markdown('<span class="research-status status-active">Fault-Tolerant QC</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Topological Error Correction</h3>
+        <p>Surface codes are the leading candidate for fault-tolerant quantum computing. They use 
+        a 2D lattice of physical qubits with local interactions to encode logical qubits, achieving 
+        error correction with realistic hardware constraints.</p>
+        
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li>2D nearest-neighbor architecture (hardware-friendly)</li>
+            <li>High error threshold (~1% physical error rate)</li>
+            <li>Efficient syndrome extraction and decoding</li>
+            <li>Scalable to millions of physical qubits</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("### Distance-3 Surface Code")
+    st.markdown("A distance-3 surface code uses 9 data qubits and 8 syndrome qubits (17 total)")
+    
+    # Simulate bit-flip errors
+    st.markdown("#### Error Simulation")
+    error_rate = st.slider("Physical Error Rate", 0.0, 0.1, 0.01, 0.001, 
+                           help="Probability of error per qubit per gate")
+    
+    if st.button("Simulate Error Correction", type="primary"):
+        # Simple 3-qubit repetition code for demonstration
+        st.markdown("**3-Qubit Repetition Code (Simplified Model)**")
+        
+        # Encode logical |0⟩ = |000⟩
+        logical_state = np.array([1, 0, 0, 0, 0, 0, 0, 0], dtype=complex)
+        
+        # Apply random bit-flip errors
+        num_trials = 1000
+        uncorrected_errors = 0
+        corrected_errors = 0
+        
+        for _ in range(num_trials):
+            # Random errors on 3 qubits
+            errors = np.random.random(3) < error_rate
+            num_errors = np.sum(errors)
+            
+            if num_errors >= 2:
+                # Uncorrectable (majority fails)
+                uncorrected_errors += 1
+            elif num_errors == 1:
+                # Correctable (majority succeeds)
+                corrected_errors += 1
+        
+        success_rate = (num_trials - uncorrected_errors) / num_trials
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{success_rate*100:.1f}%</h3>
+                <p>Success Rate</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{corrected_errors}</h3>
+                <p>Errors Corrected</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{uncorrected_errors}</h3>
+                <p>Uncorrectable</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Threshold theorem
+        st.markdown("""
+        <div class='research-card'>
+            <h3>Threshold Theorem</h3>
+            <p>If physical error rate < threshold (~1% for surface codes), 
+            we can achieve arbitrarily low logical error rates by increasing code distance.</p>
+            <p><strong>Logical error rate:</strong> $p_L \\sim (p/p_{th})^{(d+1)/2}$ where d is code distance</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif module_id == "hardware":
+    st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
+    st.markdown("# Hardware Topology & Connectivity")
+    st.markdown('<span class="research-status status-active">Physical Implementation</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Quantum Hardware Architectures</h3>
+        <p>Real quantum processors have limited qubit connectivity. Understanding topology is 
+        crucial for circuit compilation, SWAP insertion, and benchmarking different platforms.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Platform selection
+    platform = st.selectbox(
+        "Select Quantum Platform",
+        ["IBM Heavy-Hex", "Google Sycamore (Grid)", "IonQ (All-to-All)", "Rigetti Aspen (Linear)"]
+    )
+    
+    if platform == "IBM Heavy-Hex":
+        st.markdown("### IBM Heavy-Hexagon Topology")
+        st.markdown("""
+        <div class='research-card'>
+            <p>IBM's heavy-hex architecture provides higher connectivity than square lattice while 
+            maintaining manufacturability. Each qubit connects to 2-3 neighbors.</p>
+            <p><strong>Advantages:</strong> Better for QAOA, VQE circuits | Lower SWAP overhead</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Generate heavy-hex layout (simplified 7-qubit example)
+        positions = {
+            0: (0, 0),
+            1: (1, 0.5),
+            2: (1, -0.5),
+            3: (2, 0),
+            4: (3, 0.5),
+            5: (3, -0.5),
+            6: (4, 0)
+        }
+        edges = [(0,1), (0,2), (1,3), (2,3), (3,4), (3,5), (4,6), (5,6)]
+        
+    elif platform == "Google Sycamore (Grid)":
+        st.markdown("### Google Sycamore Grid Topology")
+        st.markdown("""
+        <div class='research-card'>
+            <p>2D grid with nearest-neighbor connectivity. Each qubit connects to 2-4 neighbors.</p>
+            <p><strong>Advantages:</strong> Suitable for surface codes | Uniform connectivity</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        positions = {
+            0: (0, 0), 1: (1, 0), 2: (2, 0),
+            3: (0, 1), 4: (1, 1), 5: (2, 1),
+            6: (0, 2), 7: (1, 2), 8: (2, 2)
+        }
+        edges = [(0,1), (1,2), (3,4), (4,5), (6,7), (7,8), (0,3), (1,4), (2,5), (3,6), (4,7), (5,8)]
+        
+    elif platform == "IonQ (All-to-All)":
+        st.markdown("### IonQ All-to-All Connectivity")
+        st.markdown("""
+        <div class='research-card'>
+            <p>Trapped ion systems can perform gates between any qubit pair (all-to-all connectivity).</p>
+            <p><strong>Advantages:</strong> No SWAP gates needed | Ideal for fully-connected problems</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Pentagon layout
+        theta = np.linspace(0, 2*np.pi, 6, endpoint=False)
+        positions = {i: (np.cos(t), np.sin(t)) for i, t in enumerate(theta[:5])}
+        edges = [(i, j) for i in range(5) for j in range(i+1, 5)]
+        
+    else:  # Rigetti Linear
+        st.markdown("### Rigetti Linear Chain")
+        st.markdown("""
+        <div class='research-card'>
+            <p>Linear chain topology where each qubit connects to nearest neighbors only.</p>
+            <p><strong>Constraints:</strong> High SWAP overhead for long-range interactions</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        positions = {i: (i, 0) for i in range(7)}
+        edges = [(i, i+1) for i in range(6)]
+    
+    # Visualize topology
+    fig_topo = go.Figure()
+    
+    # Draw edges
+    for i, j in edges:
+        x0, y0 = positions[i]
+        x1, y1 = positions[j]
+        fig_topo.add_trace(go.Scatter(
+            x=[x0, x1], y=[y0, y1],
+            mode='lines',
+            line=dict(color='#6366F1', width=3),
+            hoverinfo='skip',
+            showlegend=False
+        ))
+    
+    # Draw nodes
+    x_coords = [positions[i][0] for i in positions]
+    y_coords = [positions[i][1] for i in positions]
+    fig_topo.add_trace(go.Scatter(
+        x=x_coords, y=y_coords,
+        mode='markers+text',
+        marker=dict(size=35, color='#06B6D4', line=dict(color='white', width=3)),
+        text=list(positions.keys()),
+        textposition='middle center',
+        textfont=dict(size=16, color='white'),
+        showlegend=False
+    ))
+    
+    fig_topo.update_layout(
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False, scaleanchor='x'),
+        height=500
+    )
+    
+    st.plotly_chart(fig_topo, use_container_width=True)
+    
+    # Connectivity metrics
+    num_qubits = len(positions)
+    num_edges = len(edges)
+    avg_degree = 2 * num_edges / num_qubits
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{num_qubits}</h3>
+            <p>Qubits</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{num_edges}</h3>
+            <p>Connections</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{avg_degree:.1f}</h3>
+            <p>Avg Degree</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif module_id == "complexity":
+    st.markdown("<div class='qml-neural'>", unsafe_allow_html=True)
+    st.markdown("# Complexity Classes: P, NP, BQP")
+    st.markdown('<span class="research-status status-active">Computational Theory</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Quantum Computational Complexity</h3>
+        <p>Understanding the power and limitations of quantum computers requires studying 
+        complexity classes - the sets of problems solvable efficiently by different computational models.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Complexity class definitions
+    st.markdown("### Complexity Classes")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class='research-card'>
+            <h4>P (Polynomial Time)</h4>
+            <p>Problems solvable by classical deterministic computers in polynomial time.</p>
+            <p><strong>Examples:</strong> Sorting, shortest path, linear programming</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class='research-card'>
+            <h4>NP (Nondeterministic Polynomial)</h4>
+            <p>Problems whose solutions can be verified in polynomial time.</p>
+            <p><strong>Examples:</strong> SAT, graph coloring, traveling salesman</p>
+            <p><strong>Open Question:</strong> P = NP?</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class='research-card'>
+            <h4>BQP (Bounded-Error Quantum Polynomial)</h4>
+            <p>Problems solvable by quantum computers in polynomial time with high probability.</p>
+            <p><strong>Examples:</strong> Factoring (Shor), simulation, search (Grover)</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class='research-card'>
+            <h4>Relationships</h4>
+            <p>$P \\subseteq BQP \\subseteq PSPACE$</p>
+            <p>$BQP$ and $NP$ are believed to be incomparable</p>
+            <p>Quantum advantage lies in problems in $BQP \\setminus P$</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Landmark problems
+    st.markdown("### Landmark Quantum Algorithms")
+    
+    algorithm = st.selectbox(
+        "Select Algorithm",
+        ["Shor's Factoring", "Grover's Search", "Quantum Simulation"]
+    )
+    
+    if algorithm == "Shor's Factoring":
+        st.markdown("""
+        <div class='research-card'>
+            <h3>Shor's Algorithm (1994)</h3>
+            <p><strong>Problem:</strong> Factor integer N into prime factors</p>
+            <p><strong>Classical:</strong> Best known - sub-exponential (General Number Field Sieve)</p>
+            <p><strong>Quantum:</strong> Polynomial time O((log N)³)</p>
+            <p><strong>Impact:</strong> Breaks RSA encryption, demonstrates quantum advantage</p>
+            
+            <p><strong>Key Idea:</strong> Use quantum Fourier transform to find period of modular exponentiation</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Example factoring
+        N_factor = st.number_input("Number to factor", min_value=15, max_value=10000, value=15, step=2)
+        if st.button("Find Factors", type="primary"):
+            factors = []
+            for i in range(2, int(np.sqrt(N_factor)) + 1):
+                if N_factor % i == 0:
+                    factors = [i, N_factor // i]
+                    break
+            
+            if factors:
+                st.success(f"✅ {N_factor} = {factors[0]} × {factors[1]}")
+            else:
+                st.info(f"{N_factor} is prime")
+    
+    elif algorithm == "Grover's Search":
+        st.markdown("""
+        <div class='research-card'>
+            <h3>Grover's Algorithm (1996)</h3>
+            <p><strong>Problem:</strong> Search unstructured database of N items</p>
+            <p><strong>Classical:</strong> O(N) - must check each item</p>
+            <p><strong>Quantum:</strong> O(√N) - quadratic speedup</p>
+            
+            <p><strong>Optimal:</strong> Provably optimal for unstructured search (tight bound)</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Grover iteration count
+        N_search = st.slider("Database size N", 4, 1024, 16, step=4)
+        classical_queries = N_search / 2  # Average
+        quantum_queries = np.pi/4 * np.sqrt(N_search)
+        speedup = classical_queries / quantum_queries
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{classical_queries:.0f}</h3>
+                <p>Classical Queries</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{quantum_queries:.0f}</h3>
+                <p>Quantum Queries</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col3:
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{speedup:.1f}×</h3>
+                <p>Speedup</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    else:  # Quantum Simulation
+        st.markdown("""
+        <div class='research-card'>
+            <h3>Quantum Simulation (Feynman 1982)</h3>
+            <p><strong>Problem:</strong> Simulate quantum many-body systems</p>
+            <p><strong>Classical:</strong> Exponential resources (Hilbert space grows as 2^N)</p>
+            <p><strong>Quantum:</strong> Polynomial resources (native quantum evolution)</p>
+            
+            <p><strong>Applications:</strong> Materials science, drug discovery, high-energy physics</p>
+            <p><strong>Status:</strong> First practical quantum advantage demonstrated (2019-2023)</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif module_id == "topological":
+    st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
+    st.markdown("# Topological Quantum Computing")
+    st.markdown('<span class="research-status status-frontier">Advanced Topic</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Topology-Based Quantum Information</h3>
+        <p>Topological quantum computing encodes quantum information in non-local topological 
+        properties of systems, providing inherent protection against local errors. Information 
+        is stored in the braiding of anyons (exotic quasiparticles in 2D systems).</p>
+        
+        <p><strong>Key Advantages:</strong></p>
+        <ul>
+            <li>Topologically protected qubits (immune to local perturbations)</li>
+            <li>Gates performed by braiding anyons (geometrically robust)</li>
+            <li>Fault-tolerance built into physics (not error correction overhead)</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("### Anyons & Braiding")
+    st.markdown("""
+    <div class='research-card'>
+        <h4>Fibonacci Anyons</h4>
+        <p>Universal topological quantum computing can be achieved with Fibonacci anyons, 
+        which have fusion rules: $\\tau \\times \\tau = 1 + \\tau$</p>
+        
+        <p><strong>Braiding Operations:</strong> Moving anyon A around anyon B clockwise vs 
+        counterclockwise gives different quantum gates. These operations form a representation 
+        of the braid group.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Braid visualization
+    st.markdown("#### Braid Diagram")
+    st.markdown("Select braid operation:")
+    
+    braid_type = st.selectbox(
+        "Braid Type",
+        ["Identity (No Braid)", "σ₁ (Braid 1-2)", "σ₂ (Braid 2-3)", "σ₁σ₂σ₁ (Yang-Baxter)"]
+    )
+    
+    # Simple visualization
+    fig_braid = go.Figure()
+    
+    if braid_type == "Identity (No Braid)":
+        # Straight lines
+        for i in range(3):
+            fig_braid.add_trace(go.Scatter(
+                x=[0, 1], y=[i, i],
+                mode='lines',
+                line=dict(color='#6366F1', width=4),
+                showlegend=False
+            ))
+        st.markdown("**Gate:** Identity (no operation)")
+        
+    elif braid_type == "σ₁ (Braid 1-2)":
+        # Braid strands 1 and 2
+        t = np.linspace(0, 1, 100)
+        y1 = 0 + 0.3 * np.sin(np.pi * t)
+        y2 = 1 - 0.3 * np.sin(np.pi * t)
+        
+        fig_braid.add_trace(go.Scatter(x=t, y=y1, mode='lines', line=dict(color='#6366F1', width=4), showlegend=False))
+        fig_braid.add_trace(go.Scatter(x=t, y=y2, mode='lines', line=dict(color='#06B6D4', width=4), showlegend=False))
+        fig_braid.add_trace(go.Scatter(x=[0,1], y=[2,2], mode='lines', line=dict(color='#84CC16', width=4), showlegend=False))
+        
+        st.markdown("**Gate:** $\\sigma_1$ (exchange anyons 1 and 2)")
+    
+    fig_braid.update_layout(
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+        height=300
+    )
+    st.plotly_chart(fig_braid, use_container_width=True)
+    
+    # Physical platforms
+    st.markdown("### Physical Realizations")
+    st.markdown("""
+    <div class='research-card'>
+        <h4>Experimental Platforms</h4>
+        <ul>
+            <li><strong>Fractional Quantum Hall Systems:</strong> Electrons in 2D at ultra-low temperatures and high magnetic fields</li>
+            <li><strong>Topological Superconductors:</strong> Majorana zero modes at superconductor interfaces</li>
+            <li><strong>Quantum Spin Liquids:</strong> Frustrated magnetic systems with topological order</li>
+        </ul>
+        
+        <p><strong>Status:</strong> Experimental observation of non-Abelian anyons achieved (2020), 
+        but full topological quantum computer remains years away.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
     st.markdown(f"# {selected_module}")
