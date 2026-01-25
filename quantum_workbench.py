@@ -78,6 +78,7 @@ st.markdown("""
         color: var(--accent-quantum);
     }
     
+    /* REACTIVE RESEARCH CARDS WITH HOVER EFFECTS */
     .research-card {
         background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
         border: 1px solid var(--glass-border);
@@ -89,6 +90,8 @@ st.markdown("""
             inset 0 1px 0 rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
         position: relative;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: wavefunction-collapse 0.8s ease-out;
     }
     
     .research-card::before {
@@ -99,8 +102,52 @@ st.markdown("""
         right: 0;
         height: 1px;
         background: linear-gradient(90deg, transparent, var(--glass-glow), transparent);
+        opacity: 0.5;
+        transition: opacity 0.4s ease;
     }
     
+    .research-card::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, 
+            transparent 0%, 
+            rgba(0, 217, 255, 0.1) 25%, 
+            rgba(123, 97, 255, 0.1) 50%, 
+            rgba(0, 217, 255, 0.1) 75%, 
+            transparent 100%);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        opacity: 0;
+        z-index: -1;
+        animation: noise-field 8s ease infinite;
+        transition: opacity 0.4s ease;
+    }
+    
+    .research-card:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 
+            0 20px 60px rgba(0, 217, 255, 0.3),
+            0 0 40px rgba(123, 97, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -30px 60px rgba(0, 217, 255, 0.1);
+        border-color: rgba(0, 217, 255, 0.5);
+        animation: subsurface-scatter 2s ease-in-out infinite;
+    }
+    
+    .research-card:hover::before {
+        opacity: 1;
+        animation: entanglement-glow 1.5s ease infinite;
+    }
+    
+    .research-card:hover::after {
+        opacity: 1;
+    }
+    
+    /* REACTIVE EXPERIMENT PANELS */
     .experiment-panel {
         background: rgba(18, 18, 18, 0.9);
         border-left: 2px solid var(--accent-energy);
@@ -109,8 +156,38 @@ st.markdown("""
         border-radius: 12px;
         backdrop-filter: blur(10px);
         font-family: 'Source Serif Pro', serif;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
+    .experiment-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(123, 97, 255, 0.1), 
+            transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .experiment-panel:hover {
+        border-left-color: var(--accent-quantum);
+        border-left-width: 4px;
+        padding-left: 22px;
+        transform: translateX(5px);
+        box-shadow: 0 8px 24px rgba(123, 97, 255, 0.3);
+    }
+    
+    .experiment-panel:hover::before {
+        left: 100%;
+    }
+    
+    /* METRIC BOXES WITH KINETIC TYPOGRAPHY */
     .metric-box {
         background: linear-gradient(135deg, rgba(123, 97, 255, 0.08) 0%, rgba(0, 217, 255, 0.08) 100%);
         border: 1px solid var(--glass-border);
@@ -120,6 +197,37 @@ st.markdown("""
         margin: 12px 0;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
         font-family: 'JetBrains Mono', monospace;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-box::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(0, 217, 255, 0.3), transparent);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .metric-box:hover {
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 
+            0 12px 32px rgba(0, 217, 255, 0.4),
+            0 0 40px rgba(123, 97, 255, 0.3);
+        border-color: rgba(0, 217, 255, 0.6);
+        animation: displacement-ripple 0.8s ease-in-out;
+    }
+    
+    .metric-box:hover::before {
+        width: 300px;
+        height: 300px;
     }
     
     .metric-box h3 {
@@ -127,6 +235,9 @@ st.markdown("""
         font-size: 32px;
         margin: 0;
         font-weight: 700;
+        position: relative;
+        z-index: 1;
+        animation: kinetic-text 2s ease-in-out infinite;
     }
     
     .metric-box p {
@@ -135,42 +246,104 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin: 8px 0 0 0;
+        position: relative;
+        z-index: 1;
     }
     
-    .metric-box h3 {
-        color: var(--accent-cyan);
-        margin: 0;
-        font-size: 28px;
-        font-weight: 700;
-    }
-    
-    .metric-box p {
-        color: var(--text-secondary);
-        margin: 4px 0 0 0;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
+    /* FLOATING LATEX PANELS WITH GLASS MORPHISM */
     .latex-display {
-        background: rgba(99, 102, 241, 0.05);
-        border-left: 3px solid var(--accent-indigo);
-        padding: 20px;
-        margin: 16px 0;
-        border-radius: 8px;
+        background: linear-gradient(135deg, 
+            rgba(0, 217, 255, 0.05) 0%, 
+            rgba(123, 97, 255, 0.05) 100%);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-left: 3px solid var(--accent-quantum);
+        padding: 24px;
+        margin: 20px 0;
+        border-radius: 12px;
         font-family: 'JetBrains Mono', monospace;
-        color: var(--text-primary);
+        color: var(--text-mono);
+        backdrop-filter: blur(10px);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        position: relative;
+        transform-style: preserve-3d;
+        transition: all 0.4s ease;
+        animation: wavefunction-collapse 1s ease-out;
     }
     
-    .code-panel {
-        background: #0D1117;
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 8px;
-        padding: 16px;
-        margin: 16px 0;
+    .latex-display:hover {
+        transform: translateZ(10px) scale(1.02);
+        box-shadow: 
+            0 16px 48px rgba(0, 217, 255, 0.3),
+            0 0 60px rgba(123, 97, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        border-color: rgba(0, 217, 255, 0.6);
+    }
+    
+    /* TELEMETRY TICKER - REAL-TIME DATA STREAM */
+    .telemetry-ticker {
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid rgba(0, 217, 255, 0.2);
+        border-radius: 6px;
+        padding: 8px 16px;
+        margin: 12px 0;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
+        font-size: 11px;
+        color: var(--accent-quantum);
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+    
+    .telemetry-ticker::before {
+        content: '▶';
+        color: var(--accent-coherence);
+        margin-right: 8px;
+        animation: bloom-pulse 1.5s ease infinite;
+    }
+    
+    @keyframes ticker-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .telemetry-value {
+        display: inline-block;
+        color: var(--accent-coherence);
+        font-weight: 700;
+        padding: 0 4px;
+        animation: kinetic-text 3s ease-in-out infinite;
+    }
+    
+    /* CODE PANELS WITH TERMINAL AESTHETIC */
+    .code-panel {
+        background: rgba(10, 10, 10, 0.98);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
         overflow-x: auto;
+        box-shadow: 
+            inset 0 0 20px rgba(0, 0, 0, 0.8),
+            0 4px 16px rgba(0, 0, 0, 0.6);
+        position: relative;
+    }
+    
+    .code-panel::before {
+        content: 'QUANTUM CIRCUIT SYNTHESIS';
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: #0A0A0A;
+        padding: 2px 12px;
+        font-size: 9px;
+        color: var(--accent-quantum);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-radius: 4px;
+        letter-spacing: 0.1em;
     }
     
     .stButton button {
@@ -270,26 +443,137 @@ st.markdown("""
         text-align: center;
     }
     
-    /* Animated Backgrounds for Each Module */
+    /* REACTIVE QUANTUM TERMINAL - ADVANCED ANIMATIONS */
+    
+    /* Kinetic Typography */
+    @keyframes kinetic-text {
+        0%, 100% { 
+            transform: translateY(0px) scale(1);
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+        50% { 
+            transform: translateY(-2px) scale(1.01);
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+        }
+    }
+    
+    /* Bloom/Glow Effect */
+    @keyframes bloom-pulse {
+        0%, 100% { 
+            box-shadow: 
+                0 0 20px rgba(0, 217, 255, 0.3),
+                0 0 40px rgba(123, 97, 255, 0.2),
+                inset 0 0 20px rgba(0, 217, 255, 0.1);
+            filter: brightness(1);
+        }
+        50% { 
+            box-shadow: 
+                0 0 40px rgba(0, 217, 255, 0.6),
+                0 0 80px rgba(123, 97, 255, 0.4),
+                inset 0 0 30px rgba(0, 217, 255, 0.2);
+            filter: brightness(1.2);
+        }
+    }
+    
+    /* Wavefunction Collapse Animation */
+    @keyframes wavefunction-collapse {
+        0% { 
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            filter: blur(10px);
+        }
+        50% {
+            filter: blur(2px);
+        }
+        100% { 
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+    }
+    
+    /* Perlin Noise Field Simulation */
+    @keyframes noise-field {
+        0% { 
+            background-position: 0% 0%;
+            opacity: 0.1;
+        }
+        50% {
+            opacity: 0.3;
+        }
+        100% { 
+            background-position: 100% 100%;
+            opacity: 0.1;
+        }
+    }
+    
+    /* Geometric Tesseract Rotation */
+    @keyframes tesseract-rotate {
+        0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+        33% { transform: rotateX(120deg) rotateY(240deg) rotateZ(120deg); }
+        66% { transform: rotateX(240deg) rotateY(120deg) rotateZ(240deg); }
+        100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+    }
+    
+    /* Quantum Entanglement Thread Glow */
+    @keyframes entanglement-glow {
+        0%, 100% { 
+            stroke-width: 2;
+            stroke: rgba(0, 217, 255, 0.6);
+            filter: drop-shadow(0 0 5px rgba(0, 217, 255, 0.8));
+        }
+        50% { 
+            stroke-width: 3;
+            stroke: rgba(0, 217, 255, 1);
+            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 1));
+        }
+    }
+    
+    /* Subsurface Scattering Glow */
+    @keyframes subsurface-scatter {
+        0%, 100% {
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -20px 40px rgba(0, 217, 255, 0.05);
+        }
+        50% {
+            box-shadow: 
+                0 12px 48px rgba(0, 217, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -20px 40px rgba(0, 217, 255, 0.15);
+        }
+    }
+    
+    /* Displacement Field Effect */
+    @keyframes displacement-ripple {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+        25% {
+            transform: translate(2px, -2px) scale(1.01);
+        }
+        50% {
+            transform: translate(0, -3px) scale(1.02);
+        }
+        75% {
+            transform: translate(-2px, -2px) scale(1.01);
+        }
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+    }
+    
+    /* Legacy animations */
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-20px); }
-    }
-    
-    @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-        50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
     }
     
     @keyframes rotate-gradient {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
-    }
-    
-    @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
     }
     
     @keyframes wave {
@@ -756,10 +1040,20 @@ def generate_experiment_id():
     hash_obj = hashlib.md5((timestamp + random_component).encode())
     return f"QEXP-{hash_obj.hexdigest()[:8].upper()}"
 
-# Sidebar navigation
+# Sidebar navigation with real-time telemetry
 st.sidebar.markdown("## QUANTUM RESEARCH WORKBENCH v4.0.2")
 st.sidebar.markdown("**SYSTEM STATUS:** `OPERATIONAL`")
 st.sidebar.markdown("**COHERENCE TIME:** `OPTIMIZED`")
+
+# Real-time telemetry ticker in sidebar
+telemetry_html = """
+<div class='telemetry-ticker'>
+    <span>GATE FIDELITY:</span> <span class='telemetry-value'>99.94%</span> | 
+    <span>T₂:</span> <span class='telemetry-value'>103μs</span> | 
+    <span>TEMP:</span> <span class='telemetry-value'>18.7mK</span>
+</div>
+"""
+st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 modules = {
@@ -845,10 +1139,43 @@ if module_id == "overview":
     </div>
     """, unsafe_allow_html=True)
     
-    # Technology stack
-    col1, col2 = st.columns(2)
+    # Real-time telemetry dashboard
+    st.markdown("### REAL-TIME TELEMETRY STREAM")
+    col_tel1, col_tel2, col_tel3, col_tel4 = st.columns(4)
     
-    # Technology specifications
+    with col_tel1:
+        st.markdown("""
+        <div class='telemetry-ticker'>
+            GATE FIDELITY<br>
+            <span class='telemetry-value'>F = 99.94%</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_tel2:
+        st.markdown("""
+        <div class='telemetry-ticker'>
+            COHERENCE TIME<br>
+            <span class='telemetry-value'>T₂ = 103μs</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_tel3:
+        st.markdown("""
+        <div class='telemetry-ticker'>
+            CRYOGENIC TEMP<br>
+            <span class='telemetry-value'>18.7 mK</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_tel4:
+        st.markdown("""
+        <div class='telemetry-ticker'>
+            VACUUM LEVEL<br>
+            <span class='telemetry-value'>10⁻⁸ mbar</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Technology stack
     col1, col2 = st.columns(2)
     
     with col1:
