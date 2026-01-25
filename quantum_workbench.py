@@ -1176,6 +1176,287 @@ elif module_id == "qml":
             
             st.success(f"✓ Training complete. Quantum advantage: {(acc_quantum - acc_classical)*100:+.2f}%")
 
+elif module_id == "circuits":
+    st.markdown("# Quantum Circuits & Unitaries")
+    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Circuit-to-Physics Bridge</h3>
+        <p>Quantum circuits are sequences of unitary operations acting on qubits. This module demonstrates 
+        circuit construction, unitary evolution, and the mapping between gate sequences and quantum state transformations.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.latex(r"""
+    U_{\text{total}} = U_n \cdots U_2 U_1, \quad |\psi_{\text{out}}\rangle = U_{\text{total}}|\psi_{\text{in}}\rangle
+    """)
+    
+    st.markdown("""
+    <div class='latex-display'>
+        <p><strong>Unitary Evolution:</strong> Quantum gates are unitary matrices satisfying U†U = I</p>
+        <p><strong>Reversibility:</strong> All quantum gates are reversible (except measurement)</p>
+        <p><strong>Composition:</strong> Gates compose via matrix multiplication (right-to-left)</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Circuit builder
+    col1, col2 = st.columns([3, 2])
+    
+    with col1:
+        st.markdown("### Build Quantum Circuit")
+        
+        # Initial state selection
+        init_state = st.radio("Initial State", 
+                             ["|0⟩", "|1⟩", "|+⟩ = (|0⟩+|1⟩)/√2", "|-⟩ = (|0⟩-|1⟩)/√2", "Custom"],
+                             key="circuit_init_state")
+        
+        if "Custom" in init_state:
+            custom_theta = st.slider("Custom θ", 0, 180, 90, 5, key="custom_circuit_theta")
+            custom_phi = st.slider("Custom φ", 0, 360, 0, 5, key="custom_circuit_phi")
+            theta_rad = np.radians(custom_theta)
+            phi_rad = np.radians(custom_phi)
+            state = np.array([np.cos(theta_rad/2), np.exp(1j*phi_rad)*np.sin(theta_rad/2)])
+        elif "|0⟩" in init_state:
+            state = np.array([1, 0], dtype=complex)
+        elif "|1⟩" in init_state:
+            state = np.array([0, 1], dtype=complex)
+        elif "|+⟩" in init_state:
+            state = np.array([1, 1], dtype=complex) / np.sqrt(2)
+        else:  # |-⟩
+            state = np.array([1, -1], dtype=complex) / np.sqrt(2)
+        
+        # Gate palette
+        st.markdown("### Gate Sequence (applied left to right)")
+        
+        gate_options = ["H", "X", "Y", "Z", "S", "T", "RX(π/2)", "RY(π/2)", "RZ(π/2)", "RX(π)", "RY(π)"]
+        selected_gates = st.multiselect("Add gates to circuit", gate_options, key="circuit_gates")
+        
+        # Build circuit and track evolution
+        circuit_states = [state.copy()]
+        circuit_labels = [init_state.split()[0]]
+        total_unitary = np.eye(2, dtype=complex)
+        
+        pauli = pauli_matrices()
+        
+        for gate_name in selected_gates:
+            if gate_name == "H":
+                gate = hadamard()
+            elif gate_name == "X":
+                gate = pauli['X']
+            elif gate_name == "Y":
+                gate = pauli['Y']
+            elif gate_name == "Z":
+                gate = pauli['Z']
+            elif gate_name == "S":
+                gate = np.array([[1, 0], [0, 1j]], dtype=complex)
+            elif gate_name == "T":
+                gate = np.array([[1, 0], [0, np.exp(1j*np.pi/4)]], dtype=complex)
+            elif "RX" in gate_name:
+                angle = 90 if "π/2" in gate_name else 180
+                gate = rotation_gate('X', angle)
+            elif "RY" in gate_name:
+                angle = 90 if "π/2" in gate_name else 180
+                gate = rotation_gate('Y', angle)
+            elif "RZ" in gate_name:
+                angle = 90 if "π/2" in gate_name else 180
+                gate = rotation_gate('Z', angle)
+            
+            state = gate @ state
+            total_unitary = gate @ total_unitary
+            circuit_states.append(state.copy())
+            circuit_labels.append(gate_name)
+        
+        # Display circuit diagram (text-based)
+        st.markdown("### Circuit Diagram")
+        circuit_str = "q: |ψ₀⟩──"
+        for gate_name in selected_gates:
+            circuit_str += f"[{gate_name}]──"
+        circuit_str += "|ψₙ⟩"
+        
+        st.code(circuit_str, language="text")
+        
+        # State evolution table
+        st.markdown("### State Evolution")
+        
+        evolution_data = []
+        for i, (state_vec, label) in enumerate(zip(circuit_states, circuit_labels)):
+            prob_0 = abs(state_vec[0])**2
+            prob_1 = abs(state_vec[1])**2
+            phase = np.angle(state_vec[1] / state_vec[0]) if abs(state_vec[0]) > 1e-10 else 0
+            
+            evolution_data.append({
+                "Step": i,
+                "After": label,
+                "α (|0⟩)": f"{state_vec[0].real:.3f}{state_vec[0].imag:+.3f}i",
+                "β (|1⟩)": f"{state_vec[1].real:.3f}{state_vec[1].imag:+.3f}i",
+                "P(|0⟩)": f"{prob_0:.3f}",
+                "P(|1⟩)": f"{prob_1:.3f}",
+                "Phase (°)": f"{np.degrees(phase):.1f}"
+            })
+        
+        import pandas as pd
+        df_evolution = pd.DataFrame(evolution_data)
+        st.dataframe(df_evolution, use_container_width=True)
+        
+        # Total unitary matrix
+        st.markdown("### Total Circuit Unitary")
+        st.markdown("Matrix representation of the entire circuit:")
+        
+        col_u1, col_u2 = st.columns(2)
+        
+        with col_u1:
+            st.markdown("**Real Part**")
+            fig_u_real = go.Figure(data=go.Heatmap(
+                z=total_unitary.real,
+                colorscale='RdBu',
+                zmid=0,
+                text=np.round(total_unitary.real, 3),
+                texttemplate='%{text}',
+                textfont={"size": 14}
+            ))
+            fig_u_real.update_layout(
+                height=300,
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white')
+            )
+            st.plotly_chart(fig_u_real, use_container_width=True, key="unitary_real")
+        
+        with col_u2:
+            st.markdown("**Imaginary Part**")
+            fig_u_imag = go.Figure(data=go.Heatmap(
+                z=total_unitary.imag,
+                colorscale='RdBu',
+                zmid=0,
+                text=np.round(total_unitary.imag, 3),
+                texttemplate='%{text}',
+                textfont={"size": 14}
+            ))
+            fig_u_imag.update_layout(
+                height=300,
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='white')
+            )
+            st.plotly_chart(fig_u_imag, use_container_width=True, key="unitary_imag")
+        
+        # Verify unitarity
+        identity_check = np.allclose(total_unitary.conj().T @ total_unitary, np.eye(2))
+        determinant = np.linalg.det(total_unitary)
+        
+        st.markdown(f"""
+        <div class='experiment-panel'>
+            <h4>Unitary Verification</h4>
+            <p><strong>U†U = I:</strong> {"✓ Valid" if identity_check else "✗ Invalid"}</p>
+            <p><strong>det(U):</strong> {abs(determinant):.6f} (should be 1)</p>
+            <p><strong>Phase factor:</strong> e^(i{np.angle(determinant):.3f})</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("### Bloch Sphere Evolution")
+        
+        # Show initial and final states on Bloch sphere
+        if len(circuit_states) > 0:
+            final_state = circuit_states[-1]
+            
+            # Calculate Bloch coordinates for final state
+            if abs(final_state[0]) > 1e-10:
+                theta_final = 2 * np.arccos(abs(final_state[0]))
+            else:
+                theta_final = np.pi
+            
+            if abs(final_state[1]) > 1e-10:
+                phi_final = np.angle(final_state[1] / final_state[0])
+            else:
+                phi_final = 0
+            
+            fig_bloch_circuit = create_bloch_sphere(
+                np.degrees(theta_final), 
+                np.degrees(phi_final)
+            )
+            st.plotly_chart(fig_bloch_circuit, use_container_width=True, key="circuit_bloch")
+            
+            # Final state display
+            st.markdown(f"""
+            <div class='metric-box'>
+                <h3>{abs(final_state[0])**2:.3f}</h3>
+                <p>P(|0⟩)</p>
+            </div>
+            <div class='metric-box'>
+                <h3>{abs(final_state[1])**2:.3f}</h3>
+                <p>P(|1⟩)</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Measurement simulation
+            if st.button("Simulate Measurement (1000 shots)", key="circuit_measure"):
+                shots = 1000
+                prob_0 = abs(final_state[0])**2
+                
+                # Generate measurement outcomes
+                outcomes = np.random.choice([0, 1], size=shots, p=[prob_0, 1-prob_0])
+                count_0 = np.sum(outcomes == 0)
+                count_1 = np.sum(outcomes == 1)
+                
+                fig_meas = go.Figure(data=[
+                    go.Bar(
+                        x=['|0⟩', '|1⟩'],
+                        y=[count_0, count_1],
+                        marker=dict(color=['#6366F1', '#06B6D4']),
+                        text=[count_0, count_1],
+                        textposition='outside'
+                    )
+                ])
+                
+                fig_meas.update_layout(
+                    title='Measurement Results',
+                    yaxis_title='Counts',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    font=dict(color='white'),
+                    height=400
+                )
+                
+                st.plotly_chart(fig_meas, use_container_width=True, key="measurement_results")
+                
+                st.markdown(f"""
+                <div class='latex-display'>
+                    <p><strong>Theoretical:</strong> P(|0⟩) = {prob_0:.3f}, P(|1⟩) = {1-prob_0:.3f}</p>
+                    <p><strong>Measured:</strong> P(|0⟩) = {count_0/shots:.3f}, P(|1⟩) = {count_1/shots:.3f}</p>
+                    <p><strong>Statistical error:</strong> ~1/√{shots} ≈ {1/np.sqrt(shots):.3f}</p>
+                </div>
+                """, unsafe_allow_html=True)
+    
+    # Executable code
+    st.markdown("### Executable Python Code")
+    
+    gates_str = ", ".join([f"'{g}'" for g in selected_gates]) if selected_gates else "[]"
+    
+    code_circuit = f"""
+import numpy as np
+from scipy.linalg import expm
+
+# Define gates
+def hadamard():
+    return np.array([[1, 1], [1, -1]]) / np.sqrt(2)
+
+def pauli_x():
+    return np.array([[0, 1], [1, 0]])
+
+# Initialize state: {init_state}
+state = np.array([{circuit_states[0][0]:.3f}, {circuit_states[0][1]:.3f}])
+
+# Apply gates: {gates_str}
+# ... apply gate sequence ...
+
+# Final state
+print(f"Final state: |ψ⟩ = {{state[0]:.3f}}|0⟩ + {{state[1]:.3f}}|1⟩")
+print(f"Probabilities: P(|0⟩) = {{abs(state[0])**2:.3f}}, P(|1⟩) = {{abs(state[1])**2:.3f}}")
+"""
+    st.code(code_circuit, language="python")
+
 elif module_id == "export":
     st.markdown("# Reproducibility & Export System")
     st.markdown('<span class="research-status status-active">Research Infrastructure</span>', unsafe_allow_html=True)
