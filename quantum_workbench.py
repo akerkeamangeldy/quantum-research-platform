@@ -289,6 +289,43 @@ st.markdown("""
         transition: filter 0.8s ease;
     }
     
+    /* PLOTLY HOVER TOOLTIPS - CAMBRIDGE HUD AESTHETIC */
+    .js-plotly-plot .hoverlayer .hovertext {
+        background: linear-gradient(135deg, 
+            rgba(10, 10, 10, 0.95) 0%,
+            rgba(20, 20, 30, 0.90) 100%) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        border: 1px solid rgba(0, 217, 255, 0.3) !important;
+        border-radius: 12px !important;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.8),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 0 40px rgba(0, 217, 255, 0.2) !important;
+        padding: 16px 20px !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        letter-spacing: 0.3px !important;
+        animation: tooltip-entrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .js-plotly-plot .hoverlayer .hovertext path {
+        fill: rgba(10, 10, 10, 0.95) !important;
+        stroke: rgba(0, 217, 255, 0.3) !important;
+        filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.3));
+    }
+    
+    @keyframes tooltip-entrance {
+        0% { 
+            opacity: 0; 
+            transform: scale(0.85) translateY(10px); 
+        }
+        100% { 
+            opacity: 1; 
+            transform: scale(1) translateY(0); 
+        }
+    }
+    
     /* REFRACTION & GLASSMORPHISM EFFECTS */
     .plotly-graph-div::before {
         content: '';
@@ -1650,7 +1687,16 @@ def create_bloch_sphere(theta_deg, phi_deg):
             line=dict(color='rgba(255, 255, 255, 0.8)', width=2)
         ),
         name='|ψ⟩ State Vector',
-        hovertemplate='<b>|ψ⟩</b><br>θ=%{customdata[0]:.1f}°<br>φ=%{customdata[1]:.1f}°<extra></extra>',
+        hovertemplate=(
+            '<b style="font-family:JetBrains Mono;color:#00D9FF;">QUANTUM STATE VECTOR</b><br>'
+            '<span style="font-family:JetBrains Mono;font-size:10px;color:#7B61FF;">━━━━━━━━━━━━━━━━━━━━━━━━</span><br>'
+            '<b>|ψ⟩</b> = α|0⟩ + β|1⟩<br>'
+            '<span style="color:#00FF94;">θ</span> = %{customdata[0]:.2f}° (Polar)<br>'
+            '<span style="color:#00FF94;">φ</span> = %{customdata[1]:.2f}° (Azimuthal)<br>'
+            '<span style="font-family:JetBrains Mono;font-size:10px;color:#7B61FF;">━━━━━━━━━━━━━━━━━━━━━━━━</span><br>'
+            '<span style="color:rgba(255,255,255,0.6);font-size:9px;">CAMBRIDGE QUANTUM OBSERVATORY</span>'
+            '<extra></extra>'
+        ),
         customdata=[[theta_deg, phi_deg]]
     ))
     
@@ -2080,62 +2126,44 @@ if module_id == "overview":
     
     # Interactive Bento Grid Navigation in Main Area
     st.markdown("### 🎯 SELECT RESEARCH MODULE")
-    st.markdown("""
-    <div class='main-bento-grid'>
-        <div class='main-bento-tile' onclick="window.location.href='?module=bloch'">
-            <div class='main-tile-icon'>🌀</div>
-            <div class='main-tile-title'>Hilbert Space<br>Dynamics</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=interference'">
-            <div class='main-tile-icon'>〰️</div>
-            <div class='main-tile-title'>Coherent<br>Superposition</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=entanglement'">
-            <div class='main-tile-icon'>🔗</div>
-            <div class='main-tile-title'>Bell State<br>Correlations</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=noise'">
-            <div class='main-tile-icon'>📉</div>
-            <div class='main-tile-title'>Dissipative<br>Decoherence</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=circuits'">
-            <div class='main-tile-icon'>⚡</div>
-            <div class='main-tile-title'>Unitary<br>Synthesis</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=vqe'">
-            <div class='main-tile-icon'>🧬</div>
-            <div class='main-tile-title'>VQE<br>Architectures</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=qaoa'">
-            <div class='main-tile-icon'>📐</div>
-            <div class='main-tile-title'>Optimization<br>Manifolds</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=qml'">
-            <div class='main-tile-icon'>🧠</div>
-            <div class='main-tile-title'>Quantum Neural<br>Manifolds</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=qec'">
-            <div class='main-tile-icon'>🛡️</div>
-            <div class='main-tile-title'>Surface Code<br>Protocols</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=hardware'">
-            <div class='main-tile-icon'>🔌</div>
-            <div class='main-tile-title'>QPU Topology<br>Maps</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=complexity'">
-            <div class='main-tile-icon'>♾️</div>
-            <div class='main-tile-title'>Complexity<br>Landscapes</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=topological'">
-            <div class='main-tile-icon'>🔀</div>
-            <div class='main-tile-title'>Anyonic<br>Braiding</div>
-        </div>
-        <div class='main-bento-tile' onclick="window.location.href='?module=export'">
-            <div class='main-tile-icon'>💾</div>
-            <div class='main-tile-title'>Research<br>Reproducibility</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    
+    # Create functional Bento Grid with Streamlit components
+    grid_modules = [
+        ("bloch", "🌀", "Hilbert Space Dynamics"),
+        ("interference", "〰️", "Coherent Superposition"),
+        ("entanglement", "🔗", "Bell State Correlations"),
+        ("noise", "📉", "Dissipative Decoherence"),
+        ("circuits", "⚡", "Unitary Synthesis"),
+        ("vqe", "🧬", "VQE Architectures"),
+        ("qaoa", "📐", "Optimization Manifolds"),
+        ("qml", "🧠", "Quantum Neural Manifolds"),
+        ("qec", "🛡️", "Surface Code Protocols"),
+        ("hardware", "🔌", "QPU Topology Maps"),
+        ("complexity", "♾️", "Complexity Landscapes"),
+        ("topological", "🔀", "Anyonic Braiding"),
+        ("export", "💾", "Research Reproducibility")
+    ]
+    
+    # Create 4-column grid layout
+    for row_start in range(0, len(grid_modules), 4):
+        cols = st.columns(4)
+        for idx, col in enumerate(cols):
+            if row_start + idx < len(grid_modules):
+                module_id, icon, title = grid_modules[row_start + idx]
+                with col:
+                    # Custom styled button
+                    button_html = f"""
+                    <div style='text-align: center; padding: 20px; background: linear-gradient(135deg, rgba(18,18,18,0.95), rgba(26,26,26,0.9)); 
+                         border: 1px solid rgba(0,217,255,0.25); border-radius: 14px; min-height: 120px; cursor: pointer;
+                         transition: all 0.5s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;'>
+                        <div style='font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(0,217,255,0.6));'>{icon}</div>
+                        <div style='font-family: JetBrains Mono; font-size: 11px; color: #E8E8E8; text-transform: uppercase; line-height: 1.3;'>{title.replace(' ', '<br>')}</div>
+                    </div>
+                    """
+                    st.markdown(button_html, unsafe_allow_html=True)
+                    if st.button(f"Navigate to {title}", key=f"main_grid_{module_id}", use_container_width=True, type="secondary"):
+                        st.session_state.selected_module_id = module_id
+                        st.rerun()
     
     # Real-time telemetry dashboard
     st.markdown("### REAL-TIME TELEMETRY STREAM")
