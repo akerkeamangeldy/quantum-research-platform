@@ -185,8 +185,354 @@ st.markdown("""
         margin: 16px 0;
         text-align: center;
     }
+    
+    /* Animated Backgrounds for Each Module */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+    }
+    
+    @keyframes rotate-gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes wave {
+        0%, 100% { transform: translateX(0) translateY(0); }
+        25% { transform: translateX(5px) translateY(-5px); }
+        75% { transform: translateX(-5px) translateY(5px); }
+    }
+    
+    .hero-glow {
+        animation: pulse-glow 3s ease-in-out infinite;
+    }
+    
+    .floating-element {
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    .shimmer-effect {
+        background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+        background-size: 1000px 100%;
+        animation: shimmer 3s infinite;
+    }
+    
+    .particle-field {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.3;
+    }
+    
+    /* Module-specific effects */
+    .overview-bg {
+        background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+        background-size: 200% 200%;
+        animation: rotate-gradient 15s ease infinite;
+    }
+    
+    .bloch-energy {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(132, 204, 22, 0.05) 100%);
+        box-shadow: inset 0 0 50px rgba(99, 102, 241, 0.1);
+    }
+    
+    .interference-wave {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .interference-wave::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+        animation: wave 8s linear infinite;
+    }
+    
+    .noise-static {
+        background-image: 
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px);
+    }
+    
+    .vqe-landscape {
+        background: 
+            radial-gradient(ellipse at center, rgba(132, 204, 22, 0.1) 0%, transparent 60%),
+            linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+    }
+    
+    .qml-neural {
+        background: 
+            linear-gradient(45deg, rgba(99, 102, 241, 0.03) 25%, transparent 25%),
+            linear-gradient(-45deg, rgba(6, 182, 212, 0.03) 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, rgba(99, 102, 241, 0.03) 75%),
+            linear-gradient(-45deg, transparent 75%, rgba(6, 182, 212, 0.03) 75%);
+        background-size: 40px 40px;
+        background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+    }
+    
+    .circuit-flow {
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(99, 102, 241, 0.1) 25%, 
+            rgba(6, 182, 212, 0.1) 50%, 
+            rgba(99, 102, 241, 0.1) 75%, 
+            transparent 100%);
+        background-size: 200% 100%;
+        animation: shimmer 4s linear infinite;
+    }
+    
+    /* Glowing borders */
+    .glow-border {
+        position: relative;
+        border: 1px solid transparent;
+        background: linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box,
+                    linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan)) border-box;
+        border-radius: 12px;
+    }
+    
+    /* Data flow animation */
+    @keyframes data-flow {
+        0% { transform: translateX(-100%); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateX(100%); opacity: 0; }
+    }
+    
+    .data-stream {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .data-stream::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.4), transparent);
+        animation: data-flow 2s ease-in-out infinite;
+    }
 </style>
 """, unsafe_allow_html=True)
+
+# Add particle effect component for overview page
+def add_particle_effect():
+    """Add animated particle background effect"""
+    particles_html = """
+    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ['#6366F1', '#06B6D4', '#84CC16'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#6366F1', opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: true, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 } }
+            },
+            retina_detect: true
+        });
+    </script>
+    """
+    st.markdown(particles_html, unsafe_allow_html=True)
+
+def add_wave_animation():
+    """Add wave animation for interference page"""
+    wave_html = """
+    <style>
+    @keyframes wave-motion {
+        0% { transform: translateX(0) translateY(0); }
+        25% { transform: translateX(10px) translateY(-5px); }
+        50% { transform: translateX(0) translateY(0); }
+        75% { transform: translateX(-10px) translateY(5px); }
+        100% { transform: translateX(0) translateY(0); }
+    }
+    .wave-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        z-index: -1;
+        overflow: hidden;
+        opacity: 0.3;
+    }
+    .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+        animation: wave-motion 4s ease-in-out infinite;
+    }
+    .wave:nth-child(2) {
+        animation-delay: -2s;
+        opacity: 0.5;
+    }
+    </style>
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    """
+    st.markdown(wave_html, unsafe_allow_html=True)
+
+def add_matrix_rain():
+    """Add Matrix-style rain effect for circuits page"""
+    matrix_html = """
+    <canvas id="matrix-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none;"></canvas>
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = '01HXYZ'.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 14, 26, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#6366F1';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 50);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+    """
+    st.markdown(matrix_html, unsafe_allow_html=True)
+
+def add_energy_field():
+    """Add energy field visualization for VQE page"""
+    energy_html = """
+    <style>
+    @keyframes energy-pulse {
+        0%, 100% { opacity: 0.1; transform: scale(1); }
+        50% { opacity: 0.3; transform: scale(1.05); }
+    }
+    .energy-field {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(132, 204, 22, 0.2) 0%, transparent 70%);
+        animation: energy-pulse 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+    </style>
+    <div class="energy-field"></div>
+    """
+    st.markdown(energy_html, unsafe_allow_html=True)
+
+def add_neural_network_bg():
+    """Add neural network visualization for QML page"""
+    neural_html = """
+    <canvas id="neural-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2; pointer-events: none;"></canvas>
+    <script>
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const nodes = [];
+        const nodeCount = 50;
+        
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+        
+        function drawNetwork() {
+            ctx.fillStyle = 'rgba(10, 14, 26, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            // Draw nodes
+            ctx.fillStyle = '#06B6D4';
+            nodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                node.x += node.vx;
+                node.y += node.vy;
+                
+                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+            });
+        }
+        
+        setInterval(drawNetwork, 50);
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+    """
+    st.markdown(neural_html, unsafe_allow_html=True)
 
 # Quantum simulation utilities
 def pauli_matrices():
@@ -356,6 +702,10 @@ if 'experiment_log' not in st.session_state:
 
 # Main content area
 if module_id == "overview":
+    # Add particle effect background
+    add_particle_effect()
+    
+    st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
     st.markdown("# Quantum × AI Paper-to-Experiment Workbench")
     st.markdown('<span class="research-status status-active">Production Research Platform</span>', unsafe_allow_html=True)
     
@@ -435,6 +785,7 @@ if module_id == "overview":
     """, unsafe_allow_html=True)
 
 elif module_id == "bloch":
+    st.markdown("<div class='bloch-energy hero-glow'>", unsafe_allow_html=True)
     st.markdown("# Qubit State & Bloch Sphere Dynamics")
     st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
     
@@ -567,6 +918,10 @@ print(f"P(|0⟩) = {{prob_0:.3f}}, P(|1⟩) = {{prob_1:.3f}}")
     st.code(code, language="python")
 
 elif module_id == "interference":
+    # Add wave animation
+    add_wave_animation()
+    
+    st.markdown("<div class='interference-wave'>", unsafe_allow_html=True)
     st.markdown("# Superposition & Quantum Interference")
     st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
     
@@ -712,6 +1067,7 @@ elif module_id == "interference":
     st.plotly_chart(fig_pattern, use_container_width=True, key="interference_pattern")
 
 elif module_id == "noise":
+    st.markdown("<div class='noise-static'>", unsafe_allow_html=True)
     st.markdown("# Noise, Decoherence & Density Matrix Formalism")
     st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
     
@@ -852,6 +1208,10 @@ elif module_id == "noise":
         """, unsafe_allow_html=True)
 
 elif module_id == "vqe":
+    # Add energy field effect
+    add_energy_field()
+    
+    st.markdown("<div class='vqe-landscape'>", unsafe_allow_html=True)
     st.markdown("# VQE: Variational Quantum Eigensolver")
     st.markdown('<span class="research-status status-active">Variational Algorithm</span>', unsafe_allow_html=True)
     
@@ -1036,6 +1396,10 @@ elif module_id == "vqe":
         """.format(2**2), unsafe_allow_html=True)  # 2 qubits for H₂
 
 elif module_id == "qml":
+    # Add neural network background
+    add_neural_network_bg()
+    
+    st.markdown("<div class='qml-neural'>", unsafe_allow_html=True)
     st.markdown("# Quantum Machine Learning")
     st.markdown('<span class="research-status status-active">Hybrid QML</span>', unsafe_allow_html=True)
     
@@ -1177,6 +1541,10 @@ elif module_id == "qml":
             st.success(f"✓ Training complete. Quantum advantage: {(acc_quantum - acc_classical)*100:+.2f}%")
 
 elif module_id == "circuits":
+    # Add matrix rain effect
+    add_matrix_rain()
+    
+    st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
     st.markdown("# Quantum Circuits & Unitaries")
     st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
     
@@ -1458,6 +1826,7 @@ print(f"Probabilities: P(|0⟩) = {{abs(state[0])**2:.3f}}, P(|1⟩) = {{abs(sta
     st.code(code_circuit, language="python")
 
 elif module_id == "export":
+    st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
     st.markdown("# Reproducibility & Export System")
     st.markdown('<span class="research-status status-active">Research Infrastructure</span>', unsafe_allow_html=True)
     
@@ -1545,6 +1914,9 @@ else:
         quantum computing research topics.</p>
     </div>
     """, unsafe_allow_html=True)
+
+# Close module div tags
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
