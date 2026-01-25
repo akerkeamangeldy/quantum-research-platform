@@ -848,22 +848,6 @@ if module_id == "overview":
     # Technology stack
     col1, col2 = st.columns(2)
     
-    with col1:
-        st.markdown("""
-        <div class='experiment-panel'>
-            <h3>Technical Stack</h3>
-            <ul>
-                <li><strong>Quantum Frameworks:</strong> Qiskit, PennyLane</li>
-                <li><strong>Numerics:</strong> NumPy, SciPy, SymPy</li>
-                <li><strong>Visualization:</strong> Plotly 3D, Matplotlib</li>
-                <li><strong>Machine Learning:</strong> scikit-learn, quantum kernels</li>
-                <li><strong>Export:</strong> JSON snapshots, PDF reports</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-    
     # Technology specifications
     col1, col2 = st.columns(2)
     
