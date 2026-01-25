@@ -78,6 +78,271 @@ st.markdown("""
         color: var(--accent-quantum);
     }
     
+    /* CYBER-PHYSICAL GLASSMORPHIC SLIDERS */
+    .stSlider > div > div > div > div {
+        background: linear-gradient(90deg, rgba(0, 217, 255, 0.1), rgba(123, 97, 255, 0.1)) !important;
+        height: 2px !important;
+    }
+    
+    .stSlider > div > div > div > div > div {
+        background: linear-gradient(135deg, #00D9FF, #7B61FF) !important;
+        height: 16px !important;
+        width: 16px !important;
+        border: 2px solid rgba(0, 217, 255, 0.8) !important;
+        box-shadow: 
+            0 0 20px rgba(0, 217, 255, 0.8),
+            0 0 40px rgba(123, 97, 255, 0.4),
+            inset 0 0 8px rgba(255, 255, 255, 0.3) !important;
+        animation: thumb-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes thumb-pulse {
+        0%%, 100%% { box-shadow: 0 0 20px rgba(0, 217, 255, 0.8), 0 0 40px rgba(123, 97, 255, 0.4), inset 0 0 8px rgba(255, 255, 255, 0.3); }
+        50%% { box-shadow: 0 0 30px rgba(0, 217, 255, 1), 0 0 60px rgba(123, 97, 255, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.5); }
+    }
+    
+    /* ROTARY DIAL CONTROL */
+    .rotary-dial {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%%;
+        background: radial-gradient(circle at 30%% 30%%, rgba(26, 26, 26, 0.95), rgba(10, 10, 10, 0.98));
+        border: 3px solid rgba(0, 217, 255, 0.3);
+        box-shadow: 
+            0 0 30px rgba(0, 217, 255, 0.4),
+            inset 0 0 20px rgba(0, 0, 0, 0.8),
+            inset -2px -2px 8px rgba(0, 217, 255, 0.2);
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .rotary-dial:hover {
+        border-color: rgba(0, 217, 255, 0.8);
+        box-shadow: 
+            0 0 50px rgba(0, 217, 255, 0.6),
+            inset 0 0 30px rgba(0, 0, 0, 0.9),
+            inset -2px -2px 12px rgba(0, 217, 255, 0.4);
+    }
+    
+    .rotary-indicator {
+        position: absolute;
+        top: 10px;
+        left: 50%%;
+        width: 3px;
+        height: 45px;
+        background: linear-gradient(180deg, #00D9FF, transparent);
+        box-shadow: 0 0 10px #00D9FF;
+        transform-origin: bottom center;
+        border-radius: 2px;
+    }
+    
+    .rotary-value {
+        position: absolute;
+        top: 50%%;
+        left: 50%%;
+        transform: translate(-50%%, -50%%);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 18px;
+        font-weight: 700;
+        color: #00D9FF;
+        text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+    }
+    
+    /* PROCEDURAL GRID MESH BACKGROUND */
+    .data-grid-mesh {
+        position: relative;
+        background-image: 
+            linear-gradient(rgba(0, 217, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 217, 255, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+        animation: grid-scan 20s linear infinite;
+    }
+    
+    @keyframes grid-scan {
+        0%% { background-position: 0 0; }
+        100%% { background-position: 0 400px; }
+    }
+    
+    /* CYBER-PHYSICAL GLASSMORPHIC SLIDER CONTROLS */
+    .stSlider > div > div > div > div {
+        background: linear-gradient(90deg, rgba(0, 217, 255, 0.15), rgba(123, 97, 255, 0.15)) !important;
+        height: 2px !important;
+        border-radius: 1px;
+    }
+    
+    .stSlider > div > div > div > div > div {
+        background: radial-gradient(circle, #00D9FF 0%%, #7B61FF 100%%) !important;
+        height: 18px !important;
+        width: 18px !important;
+        border: 2px solid rgba(0, 217, 255, 0.9) !important;
+        box-shadow: 
+            0 0 25px rgba(0, 217, 255, 0.9),
+            0 0 50px rgba(123, 97, 255, 0.5),
+            inset 0 0 10px rgba(255, 255, 255, 0.4) !important;
+        animation: thumb-pulse 2s ease-in-out infinite;
+        transition: all 0.3s ease;
+    }
+    
+    .stSlider > div > div > div > div > div:hover {
+        transform: scale(1.3);
+        box-shadow: 
+            0 0 35px rgba(0, 217, 255, 1),
+            0 0 70px rgba(123, 97, 255, 0.7),
+            inset 0 0 15px rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    @keyframes thumb-pulse {
+        0%%, 100%% { 
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.9), 0 0 50px rgba(123, 97, 255, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+        50%% { 
+            box-shadow: 0 0 40px rgba(0, 217, 255, 1), 0 0 80px rgba(123, 97, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+    }
+    
+    /* PROCEDURAL GRID MESH BACKGROUND */
+    .data-grid-mesh {
+        position: relative;
+        background-image: 
+            linear-gradient(rgba(0, 217, 255, 0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 217, 255, 0.06) 1px, transparent 1px),
+            radial-gradient(circle at 20%% 30%%, rgba(123, 97, 255, 0.03), transparent 60%%);
+        background-size: 25px 25px, 25px 25px, 100%% 100%%;
+        animation: grid-scan 25s linear infinite;
+    }
+    
+    @keyframes grid-scan {
+        0%% { background-position: 0 0, 0 0, 0 0; }
+        100%% { background-position: 0 500px, 500px 0, 0 0; }
+    }
+    
+    /* HIGH DATA-INK RATIO METRICS */
+    .metric-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00D9FF, #7B61FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+        letter-spacing: 0.03em;
+        animation: kinetic-text 3s ease-in-out infinite;
+    }
+    
+    .metric-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        border-left: 2px solid rgba(0, 217, 255, 0.3);
+        padding-left: 8px;
+    }
+    
+    /* DIGITAL NOISE TRANSITION EFFECT */
+    @keyframes digital-noise {
+        0%%, 100%% { opacity: 1; filter: contrast(1); }
+        10%%, 30%%, 50%%, 70%%, 90%% { 
+            opacity: 0.97; 
+            filter: contrast(1.05) saturate(1.1);
+        }
+        20%%, 40%%, 60%%, 80%% { 
+            opacity: 1; 
+            filter: contrast(1) saturate(1);
+        }
+    }
+    
+    .module-content {
+        animation: digital-noise 0.5s ease-out, wavefunction-collapse 0.9s ease-out;
+    }
+    
+    /* SMOOTH LERP INTERPOLATION FOR 3D VISUALIZATIONS */
+    .plotly-graph-div {
+        transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .js-plotly-plot .plotly .main-svg {
+        transition: all 0.6s ease;
+    }
+    
+    /* ROTARY DIAL CONTROL (LABORATORY EQUIPMENT AESTHETIC) */
+    .rotary-dial-container {
+        display: inline-block;
+        margin: 20px auto;
+        text-align: center;
+    }
+    
+    .rotary-dial {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%%;
+        background: 
+            radial-gradient(circle at 35%% 35%%, rgba(30, 30, 30, 0.98), rgba(10, 10, 10, 1)),
+            radial-gradient(circle at 65%% 65%%, rgba(0, 217, 255, 0.05), transparent);
+        border: 4px solid rgba(0, 217, 255, 0.4);
+        box-shadow: 
+            0 0 40px rgba(0, 217, 255, 0.5),
+            0 8px 30px rgba(0, 0, 0, 0.8),
+            inset 0 0 30px rgba(0, 0, 0, 0.9),
+            inset -3px -3px 15px rgba(0, 217, 255, 0.3),
+            inset 3px 3px 10px rgba(0, 0, 0, 0.9);
+        position: relative;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin: 0 auto;
+    }
+    
+    .rotary-dial:hover {
+        border-color: rgba(0, 217, 255, 0.9);
+        box-shadow: 
+            0 0 60px rgba(0, 217, 255, 0.7),
+            0 10px 40px rgba(0, 0, 0, 0.9),
+            inset 0 0 40px rgba(0, 0, 0, 0.95),
+            inset -4px -4px 20px rgba(0, 217, 255, 0.5),
+            inset 4px 4px 15px rgba(0, 0, 0, 0.9);
+        transform: scale(1.05);
+    }
+    
+    .rotary-indicator {
+        position: absolute;
+        top: 15px;
+        left: 50%%;
+        width: 4px;
+        height: 50px;
+        background: linear-gradient(180deg, #00D9FF, rgba(0, 217, 255, 0.3), transparent);
+        box-shadow: 0 0 15px #00D9FF, 0 0 30px rgba(0, 217, 255, 0.5);
+        transform-origin: bottom center;
+        border-radius: 2px;
+        margin-left: -2px;
+    }
+    
+    .rotary-value {
+        position: absolute;
+        top: 50%%;
+        left: 50%%;
+        transform: translate(-50%%, -50%%);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 22px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00D9FF, #00FF94);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.8));
+    }
+    
+    .rotary-label {
+        margin-top: 15px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+    
     /* REACTIVE RESEARCH CARDS WITH HOVER EFFECTS */
     .research-card {
         background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
@@ -1320,7 +1585,9 @@ module_id = st.session_state.selected_module_id
 if 'experiment_log' not in st.session_state:
     st.session_state.experiment_log = []
 
-# Main content area
+# Main content area with cyber-physical transition
+st.markdown("<div class='module-content'>", unsafe_allow_html=True)
+
 if module_id == "overview":
     # Add particle effect background
     add_particle_effect()
@@ -1458,13 +1725,46 @@ if module_id == "overview":
     </p>
     """, unsafe_allow_html=True)
     
-    theta_hero = st.slider("Polar Angle θ [0, π]", 0, 180, 45, key="hero_theta", 
-                          help="Controls probability amplitude distribution")
-    phi_hero = st.slider("Azimuthal Phase φ [0, 2π]", 0, 360, 45, key="hero_phi",
-                        help="Determines relative phase between basis states")
+    # Custom glassmorphic slider with real-time feedback
+    st.markdown("""
+    <div class='data-grid-mesh' style='padding: 20px; border-radius: 12px; border: 1px solid rgba(0, 217, 255, 0.2);'>
+        <div class='metric-label'>POLAR ANGLE θ [0, π]</div>
+    </div>
+    """, unsafe_allow_html=True)
+    theta_hero = st.slider("", 0, 180, 45, key="hero_theta", 
+                          help="Controls probability amplitude distribution", label_visibility="collapsed")
+    st.markdown(f"""
+    <div style='text-align: center; margin-top: -10px; margin-bottom: 15px;'>
+        <span class='metric-value'>{theta_hero}°</span>
+        <span class='metric-label'> = {np.radians(theta_hero):.3f} rad</span>
+    </div>
+    """, unsafe_allow_html=True)
     
+    st.markdown("""
+    <div class='data-grid-mesh' style='padding: 20px; border-radius: 12px; border: 1px solid rgba(123, 97, 255, 0.2);'>
+        <div class='metric-label'>AZIMUTHAL PHASE φ [0, 2π]</div>
+    </div>
+    """, unsafe_allow_html=True)
+    phi_hero = st.slider("", 0, 360, 45, key="hero_phi",
+                        help="Determines relative phase between basis states", label_visibility="collapsed")
+    st.markdown(f"""
+    <div style='text-align: center; margin-top: -10px; margin-bottom: 20px;'>
+        <span class='metric-value'>{phi_hero}°</span>
+        <span class='metric-label'> = {np.radians(phi_hero):.3f} rad</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Enhanced Bloch sphere with volumetric rendering hints
+    st.markdown("""
+    <div class='data-grid-mesh' style='padding: 15px; border-radius: 12px; border: 1px solid rgba(0, 217, 255, 0.3); margin-bottom: 15px;'>
+        <div style='text-align: center;'>
+            <span class='metric-label'>◉ WAVEFUNCTION VISUALIZATION</span>
+            <span style='margin-left: 20px; color: #00FF94; font-family: JetBrains Mono; font-size: 10px;'>⚡ REAL-TIME LERP INTERPOLATION</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     fig_hero = create_bloch_sphere(theta_hero, phi_hero)
-    st.plotly_chart(fig_hero, use_container_width=True, key="hero_bloch")
+    st.plotly_chart(fig_hero, use_container_width=True, key="hero_bloch", config={'displayModeBar': False})
     
     # State vector display with technical metrics
     theta_rad = np.radians(theta_hero)
@@ -1528,10 +1828,44 @@ elif module_id == "bloch":
         st.markdown("### STATE VECTOR CONFIGURATION")
         st.markdown("<p style='font-family: \"Source Serif Pro\", serif; font-size: 13px;'>Manipulate spherical coordinates to observe <strong>geometric phase accumulation</strong> via parallel transport on the Bloch manifold.</p>", unsafe_allow_html=True)
         
-        theta_bloch = st.slider("Polar Angle θ [0, π]", 0, 180, 90, 5, key="bloch_theta",
-                               help="Controls latitude on Bloch sphere (|0⟩ at θ=0, |1⟩ at θ=π)")
-        phi_bloch = st.slider("Azimuthal Phase φ [0, 2π]", 0, 360, 0, 5, key="bloch_phi",
-                             help="Determines relative phase between computational basis states")
+        # Glassmorphic slider with data-grid mesh
+        st.markdown("""
+        <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 217, 255, 0.25); margin-bottom: 10px;'>
+            <span class='metric-label'>⚛ POLAR ANGLE θ [0, π]</span>
+        </div>
+        """, unsafe_allow_html=True)
+        theta_bloch = st.slider("", 0, 180, 90, 5, key="bloch_theta",
+                               help="Controls latitude on Bloch sphere (|0⟩ at θ=0, |1⟩ at θ=π)", label_visibility="collapsed")
+        st.markdown(f"""
+        <div style='text-align: center; margin-top: -8px; margin-bottom: 20px;'>
+            <span class='metric-value' style='font-size: 20px;'>{theta_bloch}°</span>
+            <span class='metric-label'> | θ = {np.radians(theta_bloch):.4f} rad</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Rotary dial for phase (laboratory equipment aesthetic)
+        st.markdown("""
+        <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(123, 97, 255, 0.25); margin-bottom: 10px;'>
+            <span class='metric-label'>⚡ AZIMUTHAL PHASE φ [0, 2π] - ROTARY CONTROL</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_a, col_b, col_c = st.columns([1, 2, 1])
+        with col_b:
+            phi_bloch = st.slider("", 0, 360, 0, 5, key="bloch_phi",
+                                 help="Determines relative phase between computational basis states", label_visibility="collapsed")
+            
+            # Render rotary dial visualization
+            rotation_angle = phi_bloch - 90  # Adjust to start at top
+            st.markdown(f"""
+            <div class='rotary-dial-container'>
+                <div class='rotary-dial'>
+                    <div class='rotary-indicator' style='transform: rotate({rotation_angle}deg);'></div>
+                    <div class='rotary-value'>{phi_bloch}°</div>
+                </div>
+                <div class='rotary-label'>φ = {np.radians(phi_bloch):.4f} rad</div>
+            </div>
+            """, unsafe_allow_html=True)
         
         # Gate sequence with technical descriptions
         st.markdown("### UNITARY GATE SEQUENCE APPLICATION")
@@ -1837,48 +2171,75 @@ elif module_id == "entanglement":
         amplitudes_real = np.real(state)
         amplitudes_imag = np.imag(state)
         
+        # Enhanced visualization with area-glow effects
         fig_amp = go.Figure()
         fig_amp.add_trace(go.Bar(
             x=basis_labels,
             y=amplitudes_real,
-            name='Real',
-            marker_color='#6366F1'
+            name='Re(ψ)',
+            marker=dict(
+                color='#00D9FF',
+                line=dict(color='rgba(0, 217, 255, 0.8)', width=2)
+            ),
+            opacity=0.85,
+            hovertemplate='<b>%{x}</b><br>Real: %{y:.4f}<extra></extra>'
         ))
         fig_amp.add_trace(go.Bar(
             x=basis_labels,
             y=amplitudes_imag,
-            name='Imaginary',
-            marker_color='#06B6D4'
+            name='Im(ψ)',
+            marker=dict(
+                color='#7B61FF',
+                line=dict(color='rgba(123, 97, 255, 0.8)', width=2)
+            ),
+            opacity=0.85,
+            hovertemplate='<b>%{x}</b><br>Imaginary: %{y:.4f}<extra></extra>'
         ))
         
         fig_amp.update_layout(
-            yaxis_title='Amplitude',
+            yaxis_title='<b>AMPLITUDE</b>',
             barmode='group',
-            plot_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(10, 10, 10, 0.5)',
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            height=350
+            font=dict(color='#E8E8E8', family='JetBrains Mono'),
+            height=350,
+            xaxis=dict(gridcolor='rgba(0, 217, 255, 0.1)', showgrid=True),
+            yaxis=dict(gridcolor='rgba(0, 217, 255, 0.1)', showgrid=True, zeroline=True, zerolinecolor='rgba(255, 255, 255, 0.3)'),
+            legend=dict(font=dict(size=11)),
+            margin=dict(l=50, r=20, t=30, b=50)
         )
-        st.plotly_chart(fig_amp, use_container_width=True)
+        st.plotly_chart(fig_amp, use_container_width=True, config={'displayModeBar': False})
     
     with col2:
-        st.markdown("#### Probability Distribution")
+        st.markdown("#### PROBABILITY DISTRIBUTION")
         probabilities = np.abs(state)**2
         
+        # Area-glow fill visualization
         fig_prob = go.Figure()
+        
+        # Add glowing area fill
+        colors = ['rgba(0, 255, 148, 0.9)' if p == max(probabilities) else 'rgba(0, 217, 255, 0.7)' for p in probabilities]
+        
         fig_prob.add_trace(go.Bar(
             x=basis_labels,
             y=probabilities,
-            marker_color='#84CC16'
+            marker=dict(
+                color=colors,
+                line=dict(color='rgba(0, 255, 148, 1)', width=2),
+                pattern=dict(shape='')
+            ),
+            hovertemplate='<b>%{x}</b><br>P = %{y:.4f}<extra></extra>'
         ))
         
         fig_prob.update_layout(
-            yaxis_title='Probability',
-            yaxis=dict(range=[0, 0.6]),
-            plot_bgcolor='rgba(0,0,0,0)',
+            yaxis_title='<b>|ψ|²</b>',
+            yaxis=dict(range=[0, max(0.6, max(probabilities) * 1.1)], gridcolor='rgba(0, 217, 255, 0.1)', showgrid=True),
+            xaxis=dict(gridcolor='rgba(0, 217, 255, 0.05)'),
+            plot_bgcolor='rgba(10, 10, 10, 0.5)',
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            height=350
+            font=dict(color='#E8E8E8', family='JetBrains Mono'),
+            height=350,
+            margin=dict(l=50, r=20, t=30, b=50)
         )
         st.plotly_chart(fig_prob, use_container_width=True)
     
@@ -3352,40 +3713,77 @@ elif module_id == "hardware":
         positions = {i: (i, 0) for i in range(7)}
         edges = [(i, i+1) for i in range(6)]
     
-    # Visualize topology
+    # Visualize topology with WebGL-style volumetric effects
+    st.markdown("""
+    <div class='data-grid-mesh' style='padding: 12px; border-radius: 10px; border: 1px solid rgba(0, 217, 255, 0.2); margin-bottom: 15px;'>
+        <span class='metric-label'>⚡ QUBIT CONNECTIVITY MAP - VOLUMETRIC RENDERING</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
     fig_topo = go.Figure()
     
-    # Draw edges
+    # Draw energy filaments (edges) with bezier-like curves and gradients
     for i, j in edges:
         x0, y0 = positions[i]
         x1, y1 = positions[j]
+        
+        # Calculate entanglement fidelity (simulated)
+        fidelity = np.random.uniform(0.85, 0.99)
+        opacity = 0.4 + (fidelity - 0.85) / (0.99 - 0.85) * 0.5
+        width = 2 + (fidelity - 0.85) / (0.99 - 0.85) * 4
+        
+        # Create curved path for energy filament effect
+        mid_x = (x0 + x1) / 2
+        mid_y = (y0 + y1) / 2 + 0.1
+        t = np.linspace(0, 1, 20)
+        curve_x = (1-t)**2 * x0 + 2*(1-t)*t * mid_x + t**2 * x1
+        curve_y = (1-t)**2 * y0 + 2*(1-t)*t * mid_y + t**2 * y1
+        
         fig_topo.add_trace(go.Scatter(
-            x=[x0, x1], y=[y0, y1],
+            x=curve_x, y=curve_y,
             mode='lines',
-            line=dict(color='#6366F1', width=3),
-            hoverinfo='skip',
+            line=dict(
+                color=f'rgba(0, 217, 255, {opacity})',
+                width=width
+            ),
+            hovertemplate=f'<b>Connection {i} ↔ {j}</b><br>Fidelity: {fidelity:.3f}<extra></extra>',
             showlegend=False
         ))
     
-    # Draw nodes
+    # Draw pulsating volumetric spheres (qubits)
     x_coords = [positions[i][0] for i in positions]
     y_coords = [positions[i][1] for i in positions]
+    coherence_times = np.random.uniform(80, 120, len(positions))  # Simulated T2 times
+    
+    # Create varying sizes based on coherence time for data-ink ratio
+    sizes = 30 + (coherence_times - 80) / 40 * 20
+    colors = [f'rgba(0, 217, 255, {0.7 + (t-80)/200})' for t in coherence_times]
+    
     fig_topo.add_trace(go.Scatter(
         x=x_coords, y=y_coords,
         mode='markers+text',
-        marker=dict(size=35, color='#06B6D4', line=dict(color='white', width=3)),
-        text=list(positions.keys()),
+        marker=dict(
+            size=sizes,
+            color=colors,
+            line=dict(color='rgba(0, 255, 148, 0.9)', width=3),
+            symbol='circle'
+        ),
+        text=[f'<b>Q{i}</b>' for i in positions.keys()],
         textposition='middle center',
-        textfont=dict(size=16, color='white'),
+        textfont=dict(size=14, color='#0A0A0A', family='JetBrains Mono'),
+        hovertemplate='<b>Qubit %{text}</b><br>T₂: %{customdata:.1f}μs<extra></extra>',
+        customdata=coherence_times,
         showlegend=False
     ))
     
     fig_topo.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(10, 10, 10, 0.5)',
         paper_bgcolor='rgba(0,0,0,0)',
-        xaxis=dict(visible=False),
-        yaxis=dict(visible=False, scaleanchor='x'),
-        height=500
+        xaxis=dict(visible=False, range=[min(x_coords)-1, max(x_coords)+1]),
+        yaxis=dict(visible=False, scaleanchor='x', range=[min(y_coords)-1, max(y_coords)+1]),
+        height=550,
+        margin=dict(l=20, r=20, t=20, b=20),
+        font=dict(family='JetBrains Mono', color='#E8E8E8')
     )
     
     st.plotly_chart(fig_topo, use_container_width=True)
