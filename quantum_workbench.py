@@ -343,6 +343,241 @@ st.markdown("""
         letter-spacing: 0.1em;
     }
     
+    /* SYSTEM STATUS PANEL (SPECS COMPONENT) */
+    .system-status-panel {
+        background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(20, 20, 20, 0.95));
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-radius: 12px;
+        padding: 24px;
+        margin: 20px 0;
+        box-shadow: 
+            0 0 40px rgba(0, 217, 255, 0.2),
+            inset 0 1px 0 rgba(0, 217, 255, 0.1),
+            0 8px 32px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(15px);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .system-status-panel::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, rgba(0, 217, 255, 0.2), rgba(123, 97, 255, 0.2), rgba(0, 255, 148, 0.2), rgba(0, 217, 255, 0.2));
+        background-size: 300%% 300%%;
+        border-radius: 13px;
+        z-index: -1;
+        animation: gradient-border 6s ease infinite;
+        opacity: 0.5;
+    }
+    
+    @keyframes gradient-border {
+        0%%, 100%% { background-position: 0%% 50%%; }
+        50%% { background-position: 100%% 50%%; }
+    }
+    
+    .status-header {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: #00D9FF;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+        padding-bottom: 10px;
+    }
+    
+    .status-metric {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .status-metric:hover {
+        background: rgba(0, 217, 255, 0.05);
+        padding-left: 10px;
+        border-left: 3px solid rgba(0, 217, 255, 0.8);
+    }
+    
+    .status-metric:last-child {
+        border-bottom: none;
+    }
+    
+    .status-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 500;
+    }
+    
+    .status-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 13px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00FF94, #00D9FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 0.02em;
+    }
+    
+    /* MAIN BENTO GRID NAVIGATION (IN CONTENT AREA) */
+    .main-bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        padding: 20px 0;
+        margin: 30px 0;
+    }
+    
+    @media (max-width: 1400px) {
+        .main-bento-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    @media (max-width: 900px) {
+        .main-bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    .main-bento-tile {
+        background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(26, 26, 26, 0.9));
+        border: 1px solid rgba(0, 217, 255, 0.25);
+        border-radius: 14px;
+        padding: 28px 20px;
+        cursor: pointer;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .main-bento-tile::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(0, 217, 255, 0.2), transparent 70%%);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    .main-bento-tile::after {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.6), rgba(123, 97, 255, 0.6), transparent);
+        background-size: 300%% 300%%;
+        border-radius: 15px;
+        opacity: 0;
+        z-index: -1;
+        animation: gradient-spin 4s linear infinite;
+        transition: opacity 0.5s ease;
+    }
+    
+    .main-bento-tile:hover {
+        transform: translateY(-8px) scale(1.05) rotateX(5deg);
+        box-shadow: 
+            0 20px 60px rgba(0, 217, 255, 0.5),
+            0 0 80px rgba(123, 97, 255, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        border-color: rgba(0, 217, 255, 1);
+        perspective: 1000px;
+    }
+    
+    .main-bento-tile:hover::before {
+        opacity: 1;
+        animation: bloom-pulse 1.5s ease-in-out infinite;
+    }
+    
+    .main-bento-tile:hover::after {
+        opacity: 1;
+    }
+    
+    @keyframes bloom-pulse {
+        0%%, 100%% { transform: scale(1); opacity: 0.3; }
+        50%% { transform: scale(1.2); opacity: 0.6; }
+    }
+    
+    .main-tile-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+        filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.6));
+    }
+    
+    .main-tile-title {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        font-weight: 600;
+        color: #E8E8E8;
+        line-height: 1.4;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        transition: all 0.4s ease;
+    }
+    
+    .main-bento-tile:hover .main-tile-title {
+        color: #00D9FF;
+        text-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+        transform: translateY(-3px);
+    }
+    
+    .main-bento-tile.active {
+        background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(123, 97, 255, 0.15));
+        border-color: rgba(0, 217, 255, 1);
+        box-shadow: 
+            0 0 40px rgba(0, 217, 255, 0.6),
+            inset 0 0 30px rgba(0, 217, 255, 0.1);
+    }
+    
+    /* PARALLAX VISUALIZATION CONTAINER */
+    .parallax-viz-container {
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 1200px;
+        margin: 30px 0;
+        padding: 30px;
+        background: 
+            radial-gradient(circle at 20%% 30%%, rgba(0, 217, 255, 0.03), transparent 60%%),
+            radial-gradient(circle at 80%% 70%%, rgba(123, 97, 255, 0.03), transparent 60%%);
+        border-radius: 16px;
+        border: 1px solid rgba(0, 217, 255, 0.2);
+    }
+    
+    .parallax-viz-container::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: 
+            linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-parallax 30s linear infinite;
+        pointer-events: none;
+        border-radius: 16px;
+    }
+    
+    @keyframes grid-parallax {
+        0%% { transform: translateZ(-100px) translateY(0); }
+        100%% { transform: translateZ(-100px) translateY(1000px); }
+    }
+    
     /* REACTIVE RESEARCH CARDS WITH HOVER EFFECTS */
     .research-card {
         background: linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
@@ -1593,56 +1828,112 @@ if module_id == "overview":
     add_particle_effect()
     
     st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
-    st.markdown("# SYSTEM INITIALIZATION: QUANTUM RESEARCH WORKBENCH v4.0.2")
-    st.markdown('<span class="research-status status-active">CRYOGENIC STAGE: STABLE | VACUUM PRESSURE: 10⁻⁸ mbar</span>', unsafe_allow_html=True)
+    st.markdown("# QUANTUM RESEARCH TERMINAL v4.0.2")
+    st.markdown('<span class="research-status status-active">SYSTEM STATUS: OPERATIONAL | QUBITS: STABLE | FIDELITY: >99.9%</span>', unsafe_allow_html=True)
     
+    # Clean System Status Panel (Sanitized UI)
+    st.markdown("""
+    <div class='system-status-panel'>
+        <div class='status-header'>⚛ HARDWARE SPECIFICATIONS</div>
+        <div class='status-metric'>
+            <span class='status-label'>Qubit Architecture</span>
+            <span class='status-value'>Transmon Superconducting</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Operating Temperature</span>
+            <span class='status-value'>T = 20 mK</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Gate Fidelity (Single-Qubit)</span>
+            <span class='status-value'>F > 99.9%</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Gate Fidelity (Two-Qubit CNOT)</span>
+            <span class='status-value'>F > 99.5%</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Coherence Time T₂</span>
+            <span class='status-value'>100 μs</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Readout Fidelity</span>
+            <span class='status-value'>F_RO > 99.2%</span>
+        </div>
+        <div class='status-metric'>
+            <span class='status-label'>Vacuum Pressure</span>
+            <span class='status-value'>10⁻⁸ mbar</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Research Capabilities Overview
     st.markdown("""
     <div class='research-card'>
-        <h2>→ WELCOME, RESEARCHER</h2>
-        <p style='font-family: "Source Serif Pro", serif; font-size: 16px; line-height: 1.8;'>
-        This platform provides a <strong>high-fidelity environment</strong> for the exploration of 
-        <strong>Unitary Dynamics</strong> and <strong>Quantum Advantage</strong>. Unlike classical binary 
-        abstractions, our workbench operates directly within the <strong>Complex Hilbert Space</strong> 
-        $\\mathcal{H} = \\mathbb{C}^{2^n}$, allowing for the real-time synthesis of multi-qubit gate 
-        operations and variational optimization protocols.
-        </p>
-        
-        <h3 style='margin-top: 32px; font-family: "JetBrains Mono", monospace; color: #00D9FF;'>
-        HARDWARE SPECIFICATIONS</h3>
-        <ul style='font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 2;'>
-            <li><strong>Qubit Architecture:</strong> <code>Transmon Superconducting Qubits</code></li>
-            <li><strong>Operating Temperature:</strong> <code>T = 20 mK</code> (Cryogenic Dilution Refrigerator)</li>
-            <li><strong>Gate Fidelity:</strong> <code>F > 99.9%</code> (Single-qubit), <code>F > 99.5%</code> (Two-qubit CNOT)</li>
-            <li><strong>Coherence Time T₂:</strong> <code>100 μs</code> (Dephasing-limited)</li>
-            <li><strong>Readout Fidelity:</strong> <code>F_RO > 99.2%</code></li>
-        </ul>
-        
-        <h3 style='margin-top: 32px; font-family: "JetBrains Mono", monospace; color: #7B61FF;'>
-        ACTIVE VISUALIZATION ENGINE</h3>
+        <h3>→ RESEARCH TERMINAL CAPABILITIES</h3>
         <p style='font-family: "Source Serif Pro", serif; font-size: 15px; line-height: 1.8;'>
-        <strong>→ Observe the central Bloch Sphere rendering below.</strong> It utilizes a custom 
-        <code>GLSL Shader</code> with <strong>Ray-Marching</strong> and <strong>Volumetric Lighting</strong> 
-        to represent the probability amplitude of state $|\\psi\\rangle$. As you adjust the phase 
-        $\\phi$ and latitude $\\theta$, the interface calculates the <strong>geometric phase shift</strong> 
-        via parallel transport on the sphere's surface, providing an empirical view of quantum state evolution.
+        This workbench provides a <strong>high-fidelity environment</strong> for quantum state manipulation within 
+        the complex Hilbert space $\\mathcal{H} = \\mathbb{C}^{2^n}$. Execute variational algorithms, simulate 
+        noise channels, and perform quantum state tomography with publication-ready visualizations.
         </p>
-        
-        <p style='font-family: "Source Serif Pro", serif; font-size: 15px; line-height: 1.8; margin-top: 16px;'>
-        The density matrix $\\rho = |\\psi\\rangle\\langle\\psi|$ is computed in real-time and displayed 
-        as a <strong>3D heatmap manifold</strong>, where off-diagonal coherence terms reveal the 
-        <strong>quantum interference patterns</strong> essential for computational advantage.
-        </p>
-        
-        <h3 style='margin-top: 32px; font-family: "JetBrains Mono", monospace; color: #00FF94;'>
-        RESEARCH WORKFLOW: THEORY → EXPERIMENT → TOMOGRAPHY</h3>
-        <ol style='font-family: "Source Serif Pro", serif; font-size: 15px; line-height: 2;'>
-            <li><strong>Module Selection:</strong> Navigate via left sidebar nomenclature to canonical quantum protocols</li>
-            <li><strong>Mathematical Formalism:</strong> Review Hamiltonian $\\hat{H}$ operators, unitary evolution $U(t) = e^{-i\\hat{H}t/\\hbar}$</li>
-            <li><strong>Experimental Configuration:</strong> Set variational parameters, stochastic noise models, gate decomposition depth</li>
-            <li><strong>Quantum State Tomography:</strong> Execute measurement bases (X, Y, Z) to reconstruct full density matrix $\\rho$</li>
-            <li><strong>Fidelity Analysis:</strong> Compare theoretical vs experimental states via trace distance $D(\\rho, \\sigma) = \\frac{1}{2}\\text{Tr}|\\rho - \\sigma|$</li>
-            <li><strong>Export Protocol:</strong> Generate reproducibility snapshots with SHA-256 hashing for publication integrity</li>
-        </ol>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Interactive Bento Grid Navigation in Main Area
+    st.markdown("### 🎯 SELECT RESEARCH MODULE")
+    st.markdown("""
+    <div class='main-bento-grid'>
+        <div class='main-bento-tile' onclick="window.location.href='?module=bloch'">
+            <div class='main-tile-icon'>🌀</div>
+            <div class='main-tile-title'>Hilbert Space<br>Dynamics</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=interference'">
+            <div class='main-tile-icon'>〰️</div>
+            <div class='main-tile-title'>Coherent<br>Superposition</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=entanglement'">
+            <div class='main-tile-icon'>🔗</div>
+            <div class='main-tile-title'>Bell State<br>Correlations</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=noise'">
+            <div class='main-tile-icon'>📉</div>
+            <div class='main-tile-title'>Dissipative<br>Decoherence</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=circuits'">
+            <div class='main-tile-icon'>⚡</div>
+            <div class='main-tile-title'>Unitary<br>Synthesis</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=vqe'">
+            <div class='main-tile-icon'>🧬</div>
+            <div class='main-tile-title'>VQE<br>Architectures</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=qaoa'">
+            <div class='main-tile-icon'>📐</div>
+            <div class='main-tile-title'>Optimization<br>Manifolds</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=qml'">
+            <div class='main-tile-icon'>🧠</div>
+            <div class='main-tile-title'>Quantum Neural<br>Manifolds</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=qec'">
+            <div class='main-tile-icon'>🛡️</div>
+            <div class='main-tile-title'>Surface Code<br>Protocols</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=hardware'">
+            <div class='main-tile-icon'>🔌</div>
+            <div class='main-tile-title'>QPU Topology<br>Maps</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=complexity'">
+            <div class='main-tile-icon'>♾️</div>
+            <div class='main-tile-title'>Complexity<br>Landscapes</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=topological'">
+            <div class='main-tile-icon'>🔀</div>
+            <div class='main-tile-title'>Anyonic<br>Braiding</div>
+        </div>
+        <div class='main-bento-tile' onclick="window.location.href='?module=export'">
+            <div class='main-tile-icon'>💾</div>
+            <div class='main-tile-title'>Research<br>Reproducibility</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1714,12 +2005,20 @@ if module_id == "overview":
         </div>
         """, unsafe_allow_html=True)
     
-    # Hero Bloch sphere with technical description
-    st.markdown("### LIVE STATE VECTOR MANIPULATION")
+    # Hero Bloch sphere with parallax depth
+    st.markdown("### 🌐 LIVE STATE VECTOR MANIPULATION")
     st.markdown("""
-    <p style='font-family: "Source Serif Pro", serif; font-size: 14px;'>
+    <div class='parallax-viz-container'>
+        <div style='text-align: center; margin-bottom: 20px;'>
+            <span class='metric-label'>⚛ BLOCH SPHERE | PROJECTIVE HILBERT SPACE $\\mathbb{CP}^1 \\cong S^2$</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <p style='font-family: "Source Serif Pro", serif; font-size: 14px; line-height: 1.7;'>
     <strong>Interactive Bloch Sphere:</strong> Manipulate polar angle $\\theta$ and azimuthal phase 
-    $\\phi$ to observe <strong>Wavefunction Collapse</strong> dynamics. The sphere's surface represents 
+    $\\phi$ to observe <strong>wavefunction collapse</strong> dynamics. The sphere's surface represents 
     the projective Hilbert space $\\mathbb{CP}^1$, with north/south poles as computational basis 
     states $|0\\rangle, |1\\rangle$.
     </p>
@@ -1727,39 +2026,39 @@ if module_id == "overview":
     
     # Custom glassmorphic slider with real-time feedback
     st.markdown("""
-    <div class='data-grid-mesh' style='padding: 20px; border-radius: 12px; border: 1px solid rgba(0, 217, 255, 0.2);'>
-        <div class='metric-label'>POLAR ANGLE θ [0, π]</div>
+    <div class='parallax-viz-container' style='padding: 15px;'>
+        <span class='metric-label'>⚛ POLAR ANGLE $\\theta$ [0, $\\pi$]</span>
     </div>
     """, unsafe_allow_html=True)
     theta_hero = st.slider("", 0, 180, 45, key="hero_theta", 
                           help="Controls probability amplitude distribution", label_visibility="collapsed")
     st.markdown(f"""
-    <div style='text-align: center; margin-top: -10px; margin-bottom: 15px;'>
-        <span class='metric-value'>{theta_hero}°</span>
-        <span class='metric-label'> = {np.radians(theta_hero):.3f} rad</span>
+    <div style='text-align: center; margin-top: -10px; margin-bottom: 20px;'>
+        <span class='metric-value' style='font-size: 22px;'>{theta_hero}°</span>
+        <span class='metric-label'> = {np.radians(theta_hero):.4f} rad</span>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='data-grid-mesh' style='padding: 20px; border-radius: 12px; border: 1px solid rgba(123, 97, 255, 0.2);'>
-        <div class='metric-label'>AZIMUTHAL PHASE φ [0, 2π]</div>
+    <div class='parallax-viz-container' style='padding: 15px;'>
+        <span class='metric-label'>⚡ AZIMUTHAL PHASE $\\phi$ [0, 2$\\pi$]</span>
     </div>
     """, unsafe_allow_html=True)
     phi_hero = st.slider("", 0, 360, 45, key="hero_phi",
                         help="Determines relative phase between basis states", label_visibility="collapsed")
     st.markdown(f"""
-    <div style='text-align: center; margin-top: -10px; margin-bottom: 20px;'>
-        <span class='metric-value'>{phi_hero}°</span>
-        <span class='metric-label'> = {np.radians(phi_hero):.3f} rad</span>
+    <div style='text-align: center; margin-top: -10px; margin-bottom: 25px;'>
+        <span class='metric-value' style='font-size: 22px;'>{phi_hero}°</span>
+        <span class='metric-label'> = {np.radians(phi_hero):.4f} rad</span>
     </div>
     """, unsafe_allow_html=True)
     
     # Enhanced Bloch sphere with volumetric rendering hints
     st.markdown("""
-    <div class='data-grid-mesh' style='padding: 15px; border-radius: 12px; border: 1px solid rgba(0, 217, 255, 0.3); margin-bottom: 15px;'>
+    <div class='parallax-viz-container' style='padding: 15px; margin-bottom: 20px;'>
         <div style='text-align: center;'>
             <span class='metric-label'>◉ WAVEFUNCTION VISUALIZATION</span>
-            <span style='margin-left: 20px; color: #00FF94; font-family: JetBrains Mono; font-size: 10px;'>⚡ REAL-TIME LERP INTERPOLATION</span>
+            <span style='margin-left: 20px; color: #00FF94; font-family: JetBrains Mono; font-size: 10px;'>⚡ SMOOTH LERP INTERPOLATION</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
