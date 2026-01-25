@@ -1384,6 +1384,13 @@ elif module_id == "entanglement":
         a0, a1 = 0, np.pi/2
         b0, b1 = np.pi/4, -np.pi/4
         
+        # Define Pauli matrices
+        def pauli_x():
+            return np.array([[0, 1], [1, 0]], dtype=complex)
+        
+        def pauli_z():
+            return np.array([[1, 0], [0, -1]], dtype=complex)
+        
         # Calculate expectation values
         def chsh_expectation(state, theta_a, theta_b):
             # Measurement operators
@@ -2537,7 +2544,12 @@ elif module_id == "export":
         st.info("No experiments logged yet. Run experiments in other modules to populate this log.")
     else:
         for i, exp in enumerate(reversed(st.session_state.experiment_log)):
-            with st.expander(f"**{exp['id']}** - {exp['module']} - {exp['timestamp'][:19]}"):
+            # Generate ID if not present
+            exp_id = exp.get('id', f"EXP-{i:04d}")
+            exp_module = exp.get('module', 'Unknown')
+            exp_time = exp.get('timestamp', '')[:19]
+            
+            with st.expander(f"**{exp_id}** - {exp_module} - {exp_time}"):
                 st.json(exp)
                 
                 col1, col2 = st.columns(2)
