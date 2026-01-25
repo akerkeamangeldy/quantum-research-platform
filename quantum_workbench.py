@@ -903,6 +903,25 @@ def add_neural_network_bg():
     st.markdown(neural_html, unsafe_allow_html=True)
 
 # Quantum simulation utilities
+def convert_to_json_serializable(obj):
+    """Convert numpy types to Python native types for JSON serialization."""
+    if isinstance(obj, dict):
+        return {key: convert_to_json_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_json_serializable(item) for item in obj]
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, (np.integer, np.int64, np.int32)):
+        return int(obj)
+    elif isinstance(obj, (np.floating, np.float64, np.float32)):
+        return float(obj)
+    elif isinstance(obj, (np.complexfloating, complex)):
+        return {'real': float(obj.real), 'imag': float(obj.imag)}
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    else:
+        return obj
+
 def pauli_matrices():
     """Return Pauli matrices."""
     I = np.array([[1, 0], [0, 1]], dtype=complex)
@@ -2883,11 +2902,13 @@ elif module_id == "export":
                 
                 with col1:
                     if st.button(f"Export JSON", key=f"export_json_{i}"):
-                        json_str = json.dumps(exp, indent=2)
+                        # Convert numpy types to JSON-serializable types
+                        exp_serializable = convert_to_json_serializable(exp)
+                        json_str = json.dumps(exp_serializable, indent=2)
                         st.download_button(
                             label="Download JSON",
                             data=json_str,
-                            file_name=f"{exp['id']}.json",
+                            file_name=f"{exp_id}.json",
                             mime="application/json",
                             key=f"download_json_{i}"
                         )
@@ -2924,6 +2945,8 @@ elif module_id == "export":
                 "platform": "Quantum Research Workbench",
                 "experiments": st.session_state.experiment_log
             }
+            # Convert numpy types to JSON-serializable types
+            all_experiments = convert_to_json_serializable(all_experiments)
             json_str = json.dumps(all_experiments, indent=2)
             st.download_button(
                 label="Download Complete Experiment Log (JSON)",
