@@ -1108,7 +1108,7 @@ bento_grid_html = """
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(0, 217, 255, 0.15), transparent 70%);
+    background: radial-gradient(circle at center, rgba(0, 217, 255, 0.15), transparent 70%%);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
@@ -1119,7 +1119,7 @@ bento_grid_html = """
     position: absolute;
     inset: -2px;
     background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.4), rgba(123, 97, 255, 0.4), transparent);
-    background-size: 200% 200%;
+    background-size: 200%% 200%%;
     border-radius: 13px;
     opacity: 0;
     z-index: -1;
@@ -1128,14 +1128,14 @@ bento_grid_html = """
 }
 
 @keyframes gradient-spin {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0%% { background-position: 0%% 50%%; }
+    50%% { background-position: 100%% 50%%; }
+    100%% { background-position: 0%% 50%%; }
 }
 
 @keyframes wave-pattern {
-    0%, 100% { transform: translateY(0) scaleY(1); }
-    50% { transform: translateY(-5px) scaleY(1.05); }
+    0%%, 100%% { transform: translateY(0) scaleY(1); }
+    50%% { transform: translateY(-5px) scaleY(1.05); }
 }
 
 .bento-tile:hover {
