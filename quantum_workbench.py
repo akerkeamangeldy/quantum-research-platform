@@ -1059,7 +1059,7 @@ def generate_experiment_id():
     hash_obj = hashlib.md5((timestamp + random_component).encode())
     return f"QEXP-{hash_obj.hexdigest()[:8].upper()}"
 
-# Sidebar navigation with real-time telemetry
+# Bento Grid Navigation System - Non-Linear Matrix
 st.sidebar.markdown("## QUANTUM RESEARCH WORKBENCH v4.0.2")
 st.sidebar.markdown("**SYSTEM STATUS:** `OPERATIONAL`")
 st.sidebar.markdown("**COHERENCE TIME:** `OPTIMIZED`")
@@ -1075,25 +1075,246 @@ telemetry_html = """
 st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-modules = {
-    "Module 01: Theoretical Framework & Executive Summary": "overview",
-    "Module 02: Hilbert Space Mapping & Bloch Vector Dynamics": "bloch",
-    "Module 03: Coherent State Evolution & Phase Interference Patterns": "interference",
-    "Module 04: Non-Local Correlations & Bell State Tomography": "entanglement",
-    "Module 05: Dissipative Dynamics & Stochastic Noise Modeling": "noise",
-    "Module 06: Unitary Transformations & Quantum Circuit Synthesis": "circuits",
-    "Module 07: Variational Quantum Eigensolver (VQE) Architectures": "vqe",
-    "Module 08: QAOA: Combinatorial Optimization Manifolds": "qaoa",
-    "Module 09: Quantum Neural Manifolds & Kernel-Based Learning": "qml",
-    "Module 10: Topologically Protected Computing & Surface Code Error Correction": "qec",
-    "Module 11: Hardware Topology & Qubit Connectivity Maps": "hardware",
-    "Module 12: Computational Complexity Landscape: P, NP, BQP": "complexity",
-    "Module 13: Topological Quantum Computing & Anyonic Braiding": "topological",
-    "Module 14: Reproducibility Protocol & Data Export": "export"
+# Bento Grid CSS and JavaScript
+bento_grid_html = """
+<style>
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 8px;
+    margin: 0;
 }
 
-selected_module = st.sidebar.radio("RESEARCH NOMENCLATURE", list(modules.keys()))
-module_id = modules[selected_module]
+.bento-tile {
+    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(26, 26, 26, 0.9));
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-radius: 12px;
+    padding: 16px 12px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bento-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 217, 255, 0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.bento-tile::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.4), rgba(123, 97, 255, 0.4), transparent);
+    background-size: 200% 200%;
+    border-radius: 13px;
+    opacity: 0;
+    z-index: -1;
+    animation: gradient-spin 3s linear infinite;
+    transition: opacity 0.4s ease;
+}
+
+@keyframes gradient-spin {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes wave-pattern {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-5px) scaleY(1.05); }
+}
+
+.bento-tile:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 
+        0 16px 48px rgba(0, 217, 255, 0.4),
+        0 0 60px rgba(123, 97, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.8);
+}
+
+.bento-tile:hover::before {
+    opacity: 1;
+}
+
+.bento-tile:hover::after {
+    opacity: 1;
+}
+
+.bento-tile:hover .tile-title {
+    color: #00D9FF;
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+    animation: wave-pattern 1s ease-in-out infinite;
+}
+
+.bento-tile:active {
+    transform: scale(1.08);
+    transition: transform 0.2s ease;
+}
+
+.bento-tile.selected {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(123, 97, 255, 0.2));
+    border-color: rgba(0, 217, 255, 1);
+    box-shadow: 
+        0 0 30px rgba(0, 217, 255, 0.6),
+        inset 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.tile-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #E8E8E8;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+}
+
+.bento-tile.large {
+    grid-column: span 2;
+    min-height: 100px;
+    font-size: 12px;
+}
+
+.bento-tile.large .tile-title {
+    font-size: 13px;
+}
+</style>
+
+<div class="bento-grid">
+    <div class="bento-tile" onclick="selectModule('overview')" id="tile-overview">
+        <div class="tile-title">Theoretical<br>Framework</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('bloch')" id="tile-bloch">
+        <div class="tile-title">Hilbert Space<br>Dynamics</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('interference')" id="tile-interference">
+        <div class="tile-title">Coherent<br>Superposition</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('entanglement')" id="tile-entanglement">
+        <div class="tile-title">Bell State<br>Correlations</div>
+    </div>
+    <div class="bento-tile large" onclick="selectModule('noise')" id="tile-noise">
+        <div class="tile-title">Dissipative Decoherence</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('circuits')" id="tile-circuits">
+        <div class="tile-title">Unitary<br>Synthesis</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('vqe')" id="tile-vqe">
+        <div class="tile-title">VQE<br>Architectures</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('qaoa')" id="tile-qaoa">
+        <div class="tile-title">Optimization<br>Manifolds</div>
+    </div>
+    <div class="bento-tile large" onclick="selectModule('qml')" id="tile-qml">
+        <div class="tile-title">Quantum Neural Manifolds</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('qec')" id="tile-qec">
+        <div class="tile-title">Surface Code<br>Protocols</div>
+    </div>
+    <div class="bento-tile large" onclick="selectModule('hardware')" id="tile-hardware">
+        <div class="tile-title">QPU Topology Maps</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('complexity')" id="tile-complexity">
+        <div class="tile-title">Complexity<br>Landscapes</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('topological')" id="tile-topological">
+        <div class="tile-title">Anyonic<br>Braiding</div>
+    </div>
+    <div class="bento-tile" onclick="selectModule('export')" id="tile-export">
+        <div class="tile-title">Research<br>Reproducibility</div>
+    </div>
+</div>
+
+<script>
+function selectModule(moduleId) {
+    // Remove selected class from all tiles
+    document.querySelectorAll('.bento-tile').forEach(tile => {
+        tile.classList.remove('selected');
+    });
+    
+    // Add selected class to clicked tile
+    document.getElementById('tile-' + moduleId).classList.add('selected');
+    
+    // Update Streamlit session state
+    window.parent.postMessage({
+        type: 'streamlit:setComponentValue',
+        data: moduleId
+    }, '*');
+}
+
+// Highlight current module on load
+const currentModule = '%s';
+if (currentModule) {
+    const tile = document.getElementById('tile-' + currentModule);
+    if (tile) tile.classList.add('selected');
+}
+</script>
+"""
+
+# Initialize session state for module selection
+if 'selected_module_id' not in st.session_state:
+    st.session_state.selected_module_id = 'overview'
+
+# Render Bento Grid with current module highlighted
+st.sidebar.markdown(bento_grid_html % st.session_state.selected_module_id, unsafe_allow_html=True)
+
+# Module mapping
+modules_list = [
+    ("overview", "Theoretical Framework"),
+    ("bloch", "Hilbert Space Dynamics"),
+    ("interference", "Coherent Superposition"),
+    ("entanglement", "Bell State Correlations"),
+    ("noise", "Dissipative Decoherence"),
+    ("circuits", "Unitary Synthesis"),
+    ("vqe", "VQE Architectures"),
+    ("qaoa", "Optimization Manifolds"),
+    ("qml", "Quantum Neural Manifolds"),
+    ("qec", "Surface Code Protocols"),
+    ("hardware", "QPU Topology Maps"),
+    ("complexity", "Complexity Landscapes"),
+    ("topological", "Anyonic Braiding"),
+    ("export", "Research Reproducibility")
+]
+
+# Create clickable navigation with columns for compact layout
+st.sidebar.markdown("---")
+st.sidebar.markdown("**NAVIGATION:**")
+
+# Create two columns for compact button layout
+for i in range(0, len(modules_list), 2):
+    col1, col2 = st.sidebar.columns(2)
+    
+    with col1:
+        module_id, module_name = modules_list[i]
+        if st.button(module_name.replace(" ", "\n"), key=f"nav_{module_id}", use_container_width=True):
+            st.session_state.selected_module_id = module_id
+            st.rerun()
+    
+    if i + 1 < len(modules_list):
+        with col2:
+            module_id, module_name = modules_list[i + 1]
+            if st.button(module_name.replace(" ", "\n"), key=f"nav_{module_id}", use_container_width=True):
+                st.session_state.selected_module_id = module_id
+                st.rerun()
+
+module_id = st.session_state.selected_module_id
 
 # Experiment session state
 if 'experiment_log' not in st.session_state:
