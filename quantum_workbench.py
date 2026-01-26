@@ -2050,65 +2050,159 @@ def generate_experiment_id():
     return f"QEXP-{hash_obj.hexdigest()[:8].upper()}"
 
 # Professional Row-Based Sidebar Navigation
-st.sidebar.markdown("## QUANTUM RESEARCH WORKBENCH v4.0.2")
-st.sidebar.markdown("**SYSTEM STATUS:** `OPERATIONAL`")
-st.sidebar.markdown("**COHERENCE TIME:** `OPTIMIZED`")
+
+# Initialize session state
+if 'selected_module_id' not in st.session_state:
+    st.session_state.selected_module_id = 'overview'
+if 'language' not in st.session_state:
+    st.session_state.language = 'en'
+
+# Language translations
+translations = {
+    'en': {
+        'title': 'QUANTUM RESEARCH WORKBENCH v4.0.2',
+        'system_status': 'SYSTEM STATUS',
+        'operational': 'OPERATIONAL',
+        'coherence_time': 'COHERENCE TIME',
+        'optimized': 'OPTIMIZED',
+        'gate_fidelity': 'GATE FIDELITY',
+        'temp': 'TEMP',
+        'search_placeholder': '🔍 Search modules...',
+        'sections': {
+            'foundations': 'FOUNDATIONS',
+            'correlations': 'QUANTUM CORRELATIONS',
+            'dynamics': 'NOISE & DYNAMICS',
+            'variational': 'VARIATIONAL ALGORITHMS',
+            'qml': 'QUANTUM ML',
+            'hardware': 'ERROR CORRECTION & HARDWARE',
+            'complexity': 'COMPLEXITY THEORY',
+            'export': 'DATA EXPORT'
+        },
+        'modules': {
+            'overview': 'Theoretical Framework',
+            'bloch': 'Hilbert Space Dynamics',
+            'interference': 'Coherent Superposition',
+            'entanglement': 'Bell-State Correlations',
+            'topological': 'Topological Phases',
+            'noise': 'Dissipative Decoherence',
+            'circuits': 'Unitary Synthesis',
+            'vqe': 'VQE Architectures',
+            'qaoa': 'Optimization Manifolds',
+            'qml': 'Quantum Neural Networks',
+            'qec': 'Surface Code Protocols',
+            'hardware': 'QPU Topology Maps',
+            'complexity': 'Complexity Landscapes',
+            'export': 'Research Reproducibility'
+        }
+    },
+    'ru': {
+        'title': 'КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2',
+        'system_status': 'СТАТУС СИСТЕМЫ',
+        'operational': 'РАБОТАЕТ',
+        'coherence_time': 'ВРЕМЯ КОГЕРЕНТНОСТИ',
+        'optimized': 'ОПТИМИЗИРОВАНО',
+        'gate_fidelity': 'ТОЧНОСТЬ ГЕЙТОВ',
+        'temp': 'ТЕМП',
+        'search_placeholder': '🔍 Поиск модулей...',
+        'sections': {
+            'foundations': 'ОСНОВЫ',
+            'correlations': 'КВАНТОВЫЕ КОРРЕЛЯЦИИ',
+            'dynamics': 'ШУМЫ И ДИНАМИКА',
+            'variational': 'ВАРИАЦИОННЫЕ АЛГОРИТМЫ',
+            'qml': 'КВАНТОВОЕ МАШИННОЕ ОБУЧЕНИЕ',
+            'hardware': 'КОРРЕКЦИЯ ОШИБОК И ОБОРУДОВАНИЕ',
+            'complexity': 'ТЕОРИЯ СЛОЖНОСТИ',
+            'export': 'ЭКСПОРТ ДАННЫХ'
+        },
+        'modules': {
+            'overview': 'Теоретическая Основа',
+            'bloch': 'Динамика Пространства Гильберта',
+            'interference': 'Когерентная Суперпозиция',
+            'entanglement': 'Корреляции Белла',
+            'topological': 'Топологические Фазы',
+            'noise': 'Диссипативная Декогеренция',
+            'circuits': 'Унитарный Синтез',
+            'vqe': 'Архитектуры VQE',
+            'qaoa': 'Многообразия Оптимизации',
+            'qml': 'Квантовые Нейронные Сети',
+            'qec': 'Протоколы Поверхностного Кода',
+            'hardware': 'Топология КПУ',
+            'complexity': 'Ландшафты Сложности',
+            'export': 'Воспроизводимость Исследований'
+        }
+    }
+}
+
+lang = translations[st.session_state.language]
+
+# Language selector
+col_lang1, col_lang2 = st.sidebar.columns(2)
+with col_lang1:
+    if st.button("🇬🇧 EN", key="lang_en", type="primary" if st.session_state.language == 'en' else "secondary", use_container_width=True):
+        st.session_state.language = 'en'
+        st.rerun()
+with col_lang2:
+    if st.button("🇷🇺 RU", key="lang_ru", type="primary" if st.session_state.language == 'ru' else "secondary", use_container_width=True):
+        st.session_state.language = 'ru'
+        st.rerun()
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown(f"## {lang['title']}")
+st.sidebar.markdown(f"**{lang['system_status']}:** `{lang['operational']}`")
+st.sidebar.markdown(f"**{lang['coherence_time']}:** `{lang['optimized']}`")
 
 # Real-time telemetry ticker in sidebar
-telemetry_html = """
+telemetry_html = f"""
 <div class='telemetry-ticker'>
-    <span>GATE FIDELITY:</span> <span class='telemetry-value'>99.94%</span> | 
+    <span>{lang['gate_fidelity']}:</span> <span class='telemetry-value'>99.94%</span> | 
     <span>T₂:</span> <span class='telemetry-value'>103μs</span> | 
-    <span>TEMP:</span> <span class='telemetry-value'>18.7mK</span>
+    <span>{lang['temp']}:</span> <span class='telemetry-value'>18.7mK</span>
 </div>
 """
 st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-# Initialize session state
-if 'selected_module_id' not in st.session_state:
-    st.session_state.selected_module_id = 'overview'
-
 # Search field
-st.sidebar.text_input("", placeholder="🔍 Search modules...", key="nav_search", label_visibility="collapsed")
+st.sidebar.text_input("", placeholder=lang['search_placeholder'], key="nav_search", label_visibility="collapsed")
 
 # Navigation structure with organized groups
 nav_groups = [
-    ("FOUNDATIONS", [
-        ("overview", "01", "Theoretical Framework"),
-        ("bloch", "02", "Hilbert Space Dynamics"),
-        ("interference", "03", "Coherent Superposition"),
+    ("foundations", [
+        ("overview", "01", lang['modules']['overview']),
+        ("bloch", "02", lang['modules']['bloch']),
+        ("interference", "03", lang['modules']['interference']),
     ]),
-    ("QUANTUM CORRELATIONS", [
-        ("entanglement", "04", "Bell-State Correlations"),
-        ("topological", "05", "Topological Phases"),
+    ("correlations", [
+        ("entanglement", "04", lang['modules']['entanglement']),
+        ("topological", "05", lang['modules']['topological']),
     ]),
-    ("NOISE & DYNAMICS", [
-        ("noise", "06", "Dissipative Decoherence"),
-        ("circuits", "07", "Unitary Synthesis"),
+    ("dynamics", [
+        ("noise", "06", lang['modules']['noise']),
+        ("circuits", "07", lang['modules']['circuits']),
     ]),
-    ("VARIATIONAL ALGORITHMS", [
-        ("vqe", "08", "VQE Architectures"),
-        ("qaoa", "09", "Optimization Manifolds"),
+    ("variational", [
+        ("vqe", "08", lang['modules']['vqe']),
+        ("qaoa", "09", lang['modules']['qaoa']),
     ]),
-    ("QUANTUM ML", [
-        ("qml", "10", "Quantum Neural Networks"),
+    ("qml", [
+        ("qml", "10", lang['modules']['qml']),
     ]),
-    ("ERROR CORRECTION & HARDWARE", [
-        ("qec", "11", "Surface Code Protocols"),
-        ("hardware", "12", "QPU Topology Maps"),
+    ("hardware", [
+        ("qec", "11", lang['modules']['qec']),
+        ("hardware", "12", lang['modules']['hardware']),
     ]),
-    ("COMPLEXITY THEORY", [
-        ("complexity", "13", "Complexity Landscapes"),
+    ("complexity", [
+        ("complexity", "13", lang['modules']['complexity']),
     ]),
-    ("DATA EXPORT", [
-        ("export", "14", "Research Reproducibility"),
+    ("export", [
+        ("export", "14", lang['modules']['export']),
     ]),
 ]
 
 # Render professional row-based navigation
-for section_label, modules in nav_groups:
-    st.sidebar.markdown(f"<div class='nav-section-label'>{section_label}</div>", unsafe_allow_html=True)
+for section_key, modules in nav_groups:
+    st.sidebar.markdown(f"<div class='nav-section-label'>{lang['sections'][section_key]}</div>", unsafe_allow_html=True)
     
     # Render each module as a clickable row
     for module_id, number, title in modules:
