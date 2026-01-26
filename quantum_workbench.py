@@ -520,120 +520,159 @@ st.markdown("""
         letter-spacing: 0.02em;
     }
     
-    /* MAIN BENTO GRID NAVIGATION (IN CONTENT AREA) */
-    .main-bento-grid {
+    /* RESEARCH DASHBOARD NAVIGATION - DARK ACADEMIC AESTHETIC */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    .nav-section-header {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: rgba(123, 97, 255, 0.8);
+        margin: 32px 0 16px 0;
+        padding-left: 4px;
+        border-left: 3px solid rgba(123, 97, 255, 0.5);
+    }
+    
+    .research-nav-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        padding: 20px 0;
-        margin: 30px 0;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 18px;
+        padding: 0;
+        margin: 24px 0;
     }
     
-    @media (max-width: 1400px) {
-        .main-bento-grid {
-            grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1200px) {
+        .research-nav-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         }
     }
     
-    @media (max-width: 900px) {
-        .main-bento-grid {
-            grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 768px) {
+        .research-nav-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
         }
     }
     
-    .main-bento-tile {
-        background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(26, 26, 26, 0.9));
-        border: 1px solid rgba(0, 217, 255, 0.25);
-        border-radius: 14px;
-        padding: 28px 20px;
+    .research-nav-card {
+        background: linear-gradient(145deg, #1A1A1A 0%, #151515 100%);
+        border-left: 3px solid rgba(99, 102, 241, 0.4);
+        border-radius: 16px;
+        padding: 20px 18px;
         cursor: pointer;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(12px);
-        min-height: 140px;
+        box-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+        gap: 10px;
     }
     
-    .main-bento-tile::before {
+    .research-nav-card::before {
         content: '';
         position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at center, rgba(0, 217, 255, 0.2), transparent 70%%);
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(99, 102, 241, 0.3) 50%, 
+            transparent);
         opacity: 0;
-        transition: opacity 0.5s ease;
+        transition: opacity 200ms ease;
     }
     
-    .main-bento-tile::after {
-        content: '';
-        position: absolute;
-        inset: -3px;
-        background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.6), rgba(123, 97, 255, 0.6), transparent);
-        background-size: 300%% 300%%;
-        border-radius: 15px;
-        opacity: 0;
-        z-index: -1;
-        animation: gradient-spin 4s linear infinite;
-        transition: opacity 0.5s ease;
-    }
-    
-    .main-bento-tile:hover {
-        transform: translateY(-8px) scale(1.05) rotateX(5deg);
-        box-shadow: 
-            0 20px 60px rgba(0, 217, 255, 0.5),
-            0 0 80px rgba(123, 97, 255, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        border-color: rgba(0, 217, 255, 1);
-        perspective: 1000px;
-    }
-    
-    .main-bento-tile:hover::before {
-        opacity: 1;
-        animation: bloom-pulse 1.5s ease-in-out infinite;
-    }
-    
-    .main-bento-tile:hover::after {
-        opacity: 1;
-    }
-    
-    @keyframes bloom-pulse {
-        0%%, 100%% { transform: scale(1); opacity: 0.3; }
-        50%% { transform: scale(1.2); opacity: 0.6; }
-    }
-    
-    .main-tile-icon {
-        font-size: 32px;
-        margin-bottom: 12px;
-        filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.6));
-    }
-    
-    .main-tile-title {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 12px;
-        font-weight: 600;
-        color: #E8E8E8;
-        line-height: 1.4;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        transition: all 0.4s ease;
-    }
-    
-    .main-bento-tile:hover .main-tile-title {
-        color: #00D9FF;
-        text-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+    .research-nav-card:hover {
         transform: translateY(-3px);
+        border-left-color: rgba(99, 102, 241, 1);
+        box-shadow: 
+            0 8px 24px rgba(0, 0, 0, 0.5),
+            0 0 30px rgba(99, 102, 241, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        background: linear-gradient(145deg, #1D1D1D 0%, #181818 100%);
     }
     
-    .main-bento-tile.active {
-        background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(123, 97, 255, 0.15));
-        border-color: rgba(0, 217, 255, 1);
+    .research-nav-card:hover::before {
+        opacity: 1;
+    }
+    
+    .research-nav-card:active {
+        transform: translateY(-1px);
+        transition: all 80ms ease;
+    }
+    
+    .nav-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 4px;
+    }
+    
+    .nav-card-icon {
+        font-size: 24px;
+        line-height: 1;
+        flex-shrink: 0;
+        filter: grayscale(20%);
+        transition: filter 180ms ease;
+    }
+    
+    .research-nav-card:hover .nav-card-icon {
+        filter: grayscale(0%) drop-shadow(0 0 12px rgba(99, 102, 241, 0.5));
+    }
+    
+    .nav-card-title {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.25;
+        color: #E8E8E8;
+        letter-spacing: -0.01em;
+        margin: 0;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: normal;
+        transition: color 180ms ease;
+    }
+    
+    .research-nav-card:hover .nav-card-title {
+        color: rgba(99, 102, 241, 1);
+    }
+    
+    .nav-card-subtitle {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.4;
+        color: rgba(180, 180, 180, 0.75);
+        letter-spacing: 0;
+        margin: 0;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: normal;
+        transition: color 180ms ease;
+    }
+    
+    .research-nav-card:hover .nav-card-subtitle {
+        color: rgba(0, 255, 148, 0.8);
+    }
+    
+    .research-nav-card.active {
+        background: linear-gradient(145deg, #1F1F2E 0%, #1A1A28 100%);
+        border-left-color: rgba(99, 102, 241, 1);
         box-shadow: 
-            0 0 40px rgba(0, 217, 255, 0.6),
-            inset 0 0 30px rgba(0, 217, 255, 0.1);
+            0 4px 16px rgba(0, 0, 0, 0.5),
+            0 0 40px rgba(99, 102, 241, 0.2),
+            inset 0 0 30px rgba(99, 102, 241, 0.08);
+    }
+    
+    .research-nav-card.active .nav-card-title {
+        color: rgba(99, 102, 241, 1);
     }
     
     /* PARALLAX VISUALIZATION CONTAINER */
@@ -2124,46 +2163,66 @@ if module_id == "overview":
     </div>
     """, unsafe_allow_html=True)
     
-    # Interactive Bento Grid Navigation in Main Area
-    st.markdown("### 🎯 SELECT RESEARCH MODULE")
+    # Professional Research Dashboard Navigation
+    st.markdown("<div style='font-family: Inter; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; color: rgba(200,200,200,0.9); margin-bottom: 32px;'>RESEARCH MODULE SELECTOR</div>", unsafe_allow_html=True)
     
-    # Create functional Bento Grid with Streamlit components
-    grid_modules = [
-        ("bloch", "🌀", "Hilbert Space Dynamics"),
-        ("interference", "〰️", "Coherent Superposition"),
-        ("entanglement", "🔗", "Bell State Correlations"),
-        ("noise", "📉", "Dissipative Decoherence"),
-        ("circuits", "⚡", "Unitary Synthesis"),
-        ("vqe", "🧬", "VQE Architectures"),
-        ("qaoa", "📐", "Optimization Manifolds"),
-        ("qml", "🧠", "Quantum Neural Manifolds"),
-        ("qec", "🛡️", "Surface Code Protocols"),
-        ("hardware", "🔌", "QPU Topology Maps"),
-        ("complexity", "♾️", "Complexity Landscapes"),
-        ("topological", "🔀", "Anyonic Braiding"),
-        ("export", "💾", "Research Reproducibility")
-    ]
+    # Organized module groups with proper hierarchy
+    module_groups = {
+        "FOUNDATIONS": [
+            ("bloch", "⚛️", "Theoretical Framework", "postulates, operators, measurement"),
+            ("interference", "〰️", "Coherent Superposition", "phase, interference, amplitudes"),
+        ],
+        "QUANTUM CORRELATIONS": [
+            ("entanglement", "🔗", "Bell-State Correlations", "CHSH, nonlocality, EPR"),
+            ("topological", "🔀", "Topological Phases", "anyonic braiding, fault tolerance"),
+        ],
+        "NOISE & DYNAMICS": [
+            ("noise", "📉", "Dissipative Decoherence", "T1/T2, channels, density matrix"),
+            ("circuits", "⚡", "Unitary Synthesis", "gate decomposition, compilation"),
+        ],
+        "VARIATIONAL ALGORITHMS": [
+            ("vqe", "🧬", "VQE Architectures", "ansatz design, energy landscapes"),
+            ("qaoa", "📐", "Optimization Manifolds", "gradients, barren plateaus"),
+        ],
+        "QUANTUM MACHINE LEARNING": [
+            ("qml", "🧠", "Quantum Neural Networks", "embeddings, kernels, classifiers"),
+        ],
+        "ERROR CORRECTION & HARDWARE": [
+            ("qec", "🛡️", "Surface Code Protocols", "stabilizers, logical qubits"),
+            ("hardware", "🔌", "QPU Topology Maps", "connectivity, calibration"),
+        ],
+        "COMPLEXITY THEORY": [
+            ("complexity", "♾️", "Complexity Landscapes", "BQP, QMA, oracle separation"),
+        ],
+        "DATA EXPORT": [
+            ("export", "💾", "Research Reproducibility", "export state vectors, circuits"),
+        ]
+    }
     
-    # Create 4-column grid layout
-    for row_start in range(0, len(grid_modules), 4):
-        cols = st.columns(4)
-        for idx, col in enumerate(cols):
-            if row_start + idx < len(grid_modules):
-                module_id, icon, title = grid_modules[row_start + idx]
-                with col:
-                    # Custom styled button
-                    button_html = f"""
-                    <div style='text-align: center; padding: 20px; background: linear-gradient(135deg, rgba(18,18,18,0.95), rgba(26,26,26,0.9)); 
-                         border: 1px solid rgba(0,217,255,0.25); border-radius: 14px; min-height: 120px; cursor: pointer;
-                         transition: all 0.5s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;'>
-                        <div style='font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(0,217,255,0.6));'>{icon}</div>
-                        <div style='font-family: JetBrains Mono; font-size: 11px; color: #E8E8E8; text-transform: uppercase; line-height: 1.3;'>{title.replace(' ', '<br>')}</div>
+    # Render grouped navigation cards
+    for group_name, modules in module_groups.items():
+        st.markdown(f"<div class='nav-section-header'>{group_name}</div>", unsafe_allow_html=True)
+        st.markdown("<div class='research-nav-grid'>", unsafe_allow_html=True)
+        
+        cols = st.columns(len(modules))
+        for idx, (module_id, icon, title, subtitle) in enumerate(modules):
+            with cols[idx]:
+                active_class = "active" if st.session_state.get('selected_module_id') == module_id else ""
+                card_html = f"""
+                <div class='research-nav-card {active_class}'>
+                    <div class='nav-card-header'>
+                        <div class='nav-card-icon'>{icon}</div>
+                        <div class='nav-card-title'>{title}</div>
                     </div>
-                    """
-                    st.markdown(button_html, unsafe_allow_html=True)
-                    if st.button(f"Navigate to {title}", key=f"main_grid_{module_id}", use_container_width=True, type="secondary"):
-                        st.session_state.selected_module_id = module_id
-                        st.rerun()
+                    <div class='nav-card-subtitle'>{subtitle}</div>
+                </div>
+                """
+                st.markdown(card_html, unsafe_allow_html=True)
+                if st.button(f"→ {title}", key=f"nav_{module_id}", use_container_width=True):
+                    st.session_state.selected_module_id = module_id
+                    st.rerun()
+        
+        st.markdown("</div>", unsafe_allow_html=True)
     
     # Real-time telemetry dashboard
     st.markdown("### REAL-TIME TELEMETRY STREAM")
