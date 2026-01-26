@@ -2057,9 +2057,10 @@ if 'selected_module_id' not in st.session_state:
 if 'language' not in st.session_state:
     st.session_state.language = 'en'
 
-# Language translations
-translations = {
+# Comprehensive Translation System
+TRANSLATIONS = {
     'en': {
+        # Navigation & UI
         'title': 'QUANTUM RESEARCH WORKBENCH v4.0.2',
         'system_status': 'SYSTEM STATUS',
         'operational': 'OPERATIONAL',
@@ -2068,34 +2069,86 @@ translations = {
         'gate_fidelity': 'GATE FIDELITY',
         'temp': 'TEMP',
         'search_placeholder': '🔍 Search modules...',
-        'sections': {
-            'foundations': 'FOUNDATIONS',
-            'correlations': 'QUANTUM CORRELATIONS',
-            'dynamics': 'NOISE & DYNAMICS',
-            'variational': 'VARIATIONAL ALGORITHMS',
-            'qml': 'QUANTUM ML',
-            'hardware': 'ERROR CORRECTION & HARDWARE',
-            'complexity': 'COMPLEXITY THEORY',
-            'export': 'DATA EXPORT'
-        },
-        'modules': {
-            'overview': 'Theoretical Framework',
-            'bloch': 'Hilbert Space Dynamics',
-            'interference': 'Coherent Superposition',
-            'entanglement': 'Bell-State Correlations',
-            'topological': 'Topological Phases',
-            'noise': 'Dissipative Decoherence',
-            'circuits': 'Unitary Synthesis',
-            'vqe': 'VQE Architectures',
-            'qaoa': 'Optimization Manifolds',
-            'qml': 'Quantum Neural Networks',
-            'qec': 'Surface Code Protocols',
-            'hardware': 'QPU Topology Maps',
-            'complexity': 'Complexity Landscapes',
-            'export': 'Research Reproducibility'
-        }
+        
+        # Sections
+        'section_foundations': 'FOUNDATIONS',
+        'section_correlations': 'QUANTUM CORRELATIONS',
+        'section_dynamics': 'NOISE & DYNAMICS',
+        'section_variational': 'VARIATIONAL ALGORITHMS',
+        'section_qml': 'QUANTUM ML',
+        'section_hardware': 'ERROR CORRECTION & HARDWARE',
+        'section_complexity': 'COMPLEXITY THEORY',
+        'section_export': 'DATA EXPORT',
+        
+        # Module titles
+        'module_overview': 'Theoretical Framework',
+        'module_bloch': 'Hilbert Space Dynamics',
+        'module_interference': 'Coherent Superposition',
+        'module_entanglement': 'Bell-State Correlations',
+        'module_topological': 'Topological Phases',
+        'module_noise': 'Dissipative Decoherence',
+        'module_circuits': 'Unitary Synthesis',
+        'module_vqe': 'VQE Architectures',
+        'module_qaoa': 'Optimization Manifolds',
+        'module_qml': 'Quantum Neural Networks',
+        'module_qec': 'Surface Code Protocols',
+        'module_hardware': 'QPU Topology Maps',
+        'module_complexity': 'Complexity Landscapes',
+        'module_export': 'Research Reproducibility',
+        
+        # System Status Panel
+        'status_title': 'SYSTEM STATUS PANEL',
+        'status_coherence_t1': 'Relaxation Time T₁',
+        'status_coherence_t2': 'Coherence Time T₂',
+        'status_gate_single': 'Gate Fidelity (Single-Qubit)',
+        'status_gate_two': 'Gate Fidelity (Two-Qubit CNOT)',
+        'status_readout': 'Readout Fidelity',
+        'status_vacuum': 'Vacuum Pressure',
+        'status_cryo_temp': 'Cryogenic Temperature',
+        
+        # Overview content
+        'overview_capabilities_title': '→ RESEARCH TERMINAL CAPABILITIES',
+        'overview_capabilities_text': 'This workbench provides a <strong>high-fidelity environment</strong> for quantum state manipulation within the complex Hilbert space $\\mathcal{H} = \\mathbb{C}^{2^n}$. Execute variational algorithms, simulate noise channels, and perform quantum state tomography with publication-ready visualizations.',
+        'overview_module_selector': 'RESEARCH MODULE SELECTOR',
+        'overview_telemetry_title': 'REAL-TIME TELEMETRY STREAM',
+        
+        # Module subtitles
+        'subtitle_overview': 'postulates, operators, measurement',
+        'subtitle_bloch': 'unitary evolution, Hamiltonians',
+        'subtitle_interference': 'phase, interference, amplitudes',
+        'subtitle_entanglement': 'CHSH, nonlocality, EPR',
+        'subtitle_topological': 'anyonic braiding, fault tolerance',
+        'subtitle_noise': 'T1/T2, channels, density matrix',
+        'subtitle_circuits': 'gate decomposition, compilation',
+        'subtitle_vqe': 'ansatz design, energy landscapes',
+        'subtitle_qaoa': 'gradients, barren plateaus',
+        'subtitle_qml': 'embeddings, kernels, classifiers',
+        'subtitle_qec': 'stabilizers, logical qubits',
+        'subtitle_hardware': 'connectivity, calibration',
+        'subtitle_complexity': 'BQP, QMA, oracle separation',
+        'subtitle_export': 'export state vectors, circuits',
+        
+        # Bloch Sphere Module
+        'bloch_title': 'BLOCH SPHERE: State Vector Visualization',
+        'bloch_description': 'The Bloch sphere provides a geometric representation of a single-qubit pure state. Any pure state can be expressed as $|\\psi\\rangle = \\cos(\\theta/2)|0\\rangle + e^{i\\phi}\\sin(\\theta/2)|1\\rangle$, where $\\theta$ is the polar angle and $\\phi$ is the azimuthal angle.',
+        'bloch_theta_label': 'Polar Angle θ (degrees)',
+        'bloch_phi_label': 'Azimuthal Angle φ (degrees)',
+        'bloch_state_label': 'Quantum State',
+        'bloch_prob_0': 'Probability |0⟩',
+        'bloch_prob_1': 'Probability |1⟩',
+        'bloch_phase': 'Relative Phase',
+        'bloch_purity': 'State Purity',
+        
+        # Common UI elements
+        'button_navigate': '→',
+        'units_degrees': '°',
+        'units_microseconds': 'μs',
+        'units_millikelvin': 'mK',
+        'units_mbar': 'mbar',
+        'label_greater_than': '>',
     },
     'ru': {
+        # Navigation & UI
         'title': 'КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2',
         'system_status': 'СТАТУС СИСТЕМЫ',
         'operational': 'РАБОТАЕТ',
@@ -2104,36 +2157,93 @@ translations = {
         'gate_fidelity': 'ТОЧНОСТЬ ГЕЙТОВ',
         'temp': 'ТЕМП',
         'search_placeholder': '🔍 Поиск модулей...',
-        'sections': {
-            'foundations': 'ОСНОВЫ',
-            'correlations': 'КВАНТОВЫЕ КОРРЕЛЯЦИИ',
-            'dynamics': 'ШУМЫ И ДИНАМИКА',
-            'variational': 'ВАРИАЦИОННЫЕ АЛГОРИТМЫ',
-            'qml': 'КВАНТОВОЕ МАШИННОЕ ОБУЧЕНИЕ',
-            'hardware': 'КОРРЕКЦИЯ ОШИБОК И ОБОРУДОВАНИЕ',
-            'complexity': 'ТЕОРИЯ СЛОЖНОСТИ',
-            'export': 'ЭКСПОРТ ДАННЫХ'
-        },
-        'modules': {
-            'overview': 'Теоретическая Основа',
-            'bloch': 'Динамика Пространства Гильберта',
-            'interference': 'Когерентная Суперпозиция',
-            'entanglement': 'Корреляции Белла',
-            'topological': 'Топологические Фазы',
-            'noise': 'Диссипативная Декогеренция',
-            'circuits': 'Унитарный Синтез',
-            'vqe': 'Архитектуры VQE',
-            'qaoa': 'Многообразия Оптимизации',
-            'qml': 'Квантовые Нейронные Сети',
-            'qec': 'Протоколы Поверхностного Кода',
-            'hardware': 'Топология КПУ',
-            'complexity': 'Ландшафты Сложности',
-            'export': 'Воспроизводимость Исследований'
-        }
+        
+        # Sections
+        'section_foundations': 'ОСНОВЫ',
+        'section_correlations': 'КВАНТОВЫЕ КОРРЕЛЯЦИИ',
+        'section_dynamics': 'ШУМЫ И ДИНАМИКА',
+        'section_variational': 'ВАРИАЦИОННЫЕ АЛГОРИТМЫ',
+        'section_qml': 'КВАНТОВОЕ МАШИННОЕ ОБУЧЕНИЕ',
+        'section_hardware': 'КОРРЕКЦИЯ ОШИБОК И ОБОРУДОВАНИЕ',
+        'section_complexity': 'ТЕОРИЯ СЛОЖНОСТИ',
+        'section_export': 'ЭКСПОРТ ДАННЫХ',
+        
+        # Module titles
+        'module_overview': 'Теоретическая Основа',
+        'module_bloch': 'Динамика Пространства Гильберта',
+        'module_interference': 'Когерентная Суперпозиция',
+        'module_entanglement': 'Корреляции Белла',
+        'module_topological': 'Топологические Фазы',
+        'module_noise': 'Диссипативная Декогеренция',
+        'module_circuits': 'Унитарный Синтез',
+        'module_vqe': 'Архитектуры VQE',
+        'module_qaoa': 'Многообразия Оптимизации',
+        'module_qml': 'Квантовые Нейронные Сети',
+        'module_qec': 'Протоколы Поверхностного Кода',
+        'module_hardware': 'Топология КПУ',
+        'module_complexity': 'Ландшафты Сложности',
+        'module_export': 'Воспроизводимость Исследований',
+        
+        # System Status Panel
+        'status_title': 'ПАНЕЛЬ СОСТОЯНИЯ СИСТЕМЫ',
+        'status_coherence_t1': 'Время Релаксации T₁',
+        'status_coherence_t2': 'Время Когерентности T₂',
+        'status_gate_single': 'Точность Гейтов (Однокубитные)',
+        'status_gate_two': 'Точность Гейтов (Двухкубитные CNOT)',
+        'status_readout': 'Точность Считывания',
+        'status_vacuum': 'Вакуумное Давление',
+        'status_cryo_temp': 'Криогенная Температура',
+        
+        # Overview content
+        'overview_capabilities_title': '→ ВОЗМОЖНОСТИ ИССЛЕДОВАТЕЛЬСКОГО ТЕРМИНАЛА',
+        'overview_capabilities_text': 'Эта рабочая среда обеспечивает <strong>высокоточную среду</strong> для манипуляции квантовыми состояниями в комплексном пространстве Гильберта $\\mathcal{H} = \\mathbb{C}^{2^n}$. Выполняйте вариационные алгоритмы, моделируйте шумовые каналы и проводите квантовую томографию состояний с готовыми к публикации визуализациями.',
+        'overview_module_selector': 'ВЫБОР ИССЛЕДОВАТЕЛЬСКОГО МОДУЛЯ',
+        'overview_telemetry_title': 'ПОТОК ТЕЛЕМЕТРИИ В РЕАЛЬНОМ ВРЕМЕНИ',
+        
+        # Module subtitles
+        'subtitle_overview': 'постулаты, операторы, измерения',
+        'subtitle_bloch': 'унитарная эволюция, гамильтонианы',
+        'subtitle_interference': 'фаза, интерференция, амплитуды',
+        'subtitle_entanglement': 'CHSH, нелокальность, ЭПР',
+        'subtitle_topological': 'плетение анионов, отказоустойчивость',
+        'subtitle_noise': 'T1/T2, каналы, матрица плотности',
+        'subtitle_circuits': 'декомпозиция гейтов, компиляция',
+        'subtitle_vqe': 'дизайн ансаца, энергетические ландшафты',
+        'subtitle_qaoa': 'градиенты, пустые плато',
+        'subtitle_qml': 'вложения, ядра, классификаторы',
+        'subtitle_qec': 'стабилизаторы, логические кубиты',
+        'subtitle_hardware': 'связность, калибровка',
+        'subtitle_complexity': 'BQP, QMA, оракульное разделение',
+        'subtitle_export': 'экспорт векторов состояний, схем',
+        
+        # Bloch Sphere Module
+        'bloch_title': 'СФЕРА БЛОХА: Визуализация Вектора Состояния',
+        'bloch_description': 'Сфера Блоха обеспечивает геометрическое представление чистого состояния одного кубита. Любое чистое состояние может быть выражено как $|\\psi\\rangle = \\cos(\\theta/2)|0\\rangle + e^{i\\phi}\\sin(\\theta/2)|1\\rangle$, где $\\theta$ - полярный угол, а $\\phi$ - азимутальный угол.',
+        'bloch_theta_label': 'Полярный Угол θ (градусы)',
+        'bloch_phi_label': 'Азимутальный Угол φ (градусы)',
+        'bloch_state_label': 'Квантовое Состояние',
+        'bloch_prob_0': 'Вероятность |0⟩',
+        'bloch_prob_1': 'Вероятность |1⟩',
+        'bloch_phase': 'Относительная Фаза',
+        'bloch_purity': 'Чистота Состояния',
+        
+        # Common UI elements
+        'button_navigate': '→',
+        'units_degrees': '°',
+        'units_microseconds': 'мкс',
+        'units_millikelvin': 'мК',
+        'units_mbar': 'мбар',
+        'label_greater_than': '>',
     }
 }
 
-lang = translations[st.session_state.language]
+# Translation helper function
+def t(key, fallback=None):
+    """Get translation for current language with fallback"""
+    lang_dict = TRANSLATIONS.get(st.session_state.language, TRANSLATIONS['en'])
+    return lang_dict.get(key, fallback or TRANSLATIONS['en'].get(key, key))
+
+lang = TRANSLATIONS[st.session_state.language]
 
 # Language selector
 col_lang1, col_lang2 = st.sidebar.columns(2)
@@ -2148,68 +2258,68 @@ with col_lang2:
 
 st.sidebar.markdown("---")
 
-st.sidebar.markdown(f"## {lang['title']}")
-st.sidebar.markdown(f"**{lang['system_status']}:** `{lang['operational']}`")
-st.sidebar.markdown(f"**{lang['coherence_time']}:** `{lang['optimized']}`")
+st.sidebar.markdown(f"## {t('title')}")
+st.sidebar.markdown(f"**{t('system_status')}:** `{t('operational')}`")
+st.sidebar.markdown(f"**{t('coherence_time')}:** `{t('optimized')}`")
 
 # Real-time telemetry ticker in sidebar
 telemetry_html = f"""
 <div class='telemetry-ticker'>
-    <span>{lang['gate_fidelity']}:</span> <span class='telemetry-value'>99.94%</span> | 
-    <span>T₂:</span> <span class='telemetry-value'>103μs</span> | 
-    <span>{lang['temp']}:</span> <span class='telemetry-value'>18.7mK</span>
+    <span>{t('gate_fidelity')}:</span> <span class='telemetry-value'>99.94%</span> | 
+    <span>T₂:</span> <span class='telemetry-value'>103{t('units_microseconds')}</span> | 
+    <span>{t('temp')}:</span> <span class='telemetry-value'>18.7{t('units_millikelvin')}</span>
 </div>
 """
 st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 # Search field
-st.sidebar.text_input("", placeholder=lang['search_placeholder'], key="nav_search", label_visibility="collapsed")
+st.sidebar.text_input("", placeholder=t('search_placeholder'), key="nav_search", label_visibility="collapsed")
 
 # Navigation structure with organized groups
 nav_groups = [
-    ("foundations", [
-        ("overview", "01", lang['modules']['overview']),
-        ("bloch", "02", lang['modules']['bloch']),
-        ("interference", "03", lang['modules']['interference']),
+    ("section_foundations", [
+        ("overview", "01", 'module_overview', 'subtitle_overview'),
+        ("bloch", "02", 'module_bloch', 'subtitle_bloch'),
+        ("interference", "03", 'module_interference', 'subtitle_interference'),
     ]),
-    ("correlations", [
-        ("entanglement", "04", lang['modules']['entanglement']),
-        ("topological", "05", lang['modules']['topological']),
+    ("section_correlations", [
+        ("entanglement", "04", 'module_entanglement', 'subtitle_entanglement'),
+        ("topological", "05", 'module_topological', 'subtitle_topological'),
     ]),
-    ("dynamics", [
-        ("noise", "06", lang['modules']['noise']),
-        ("circuits", "07", lang['modules']['circuits']),
+    ("section_dynamics", [
+        ("noise", "06", 'module_noise', 'subtitle_noise'),
+        ("circuits", "07", 'module_circuits', 'subtitle_circuits'),
     ]),
-    ("variational", [
-        ("vqe", "08", lang['modules']['vqe']),
-        ("qaoa", "09", lang['modules']['qaoa']),
+    ("section_variational", [
+        ("vqe", "08", 'module_vqe', 'subtitle_vqe'),
+        ("qaoa", "09", 'module_qaoa', 'subtitle_qaoa'),
     ]),
-    ("qml", [
-        ("qml", "10", lang['modules']['qml']),
+    ("section_qml", [
+        ("qml", "10", 'module_qml', 'subtitle_qml'),
     ]),
-    ("hardware", [
-        ("qec", "11", lang['modules']['qec']),
-        ("hardware", "12", lang['modules']['hardware']),
+    ("section_hardware", [
+        ("qec", "11", 'module_qec', 'subtitle_qec'),
+        ("hardware", "12", 'module_hardware', 'subtitle_hardware'),
     ]),
-    ("complexity", [
-        ("complexity", "13", lang['modules']['complexity']),
+    ("section_complexity", [
+        ("complexity", "13", 'module_complexity', 'subtitle_complexity'),
     ]),
-    ("export", [
-        ("export", "14", lang['modules']['export']),
+    ("section_export", [
+        ("export", "14", 'module_export', 'subtitle_export'),
     ]),
 ]
 
 # Render professional row-based navigation
 for section_key, modules in nav_groups:
-    st.sidebar.markdown(f"<div class='nav-section-label'>{lang['sections'][section_key]}</div>", unsafe_allow_html=True)
+    st.sidebar.markdown(f"<div class='nav-section-label'>{t(section_key)}</div>", unsafe_allow_html=True)
     
     # Render each module as a clickable row
-    for module_id, number, title in modules:
+    for module_id, number, title_key, subtitle_key in modules:
         active_class = "active" if st.session_state.selected_module_id == module_id else ""
         
         # Use Streamlit button with custom styling
-        button_label = f"{number} — {title}"
+        button_label = f"{number} — {t(title_key)}"
         if st.sidebar.button(
             button_label, 
             key=f"nav_{module_id}",
