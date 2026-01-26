@@ -1147,6 +1147,59 @@ st.markdown("""
         font-weight: 600;
     }
     
+    /* SIDEBAR BUTTON STYLING - PROFESSIONAL ROWS */
+    [data-testid="stSidebar"] button[kind="secondary"],
+    [data-testid="stSidebar"] button[kind="primary"] {
+        background: transparent !important;
+        border: none !important;
+        border-left: 3px solid transparent !important;
+        border-radius: 0 6px 6px 0 !important;
+        padding: 12px 12px 12px 16px !important;
+        text-align: left !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #E0E0E0 !important;
+        letter-spacing: -0.01em !important;
+        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
+        margin: 2px 0 !important;
+    }
+    
+    [data-testid="stSidebar"] button[kind="secondary"]:hover {
+        background: rgba(99, 102, 241, 0.08) !important;
+        border-left-color: rgba(99, 102, 241, 0.4) !important;
+        color: rgba(99, 102, 241, 1) !important;
+    }
+    
+    [data-testid="stSidebar"] button[kind="primary"] {
+        background: rgba(99, 102, 241, 0.12) !important;
+        border-left-color: rgba(99, 102, 241, 1) !important;
+        color: rgba(99, 102, 241, 1) !important;
+        font-weight: 600 !important;
+        position: relative;
+    }
+    
+    [data-testid="stSidebar"] button[kind="primary"]::before {
+        content: '';
+        position: absolute;
+        left: -3px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(99, 102, 241, 1);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+    }
+    
+    [data-testid="stSidebar"] button p {
+        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-size: 13px !important;
+        margin: 0 !important;
+    }
+
+    
     .research-status {
         display: inline-block;
         padding: 6px 14px;
@@ -2057,19 +2110,18 @@ nav_groups = [
 for section_label, modules in nav_groups:
     st.sidebar.markdown(f"<div class='nav-section-label'>{section_label}</div>", unsafe_allow_html=True)
     
-    # Render each module as a row
+    # Render each module as a clickable row
     for module_id, number, title in modules:
         active_class = "active" if st.session_state.selected_module_id == module_id else ""
-        row_html = f"""
-        <div class='nav-item-row {active_class}'>
-            <span class='nav-item-number'>{number}</span>
-            <span class='nav-item-title'>{title}</span>
-        </div>
-        """
-        st.sidebar.markdown(row_html, unsafe_allow_html=True)
         
-        # Functional button (hidden visually)
-        if st.sidebar.button(f"{number} — {title}", key=f"nav_{module_id}", label_visibility="collapsed"):
+        # Use Streamlit button with custom styling
+        button_label = f"{number} — {title}"
+        if st.sidebar.button(
+            button_label, 
+            key=f"nav_{module_id}",
+            type="secondary" if st.session_state.selected_module_id != module_id else "primary",
+            use_container_width=True
+        ):
             st.session_state.selected_module_id = module_id
             st.rerun()
 
