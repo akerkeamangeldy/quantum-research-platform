@@ -2244,7 +2244,7 @@ if module_id == "overview":
                 </div>
                 """
                 st.markdown(card_html, unsafe_allow_html=True)
-                if st.button(f"→ {title}", key=f"nav_{module_id}", use_container_width=True):
+                if st.button(f"→ {title}", key=f"main_nav_{module_id}", use_container_width=True):
                     st.session_state.selected_module_id = module_id
                     st.rerun()
         
