@@ -992,7 +992,159 @@ st.markdown("""
     }
     
     .sidebar .sidebar-content {
-        background: var(--bg-secondary);
+        background: #151515;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    /* PROFESSIONAL SIDEBAR NAVIGATION - ROW-BASED MENU */
+    .sidebar-nav-container {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .sidebar-search {
+        margin: 16px 0;
+        padding: 10px 14px;
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 8px;
+        color: #E8E8E8;
+        font-size: 13px;
+        font-family: 'Inter', sans-serif;
+        width: 100%;
+        transition: all 200ms ease;
+    }
+    
+    .sidebar-search:focus {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.8);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        background: rgba(30, 30, 30, 0.9);
+    }
+    
+    .sidebar-search::placeholder {
+        color: rgba(180, 180, 180, 0.5);
+        font-size: 12px;
+    }
+    
+    .nav-section {
+        margin: 20px 0 12px 0;
+    }
+    
+    .nav-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(123, 97, 255, 0.7);
+        padding: 8px 12px 8px 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: color 150ms ease;
+        user-select: none;
+    }
+    
+    .nav-section-label:hover {
+        color: rgba(123, 97, 255, 1);
+    }
+    
+    .nav-section-chevron {
+        font-size: 12px;
+        transition: transform 200ms ease;
+    }
+    
+    .nav-section.expanded .nav-section-chevron {
+        transform: rotate(90deg);
+    }
+    
+    .nav-items {
+        display: none;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 4px;
+    }
+    
+    .nav-section.expanded .nav-items {
+        display: flex;
+    }
+    
+    .nav-item-row {
+        display: flex;
+        align-items: center;
+        padding: 12px 12px 12px 16px;
+        border-left: 3px solid transparent;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        background: transparent;
+        gap: 12px;
+    }
+    
+    .nav-item-row:hover {
+        background: rgba(99, 102, 241, 0.08);
+        border-left-color: rgba(99, 102, 241, 0.4);
+    }
+    
+    .nav-item-row.active {
+        background: rgba(99, 102, 241, 0.12);
+        border-left-color: rgba(99, 102, 241, 1);
+    }
+    
+    .nav-item-row.active::before {
+        content: '';
+        position: absolute;
+        left: -3px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(99, 102, 241, 1);
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+    }
+    
+    .nav-item-number {
+        font-size: 11px;
+        font-weight: 600;
+        color: rgba(180, 180, 180, 0.5);
+        font-family: 'JetBrains Mono', monospace;
+        min-width: 28px;
+        transition: color 150ms ease;
+    }
+    
+    .nav-item-row:hover .nav-item-number {
+        color: rgba(99, 102, 241, 0.8);
+    }
+    
+    .nav-item-row.active .nav-item-number {
+        color: rgba(99, 102, 241, 1);
+        font-weight: 700;
+    }
+    
+    .nav-item-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: #E0E0E0;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: all 150ms ease;
+        flex: 1;
+    }
+    
+    .nav-item-row:hover .nav-item-title {
+        color: rgba(99, 102, 241, 1);
+    }
+    
+    .nav-item-row.active .nav-item-title {
+        color: rgba(99, 102, 241, 1);
+        font-weight: 600;
     }
     
     .research-status {
@@ -1844,7 +1996,7 @@ def generate_experiment_id():
     hash_obj = hashlib.md5((timestamp + random_component).encode())
     return f"QEXP-{hash_obj.hexdigest()[:8].upper()}"
 
-# Bento Grid Navigation System - Non-Linear Matrix
+# Professional Row-Based Sidebar Navigation
 st.sidebar.markdown("## QUANTUM RESEARCH WORKBENCH v4.0.2")
 st.sidebar.markdown("**SYSTEM STATUS:** `OPERATIONAL`")
 st.sidebar.markdown("**COHERENCE TIME:** `OPTIMIZED`")
@@ -1860,244 +2012,66 @@ telemetry_html = """
 st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-# Bento Grid CSS and JavaScript
-bento_grid_html = """
-<style>
-.bento-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 8px;
-    margin: 0;
-}
-
-.bento-tile {
-    background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(26, 26, 26, 0.9));
-    border: 1px solid rgba(0, 217, 255, 0.2);
-    border-radius: 12px;
-    padding: 16px 12px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    font-family: 'JetBrains Mono', monospace;
-    text-align: center;
-    min-height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bento-tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(0, 217, 255, 0.15), transparent 70%%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.bento-tile::after {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.4), rgba(123, 97, 255, 0.4), transparent);
-    background-size: 200%% 200%%;
-    border-radius: 13px;
-    opacity: 0;
-    z-index: -1;
-    animation: gradient-spin 3s linear infinite;
-    transition: opacity 0.4s ease;
-}
-
-@keyframes gradient-spin {
-    0%% { background-position: 0%% 50%%; }
-    50%% { background-position: 100%% 50%%; }
-    100%% { background-position: 0%% 50%%; }
-}
-
-@keyframes wave-pattern {
-    0%%, 100%% { transform: translateY(0) scaleY(1); }
-    50%% { transform: translateY(-5px) scaleY(1.05); }
-}
-
-.bento-tile:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 
-        0 16px 48px rgba(0, 217, 255, 0.4),
-        0 0 60px rgba(123, 97, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border-color: rgba(0, 217, 255, 0.8);
-}
-
-.bento-tile:hover::before {
-    opacity: 1;
-}
-
-.bento-tile:hover::after {
-    opacity: 1;
-}
-
-.bento-tile:hover .tile-title {
-    color: #00D9FF;
-    text-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
-    animation: wave-pattern 1s ease-in-out infinite;
-}
-
-.bento-tile:active {
-    transform: scale(1.08);
-    transition: transform 0.2s ease;
-}
-
-.bento-tile.selected {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(123, 97, 255, 0.2));
-    border-color: rgba(0, 217, 255, 1);
-    box-shadow: 
-        0 0 30px rgba(0, 217, 255, 0.6),
-        inset 0 0 20px rgba(0, 217, 255, 0.2);
-}
-
-.tile-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: #E8E8E8;
-    line-height: 1.3;
-    letter-spacing: 0.02em;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-    text-transform: uppercase;
-}
-
-.bento-tile.large {
-    grid-column: span 2;
-    min-height: 100px;
-    font-size: 12px;
-}
-
-.bento-tile.large .tile-title {
-    font-size: 13px;
-}
-</style>
-
-<div class="bento-grid">
-    <div class="bento-tile" onclick="selectModule('overview')" id="tile-overview">
-        <div class="tile-title">Theoretical<br>Framework</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('bloch')" id="tile-bloch">
-        <div class="tile-title">Hilbert Space<br>Dynamics</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('interference')" id="tile-interference">
-        <div class="tile-title">Coherent<br>Superposition</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('entanglement')" id="tile-entanglement">
-        <div class="tile-title">Bell State<br>Correlations</div>
-    </div>
-    <div class="bento-tile large" onclick="selectModule('noise')" id="tile-noise">
-        <div class="tile-title">Dissipative Decoherence</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('circuits')" id="tile-circuits">
-        <div class="tile-title">Unitary<br>Synthesis</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('vqe')" id="tile-vqe">
-        <div class="tile-title">VQE<br>Architectures</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('qaoa')" id="tile-qaoa">
-        <div class="tile-title">Optimization<br>Manifolds</div>
-    </div>
-    <div class="bento-tile large" onclick="selectModule('qml')" id="tile-qml">
-        <div class="tile-title">Quantum Neural Manifolds</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('qec')" id="tile-qec">
-        <div class="tile-title">Surface Code<br>Protocols</div>
-    </div>
-    <div class="bento-tile large" onclick="selectModule('hardware')" id="tile-hardware">
-        <div class="tile-title">QPU Topology Maps</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('complexity')" id="tile-complexity">
-        <div class="tile-title">Complexity<br>Landscapes</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('topological')" id="tile-topological">
-        <div class="tile-title">Anyonic<br>Braiding</div>
-    </div>
-    <div class="bento-tile" onclick="selectModule('export')" id="tile-export">
-        <div class="tile-title">Research<br>Reproducibility</div>
-    </div>
-</div>
-
-<script>
-function selectModule(moduleId) {
-    // Remove selected class from all tiles
-    document.querySelectorAll('.bento-tile').forEach(tile => {
-        tile.classList.remove('selected');
-    });
-    
-    // Add selected class to clicked tile
-    document.getElementById('tile-' + moduleId).classList.add('selected');
-    
-    // Update Streamlit session state
-    window.parent.postMessage({
-        type: 'streamlit:setComponentValue',
-        data: moduleId
-    }, '*');
-}
-
-// Highlight current module on load
-const currentModule = '%s';
-if (currentModule) {
-    const tile = document.getElementById('tile-' + currentModule);
-    if (tile) tile.classList.add('selected');
-}
-</script>
-"""
-
-# Initialize session state for module selection
+# Initialize session state
 if 'selected_module_id' not in st.session_state:
     st.session_state.selected_module_id = 'overview'
 
-# Render Bento Grid with current module highlighted
-st.sidebar.markdown(bento_grid_html % st.session_state.selected_module_id, unsafe_allow_html=True)
+# Search field
+st.sidebar.text_input("", placeholder="🔍 Search modules...", key="nav_search", label_visibility="collapsed")
 
-# Module mapping
-modules_list = [
-    ("overview", "Theoretical Framework"),
-    ("bloch", "Hilbert Space Dynamics"),
-    ("interference", "Coherent Superposition"),
-    ("entanglement", "Bell State Correlations"),
-    ("noise", "Dissipative Decoherence"),
-    ("circuits", "Unitary Synthesis"),
-    ("vqe", "VQE Architectures"),
-    ("qaoa", "Optimization Manifolds"),
-    ("qml", "Quantum Neural Manifolds"),
-    ("qec", "Surface Code Protocols"),
-    ("hardware", "QPU Topology Maps"),
-    ("complexity", "Complexity Landscapes"),
-    ("topological", "Anyonic Braiding"),
-    ("export", "Research Reproducibility")
+# Navigation structure with organized groups
+nav_groups = [
+    ("FOUNDATIONS", [
+        ("overview", "01", "Theoretical Framework"),
+        ("bloch", "02", "Hilbert Space Dynamics"),
+        ("interference", "03", "Coherent Superposition"),
+    ]),
+    ("QUANTUM CORRELATIONS", [
+        ("entanglement", "04", "Bell-State Correlations"),
+        ("topological", "05", "Topological Phases"),
+    ]),
+    ("NOISE & DYNAMICS", [
+        ("noise", "06", "Dissipative Decoherence"),
+        ("circuits", "07", "Unitary Synthesis"),
+    ]),
+    ("VARIATIONAL ALGORITHMS", [
+        ("vqe", "08", "VQE Architectures"),
+        ("qaoa", "09", "Optimization Manifolds"),
+    ]),
+    ("QUANTUM ML", [
+        ("qml", "10", "Quantum Neural Networks"),
+    ]),
+    ("ERROR CORRECTION & HARDWARE", [
+        ("qec", "11", "Surface Code Protocols"),
+        ("hardware", "12", "QPU Topology Maps"),
+    ]),
+    ("COMPLEXITY THEORY", [
+        ("complexity", "13", "Complexity Landscapes"),
+    ]),
+    ("DATA EXPORT", [
+        ("export", "14", "Research Reproducibility"),
+    ]),
 ]
 
-# Create clickable navigation with columns for compact layout
-st.sidebar.markdown("---")
-st.sidebar.markdown("**NAVIGATION:**")
-
-# Create two columns for compact button layout
-for i in range(0, len(modules_list), 2):
-    col1, col2 = st.sidebar.columns(2)
+# Render professional row-based navigation
+for section_label, modules in nav_groups:
+    st.sidebar.markdown(f"<div class='nav-section-label'>{section_label}</div>", unsafe_allow_html=True)
     
-    with col1:
-        module_id, module_name = modules_list[i]
-        if st.button(module_name.replace(" ", "\n"), key=f"nav_{module_id}", use_container_width=True):
+    # Render each module as a row
+    for module_id, number, title in modules:
+        active_class = "active" if st.session_state.selected_module_id == module_id else ""
+        row_html = f"""
+        <div class='nav-item-row {active_class}'>
+            <span class='nav-item-number'>{number}</span>
+            <span class='nav-item-title'>{title}</span>
+        </div>
+        """
+        st.sidebar.markdown(row_html, unsafe_allow_html=True)
+        
+        # Functional button (hidden visually)
+        if st.sidebar.button(f"{number} — {title}", key=f"nav_{module_id}", label_visibility="collapsed"):
             st.session_state.selected_module_id = module_id
             st.rerun()
-    
-    if i + 1 < len(modules_list):
-        with col2:
-            module_id, module_name = modules_list[i + 1]
-            if st.button(module_name.replace(" ", "\n"), key=f"nav_{module_id}", use_container_width=True):
-                st.session_state.selected_module_id = module_id
-                st.rerun()
 
 module_id = st.session_state.selected_module_id
 
