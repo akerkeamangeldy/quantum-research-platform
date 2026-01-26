@@ -2057,10 +2057,10 @@ if 'selected_module_id' not in st.session_state:
 if 'language' not in st.session_state:
     st.session_state.language = 'en'
 
-# Comprehensive Translation System
+# COMPREHENSIVE TRANSLATION SYSTEM - ALL MODULES
 TRANSLATIONS = {
     'en': {
-        # Navigation & UI
+        # ===== GLOBAL UI =====
         'title': 'QUANTUM RESEARCH WORKBENCH v4.0.2',
         'system_status': 'SYSTEM STATUS',
         'operational': 'OPERATIONAL',
@@ -2069,8 +2069,21 @@ TRANSLATIONS = {
         'gate_fidelity': 'GATE FIDELITY',
         'temp': 'TEMP',
         'search_placeholder': '🔍 Search modules...',
+        'button_navigate': '→',
+        'units_degrees': '°',
+        'units_microseconds': 'μs',
+        'units_millikelvin': 'mK',
+        'units_mbar': 'mbar',
+        'label_greater_than': '>',
+        'status_active': 'Core Module',
+        'status_variational': 'Variational Algorithm',
+        'status_frontier': 'Advanced Topic',
+        'status_combinatorial': 'Combinatorial Optimization',
+        'status_hybrid': 'Hybrid QML',
+        'status_fault_tolerant': 'Fault-Tolerant QC',
+        'status_infrastructure': 'Research Infrastructure',
         
-        # Sections
+        # ===== SECTIONS =====
         'section_foundations': 'FOUNDATIONS',
         'section_correlations': 'QUANTUM CORRELATIONS',
         'section_dynamics': 'NOISE & DYNAMICS',
@@ -2080,7 +2093,7 @@ TRANSLATIONS = {
         'section_complexity': 'COMPLEXITY THEORY',
         'section_export': 'DATA EXPORT',
         
-        # Module titles
+        # ===== MODULE TITLES & SUBTITLES =====
         'module_overview': 'Theoretical Framework',
         'module_bloch': 'Hilbert Space Dynamics',
         'module_interference': 'Coherent Superposition',
@@ -2096,23 +2109,6 @@ TRANSLATIONS = {
         'module_complexity': 'Complexity Landscapes',
         'module_export': 'Research Reproducibility',
         
-        # System Status Panel
-        'status_title': 'SYSTEM STATUS PANEL',
-        'status_coherence_t1': 'Relaxation Time T₁',
-        'status_coherence_t2': 'Coherence Time T₂',
-        'status_gate_single': 'Gate Fidelity (Single-Qubit)',
-        'status_gate_two': 'Gate Fidelity (Two-Qubit CNOT)',
-        'status_readout': 'Readout Fidelity',
-        'status_vacuum': 'Vacuum Pressure',
-        'status_cryo_temp': 'Cryogenic Temperature',
-        
-        # Overview content
-        'overview_capabilities_title': '→ RESEARCH TERMINAL CAPABILITIES',
-        'overview_capabilities_text': 'This workbench provides a <strong>high-fidelity environment</strong> for quantum state manipulation within the complex Hilbert space $\\mathcal{H} = \\mathbb{C}^{2^n}$. Execute variational algorithms, simulate noise channels, and perform quantum state tomography with publication-ready visualizations.',
-        'overview_module_selector': 'RESEARCH MODULE SELECTOR',
-        'overview_telemetry_title': 'REAL-TIME TELEMETRY STREAM',
-        
-        # Module subtitles
         'subtitle_overview': 'postulates, operators, measurement',
         'subtitle_bloch': 'unitary evolution, Hamiltonians',
         'subtitle_interference': 'phase, interference, amplitudes',
@@ -2128,27 +2124,118 @@ TRANSLATIONS = {
         'subtitle_complexity': 'BQP, QMA, oracle separation',
         'subtitle_export': 'export state vectors, circuits',
         
-        # Bloch Sphere Module
-        'bloch_title': 'BLOCH SPHERE: State Vector Visualization',
-        'bloch_description': 'The Bloch sphere provides a geometric representation of a single-qubit pure state. Any pure state can be expressed as $|\\psi\\rangle = \\cos(\\theta/2)|0\\rangle + e^{i\\phi}\\sin(\\theta/2)|1\\rangle$, where $\\theta$ is the polar angle and $\\phi$ is the azimuthal angle.',
-        'bloch_theta_label': 'Polar Angle θ (degrees)',
-        'bloch_phi_label': 'Azimuthal Angle φ (degrees)',
-        'bloch_state_label': 'Quantum State',
-        'bloch_prob_0': 'Probability |0⟩',
-        'bloch_prob_1': 'Probability |1⟩',
-        'bloch_phase': 'Relative Phase',
-        'bloch_purity': 'State Purity',
+        # ===== SYSTEM STATUS PANEL =====
+        'status_title': 'SYSTEM STATUS PANEL',
+        'status_coherence_t1': 'Relaxation Time T₁',
+        'status_coherence_t2': 'Coherence Time T₂',
+        'status_gate_single': 'Gate Fidelity (Single-Qubit)',
+        'status_gate_two': 'Gate Fidelity (Two-Qubit CNOT)',
+        'status_readout': 'Readout Fidelity',
+        'status_vacuum': 'Vacuum Pressure',
+        'status_cryo_temp': 'Cryogenic Temperature',
         
-        # Common UI elements
-        'button_navigate': '→',
-        'units_degrees': '°',
-        'units_microseconds': 'μs',
-        'units_millikelvin': 'mK',
-        'units_mbar': 'mbar',
-        'label_greater_than': '>',
+        # ===== OVERVIEW MODULE =====
+        'overview_capabilities_title': '→ RESEARCH TERMINAL CAPABILITIES',
+        'overview_capabilities_text': 'This workbench provides a <strong>high-fidelity environment</strong> for quantum state manipulation within the complex Hilbert space $\\mathcal{H} = \\mathbb{C}^{2^n}$. Execute variational algorithms, simulate noise channels, and perform quantum state tomography with publication-ready visualizations.',
+        'overview_module_selector': 'RESEARCH MODULE SELECTOR',
+        'overview_telemetry_title': 'REAL-TIME TELEMETRY STREAM',
+        
+        # ===== BLOCH SPHERE MODULE =====
+        'bloch_module_title': 'MODULE 02: HILBERT SPACE MAPPING & BLOCH VECTOR DYNAMICS',
+        'bloch_status_badge': 'COHERENCE: OPTIMIZED | FIDELITY: >99.9%',
+        'bloch_math_title': 'MATHEMATICAL FORMALISM: PROJECTIVE HILBERT SPACE',
+        'bloch_math_intro': 'A single qubit resides within the two-dimensional complex Hilbert space $\\mathcal{H}_2 = \\mathbb{C}^2$. The most general pure state exists as a superposition over the computational basis $\\{|0\\rangle, |1\\rangle\\}$, constrained by the normalization condition inherent to quantum mechanics:',
+        'bloch_manifold_title': 'Bloch Sphere Manifold:',
+        'bloch_manifold_desc': 'The projective Hilbert space $\\mathbb{CP}^1 \\cong S^2$ (Riemann sphere) provides a geometric visualization where each pure state $|\\psi\\rangle$ corresponds to a unique point on the unit sphere. The <strong>Bloch vector</strong> $\\vec{r} = (\\sin\\theta\\cos\\phi, \\sin\\theta\\sin\\phi, \\cos\\theta)$ encodes the state\'s expectation values $\\langle \\sigma_x \\rangle, \\langle \\sigma_y \\rangle, \\langle \\sigma_z \\rangle$.',
+        'bloch_pure_state': '→ Pure States:',
+        'bloch_mixed_state': '→ Mixed States:',
+        'bloch_maximally_mixed': '→ Maximally Mixed:',
+        'bloch_config_title': 'STATE VECTOR CONFIGURATION',
+        'bloch_config_desc': 'Manipulate spherical coordinates to observe <strong>geometric phase accumulation</strong> via parallel transport on the Bloch manifold.',
+        'bloch_theta_label': '⚛ POLAR ANGLE θ [0, π]',
+        'bloch_theta_help': 'Controls latitude on Bloch sphere (|0⟩ at θ=0, |1⟩ at θ=π)',
+        'bloch_phi_label': '⚡ AZIMUTHAL PHASE φ [0, 2π] - ROTARY CONTROL',
+        'bloch_phi_help': 'Determines relative phase between computational basis states',
+        'bloch_gate_title': 'UNITARY GATE SEQUENCE APPLICATION',
+        'bloch_gate_compose': 'Compose Gate Decomposition',
+        'bloch_gate_h': 'H (Hadamard: X+Z Basis Change)',
+        'bloch_gate_x': 'X (Pauli-X: Bit Flip)',
+        'bloch_gate_y': 'Y (Pauli-Y: Bit+Phase Flip)',
+        'bloch_gate_z': 'Z (Pauli-Z: Phase Flip)',
+        'bloch_gate_rx': 'RX(π/4): X-Axis Rotation',
+        'bloch_gate_ry': 'RY(π/4): Y-Axis Rotation',
+        'bloch_gate_rz': 'RZ(π/4): Z-Axis Rotation',
+        'bloch_gate_s': 'S (Phase Gate: π/2)',
+        'bloch_gate_t': 'T (π/8 Gate)',
+        'bloch_measure_title': 'MEASUREMENT BASIS (TOMOGRAPHY)',
+        'bloch_measure_label': 'Select Pauli Operator for Projective Measurement',
+        'bloch_measure_z': 'Z (Computational Basis)',
+        'bloch_measure_x': 'X (Hadamard Basis)',
+        'bloch_measure_y': 'Y (Circular Basis)',
+        'bloch_metric_norm': 'State Norm',
+        'bloch_metric_p0': 'P(|0⟩)',
+        'bloch_metric_p1': 'P(|1⟩)',
+        'bloch_metric_phase': 'Relative Phase',
+        'bloch_code_title': 'Executable Code',
+        'bloch_code_comment_state': '# Define initial state',
+        'bloch_code_comment_gates': '# Apply gate sequence:',
+        'bloch_code_comment_measure': '# Measurement probabilities',
+        
+        # ===== INTERFERENCE MODULE =====
+        'interf_module_title': 'Superposition & Quantum Interference',
+        'interf_card_title': 'Wave-Particle Duality in Quantum Computation',
+        'interf_card_desc': 'Quantum interference emerges from the coherent superposition of probability amplitudes. Unlike classical probability, amplitudes can interfere constructively or destructively depending on their relative phase.',
+        'interf_term_desc': 'The interference term 2Re(α₁*α₂) = 2|α₁||α₂|cos(φ₁ - φ₂) depends on the relative phase.',
+        'interf_constructive': '<strong>Constructive interference:</strong> φ₁ - φ₂ = 0, 2π, ... → amplitudes add',
+        'interf_destructive': '<strong>Destructive interference:</strong> φ₁ - φ₂ = π, 3π, ... → amplitudes cancel',
+        'interf_config_title': 'Path Amplitude Configuration',
+        'interf_amp1_label': 'Amplitude |α₁|',
+        'interf_phase1_label': 'Phase φ₁ (degrees)',
+        'interf_amp2_label': 'Amplitude |α₂|',
+        'interf_phase2_label': 'Phase φ₂ (degrees)',
+        'interf_prob_quantum': 'Quantum Probability',
+        'interf_prob_classical': 'Classical (No Interference)',
+        'interf_prob_term': 'Interference Term',
+        'interf_viz_title': 'Complex Amplitude Visualization',
+        'interf_pattern_title': 'Interference Fringe Pattern',
+        'interf_chart_title': 'Probability vs Relative Phase',
+        'interf_chart_x': 'Phase Difference φ₂ - φ₁ (degrees)',
+        'interf_chart_y': 'Detection Probability',
+        
+        # ===== ENTANGLEMENT MODULE =====
+        'ent_module_title': 'Entanglement & Bell States',
+        'ent_card_title': 'Quantum Entanglement',
+        'ent_card_desc': 'Entanglement is a uniquely quantum correlation where measurement outcomes of separated particles are correlated in ways that cannot be explained by classical physics. It\'s the foundation of quantum communication, teleportation, and quantum advantage.',
+        'ent_bell_title': '<strong>Bell States:</strong> The four maximally entangled two-qubit states:',
+        'ent_prep_title': 'Bell State Preparation',
+        'ent_select_label': 'Select Bell State',
+        'ent_bell_phi_plus': 'Φ⁺ (|00⟩ + |11⟩)',
+        'ent_bell_phi_minus': 'Φ⁻ (|00⟩ - |11⟩)',
+        'ent_bell_psi_plus': 'Ψ⁺ (|01⟩ + |10⟩)',
+        'ent_bell_psi_minus': 'Ψ⁻ (|01⟩ - |10⟩)',
+        'ent_circuit_label': '<strong>Circuit:</strong>',
+        'ent_state_title': 'State Vector',
+        'ent_prob_title': 'PROBABILITY DISTRIBUTION',
+        'ent_quant_title': 'Entanglement Quantification',
+        'ent_entropy': 'Entanglement Entropy',
+        'ent_concurrence': 'Concurrence',
+        'ent_entangled': 'Entangled?',
+        'ent_bell_inequality': 'Bell Inequality (CHSH)',
+        'ent_chsh_desc': '<p>The CHSH inequality: $|S| \\leq 2$ for local hidden variable theories.</p><p>Quantum mechanics predicts $S = 2\\sqrt{2} \\approx 2.828$ for Bell states, violating the inequality and ruling out local realism.</p>',
+        'ent_button_chsh': 'Run CHSH Test',
+        'ent_chsh_param': 'CHSH Parameter |S|',
+        'ent_violation_yes': '✅ Bell inequality violated! |S| = {:.3f} > 2',
+        'ent_violation_desc': 'This demonstrates quantum entanglement and rules out local hidden variable theories!',
+        'ent_violation_no': 'No violation detected: |S| = {:.3f} ≤ 2',
+        'ent_logged': '💾 Experiment logged! Visit \'Reproducibility & Export\' to download results.',
+        
+        # ===== COMMON LABELS =====
+        'common_yes': 'Yes',
+        'common_no': 'No',
+        'common_none': 'None',
     },
     'ru': {
-        # Navigation & UI
+        # ===== GLOBAL UI =====
         'title': 'КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2',
         'system_status': 'СТАТУС СИСТЕМЫ',
         'operational': 'РАБОТАЕТ',
@@ -2157,8 +2244,21 @@ TRANSLATIONS = {
         'gate_fidelity': 'ТОЧНОСТЬ ГЕЙТОВ',
         'temp': 'ТЕМП',
         'search_placeholder': '🔍 Поиск модулей...',
+        'button_navigate': '→',
+        'units_degrees': '°',
+        'units_microseconds': 'мкс',
+        'units_millikelvin': 'мК',
+        'units_mbar': 'мбар',
+        'label_greater_than': '>',
+        'status_active': 'Основной Модуль',
+        'status_variational': 'Вариационный Алгоритм',
+        'status_frontier': 'Передовая Тема',
+        'status_combinatorial': 'Комбинаторная Оптимизация',
+        'status_hybrid': 'Гибридное КМО',
+        'status_fault_tolerant': 'Отказоустойчивые КВ',
+        'status_infrastructure': 'Исследовательская Инфраструктура',
         
-        # Sections
+        # ===== SECTIONS =====
         'section_foundations': 'ОСНОВЫ',
         'section_correlations': 'КВАНТОВЫЕ КОРРЕЛЯЦИИ',
         'section_dynamics': 'ШУМЫ И ДИНАМИКА',
@@ -2168,7 +2268,7 @@ TRANSLATIONS = {
         'section_complexity': 'ТЕОРИЯ СЛОЖНОСТИ',
         'section_export': 'ЭКСПОРТ ДАННЫХ',
         
-        # Module titles
+        # ===== MODULE TITLES & SUBTITLES =====
         'module_overview': 'Теоретическая Основа',
         'module_bloch': 'Динамика Пространства Гильберта',
         'module_interference': 'Когерентная Суперпозиция',
@@ -2184,23 +2284,6 @@ TRANSLATIONS = {
         'module_complexity': 'Ландшафты Сложности',
         'module_export': 'Воспроизводимость Исследований',
         
-        # System Status Panel
-        'status_title': 'ПАНЕЛЬ СОСТОЯНИЯ СИСТЕМЫ',
-        'status_coherence_t1': 'Время Релаксации T₁',
-        'status_coherence_t2': 'Время Когерентности T₂',
-        'status_gate_single': 'Точность Гейтов (Однокубитные)',
-        'status_gate_two': 'Точность Гейтов (Двухкубитные CNOT)',
-        'status_readout': 'Точность Считывания',
-        'status_vacuum': 'Вакуумное Давление',
-        'status_cryo_temp': 'Криогенная Температура',
-        
-        # Overview content
-        'overview_capabilities_title': '→ ВОЗМОЖНОСТИ ИССЛЕДОВАТЕЛЬСКОГО ТЕРМИНАЛА',
-        'overview_capabilities_text': 'Эта рабочая среда обеспечивает <strong>высокоточную среду</strong> для манипуляции квантовыми состояниями в комплексном пространстве Гильберта $\\mathcal{H} = \\mathbb{C}^{2^n}$. Выполняйте вариационные алгоритмы, моделируйте шумовые каналы и проводите квантовую томографию состояний с готовыми к публикации визуализациями.',
-        'overview_module_selector': 'ВЫБОР ИССЛЕДОВАТЕЛЬСКОГО МОДУЛЯ',
-        'overview_telemetry_title': 'ПОТОК ТЕЛЕМЕТРИИ В РЕАЛЬНОМ ВРЕМЕНИ',
-        
-        # Module subtitles
         'subtitle_overview': 'постулаты, операторы, измерения',
         'subtitle_bloch': 'унитарная эволюция, гамильтонианы',
         'subtitle_interference': 'фаза, интерференция, амплитуды',
@@ -2216,24 +2299,115 @@ TRANSLATIONS = {
         'subtitle_complexity': 'BQP, QMA, оракульное разделение',
         'subtitle_export': 'экспорт векторов состояний, схем',
         
-        # Bloch Sphere Module
-        'bloch_title': 'СФЕРА БЛОХА: Визуализация Вектора Состояния',
-        'bloch_description': 'Сфера Блоха обеспечивает геометрическое представление чистого состояния одного кубита. Любое чистое состояние может быть выражено как $|\\psi\\rangle = \\cos(\\theta/2)|0\\rangle + e^{i\\phi}\\sin(\\theta/2)|1\\rangle$, где $\\theta$ - полярный угол, а $\\phi$ - азимутальный угол.',
-        'bloch_theta_label': 'Полярный Угол θ (градусы)',
-        'bloch_phi_label': 'Азимутальный Угол φ (градусы)',
-        'bloch_state_label': 'Квантовое Состояние',
-        'bloch_prob_0': 'Вероятность |0⟩',
-        'bloch_prob_1': 'Вероятность |1⟩',
-        'bloch_phase': 'Относительная Фаза',
-        'bloch_purity': 'Чистота Состояния',
+        # ===== SYSTEM STATUS PANEL =====
+        'status_title': 'ПАНЕЛЬ СОСТОЯНИЯ СИСТЕМЫ',
+        'status_coherence_t1': 'Время Релаксации T₁',
+        'status_coherence_t2': 'Время Когерентности T₂',
+        'status_gate_single': 'Точность Гейтов (Однокубитные)',
+        'status_gate_two': 'Точность Гейтов (Двухкубитные CNOT)',
+        'status_readout': 'Точность Считывания',
+        'status_vacuum': 'Вакуумное Давление',
+        'status_cryo_temp': 'Криогенная Температура',
         
-        # Common UI elements
-        'button_navigate': '→',
-        'units_degrees': '°',
-        'units_microseconds': 'мкс',
-        'units_millikelvin': 'мК',
-        'units_mbar': 'мбар',
-        'label_greater_than': '>',
+        # ===== OVERVIEW MODULE =====
+        'overview_capabilities_title': '→ ВОЗМОЖНОСТИ ИССЛЕДОВАТЕЛЬСКОГО ТЕРМИНАЛА',
+        'overview_capabilities_text': 'Эта рабочая среда обеспечивает <strong>высокоточную среду</strong> для манипуляции квантовыми состояниями в комплексном пространстве Гильберта $\\mathcal{H} = \\mathbb{C}^{2^n}$. Выполняйте вариационные алгоритмы, моделируйте шумовые каналы и проводите квантовую томографию состояний с готовыми к публикации визуализациями.',
+        'overview_module_selector': 'ВЫБОР ИССЛЕДОВАТЕЛЬСКОГО МОДУЛЯ',
+        'overview_telemetry_title': 'ПОТОК ТЕЛЕМЕТРИИ В РЕАЛЬНОМ ВРЕМЕНИ',
+        
+        # ===== BLOCH SPHERE MODULE =====
+        'bloch_module_title': 'МОДУЛЬ 02: ОТОБРАЖЕНИЕ ПРОСТРАНСТВА ГИЛЬБЕРТА И ДИНАМИКА ВЕКТОРА БЛОХА',
+        'bloch_status_badge': 'КОГЕРЕНТНОСТЬ: ОПТИМИЗИРОВАНА | ТОЧНОСТЬ: >99.9%',
+        'bloch_math_title': 'МАТЕМАТИЧЕСКИЙ ФОРМАЛИЗМ: ПРОЕКТИВНОЕ ПРОСТРАНСТВО ГИЛЬБЕРТА',
+        'bloch_math_intro': 'Один кубит находится в двумерном комплексном пространстве Гильберта $\\mathcal{H}_2 = \\mathbb{C}^2$. Наиболее общее чистое состояние существует как суперпозиция над вычислительным базисом $\\{|0\\rangle, |1\\rangle\\}$, ограниченная условием нормализации, присущим квантовой механике:',
+        'bloch_manifold_title': 'Многообразие Сферы Блоха:',
+        'bloch_manifold_desc': 'Проективное пространство Гильберта $\\mathbb{CP}^1 \\cong S^2$ (сфера Римана) обеспечивает геометрическую визуализацию, где каждое чистое состояние $|\\psi\\rangle$ соответствует уникальной точке на единичной сфере. <strong>Вектор Блоха</strong> $\\vec{r} = (\\sin\\theta\\cos\\phi, \\sin\\theta\\sin\\phi, \\cos\\theta)$ кодирует ожидаемые значения состояния $\\langle \\sigma_x \\rangle, \\langle \\sigma_y \\rangle, \\langle \\sigma_z \\rangle$.',
+        'bloch_pure_state': '→ Чистые Состояния:',
+        'bloch_mixed_state': '→ Смешанные Состояния:',
+        'bloch_maximally_mixed': '→ Максимально Смешанные:',
+        'bloch_config_title': 'КОНФИГУРАЦИЯ ВЕКТОРА СОСТОЯНИЯ',
+        'bloch_config_desc': 'Манипулируйте сферическими координатами для наблюдения <strong>накопления геометрической фазы</strong> через параллельный транспорт на многообразии Блоха.',
+        'bloch_theta_label': '⚛ ПОЛЯРНЫЙ УГОЛ θ [0, π]',
+        'bloch_theta_help': 'Управляет широтой на сфере Блоха (|0⟩ при θ=0, |1⟩ при θ=π)',
+        'bloch_phi_label': '⚡ АЗИМУТАЛЬНАЯ ФАЗА φ [0, 2π] - ВРАЩАЮЩЕЕСЯ УПРАВЛЕНИЕ',
+        'bloch_phi_help': 'Определяет относительную фазу между состояниями вычислительного базиса',
+        'bloch_gate_title': 'ПРИМЕНЕНИЕ ПОСЛЕДОВАТЕЛЬНОСТИ УНИТАРНЫХ ГЕЙТОВ',
+        'bloch_gate_compose': 'Композиция Декомпозиции Гейтов',
+        'bloch_gate_h': 'H (Адамара: Смена Базиса X+Z)',
+        'bloch_gate_x': 'X (Паули-X: Инверсия Бита)',
+        'bloch_gate_y': 'Y (Паули-Y: Инверсия Бита+Фазы)',
+        'bloch_gate_z': 'Z (Паули-Z: Инверсия Фазы)',
+        'bloch_gate_rx': 'RX(π/4): Вращение Вокруг Оси X',
+        'bloch_gate_ry': 'RY(π/4): Вращение Вокруг Оси Y',
+        'bloch_gate_rz': 'RZ(π/4): Вращение Вокруг Оси Z',
+        'bloch_gate_s': 'S (Фазовый Гейт: π/2)',
+        'bloch_gate_t': 'T (Гейт π/8)',
+        'bloch_measure_title': 'БАЗИС ИЗМЕРЕНИЯ (ТОМОГРАФИЯ)',
+        'bloch_measure_label': 'Выберите Оператор Паули для Проективного Измерения',
+        'bloch_measure_z': 'Z (Вычислительный Базис)',
+        'bloch_measure_x': 'X (Базис Адамара)',
+        'bloch_measure_y': 'Y (Круговой Базис)',
+        'bloch_metric_norm': 'Норма Состояния',
+        'bloch_metric_p0': 'P(|0⟩)',
+        'bloch_metric_p1': 'P(|1⟩)',
+        'bloch_metric_phase': 'Относительная Фаза',
+        'bloch_code_title': 'Исполняемый Код',
+        'bloch_code_comment_state': '# Определить начальное состояние',
+        'bloch_code_comment_gates': '# Применить последовательность гейтов:',
+        'bloch_code_comment_measure': '# Вероятности измерения',
+        
+        # ===== INTERFERENCE MODULE =====
+        'interf_module_title': 'Суперпозиция и Квантовая Интерференция',
+        'interf_card_title': 'Корпускулярно-Волновой Дуализм в Квантовых Вычислениях',
+        'interf_card_desc': 'Квантовая интерференция возникает из когерентной суперпозиции амплитуд вероятности. В отличие от классической вероятности, амплитуды могут интерферировать конструктивно или деструктивно в зависимости от их относительной фазы.',
+        'interf_term_desc': 'Интерференционный член 2Re(α₁*α₂) = 2|α₁||α₂|cos(φ₁ - φ₂) зависит от относительной фазы.',
+        'interf_constructive': '<strong>Конструктивная интерференция:</strong> φ₁ - φ₂ = 0, 2π, ... → амплитуды складываются',
+        'interf_destructive': '<strong>Деструктивная интерференция:</strong> φ₁ - φ₂ = π, 3π, ... → амплитуды гасятся',
+        'interf_config_title': 'Конфигурация Амплитуды Траектории',
+        'interf_amp1_label': 'Амплитуда |α₁|',
+        'interf_phase1_label': 'Фаза φ₁ (градусы)',
+        'interf_amp2_label': 'Амплитуда |α₂|',
+        'interf_phase2_label': 'Фаза φ₂ (градусы)',
+        'interf_prob_quantum': 'Квантовая Вероятность',
+        'interf_prob_classical': 'Классическая (Без Интерференции)',
+        'interf_prob_term': 'Интерференционный Член',
+        'interf_viz_title': 'Визуализация Комплексной Амплитуды',
+        'interf_pattern_title': 'Интерференционная Полосовая Картина',
+        'interf_chart_title': 'Вероятность vs Относительная Фаза',
+        'interf_chart_x': 'Разность Фаз φ₂ - φ₁ (градусы)',
+        'interf_chart_y': 'Вероятность Обнаружения',
+        
+        # ===== ENTANGLEMENT MODULE =====
+        'ent_module_title': 'Запутанность и Состояния Белла',
+        'ent_card_title': 'Квантовая Запутанность',
+        'ent_card_desc': 'Запутанность - это уникальная квантовая корреляция, при которой результаты измерений разделенных частиц коррелируют способами, которые не могут быть объяснены классической физикой. Это основа квантовой связи, телепортации и квантового превосходства.',
+        'ent_bell_title': '<strong>Состояния Белла:</strong> Четыре максимально запутанных двухкубитных состояния:',
+        'ent_prep_title': 'Подготовка Состояния Белла',
+        'ent_select_label': 'Выберите Состояние Белла',
+        'ent_bell_phi_plus': 'Φ⁺ (|00⟩ + |11⟩)',
+        'ent_bell_phi_minus': 'Φ⁻ (|00⟩ - |11⟩)',
+        'ent_bell_psi_plus': 'Ψ⁺ (|01⟩ + |10⟩)',
+        'ent_bell_psi_minus': 'Ψ⁻ (|01⟩ - |10⟩)',
+        'ent_circuit_label': '<strong>Схема:</strong>',
+        'ent_state_title': 'Вектор Состояния',
+        'ent_prob_title': 'РАСПРЕДЕЛЕНИЕ ВЕРОЯТНОСТЕЙ',
+        'ent_quant_title': 'Квантификация Запутанности',
+        'ent_entropy': 'Энтропия Запутанности',
+        'ent_concurrence': 'Конкурренция',
+        'ent_entangled': 'Запутанное?',
+        'ent_bell_inequality': 'Неравенство Белла (CHSH)',
+        'ent_chsh_desc': '<p>Неравенство CHSH: $|S| \\leq 2$ для локальных теорий со скрытыми переменными.</p><p>Квантовая механика предсказывает $S = 2\\sqrt{2} \\approx 2.828$ для состояний Белла, нарушая неравенство и исключая локальный реализм.</p>',
+        'ent_button_chsh': 'Запустить Тест CHSH',
+        'ent_chsh_param': 'Параметр CHSH |S|',
+        'ent_violation_yes': '✅ Неравенство Белла нарушено! |S| = {:.3f} > 2',
+        'ent_violation_desc': 'Это демонстрирует квантовую запутанность и исключает локальные теории со скрытыми переменными!',
+        'ent_violation_no': 'Нарушение не обнаружено: |S| = {:.3f} ≤ 2',
+        'ent_logged': '💾 Эксперимент зарегистрирован! Посетите "Воспроизводимость и Экспорт" для загрузки результатов.',
+        
+        # ===== COMMON LABELS =====
+        'common_yes': 'Да',
+        'common_no': 'Нет',
+        'common_none': 'Нет',
     }
 }
 
@@ -2611,16 +2785,14 @@ if module_id == "overview":
 
 elif module_id == "bloch":
     st.markdown("<div class='bloch-energy hero-glow'>", unsafe_allow_html=True)
-    st.markdown("# MODULE 02: HILBERT SPACE MAPPING & BLOCH VECTOR DYNAMICS")
-    st.markdown('<span class="research-status status-active">COHERENCE: OPTIMIZED | FIDELITY: >99.9%</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('bloch_module_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("bloch_status_badge")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>MATHEMATICAL FORMALISM: PROJECTIVE HILBERT SPACE</h3>
+        <h3>{t('bloch_math_title')}</h3>
         <p style='font-family: "Source Serif Pro", serif; font-size: 15px; line-height: 1.8;'>
-        A single qubit resides within the two-dimensional complex Hilbert space $\\mathcal{H}_2 = \\mathbb{C}^2$. 
-        The most general pure state exists as a superposition over the computational basis $\\{|0\\rangle, |1\\rangle\\}$, 
-        constrained by the normalization condition inherent to quantum mechanics:
+        {t('bloch_math_intro')}
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -2633,18 +2805,15 @@ elif module_id == "bloch":
     \alpha = \cos(\theta/2), \quad \beta = e^{i\phi}\sin(\theta/2) \quad \text{(Bloch Parameterization)}
     """)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='latex-display'>
-        <p style='font-family: "Source Serif Pro", serif;'><strong>Bloch Sphere Manifold:</strong> 
-        The projective Hilbert space $\\mathbb{CP}^1 \\cong S^2$ (Riemann sphere) provides a geometric 
-        visualization where each pure state $|\\psi\\rangle$ corresponds to a unique point on the unit sphere. 
-        The <strong>Bloch vector</strong> $\\vec{r} = (\\sin\\theta\\cos\\phi, \\sin\\theta\\sin\\phi, \\cos\\theta)$ 
-        encodes the state's expectation values $\\langle \\sigma_x \\rangle, \\langle \\sigma_y \\rangle, \\langle \\sigma_z \\rangle$.</p>
+        <p style='font-family: "Source Serif Pro", serif;'><strong>{t('bloch_manifold_title')}</strong> 
+        {t('bloch_manifold_desc')}</p>
         
         <p style='font-family: "JetBrains Mono", monospace; font-size: 13px; margin-top: 16px;'>
-        <strong>→ Pure States:</strong> <code>|r| = 1</code> (sphere surface)<br>
-        <strong>→ Mixed States:</strong> <code>|r| < 1</code> (interior volume, density matrix $\\rho$)<br>
-        <strong>→ Maximally Mixed:</strong> <code>|r| = 0</code> (sphere center, $\\rho = \\mathbb{I}/2$)
+        <strong>{t('bloch_pure_state')}</strong> <code>|r| = 1</code> (sphere surface)<br>
+        <strong>{t('bloch_mixed_state')}</strong> <code>|r| < 1</code> (interior volume, density matrix $\\rho$)<br>
+        <strong>{t('bloch_maximally_mixed')}</strong> <code>|r| = 0</code> (sphere center, $\\rho = \\mathbb{I}/2$)
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -2653,17 +2822,17 @@ elif module_id == "bloch":
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.markdown("### STATE VECTOR CONFIGURATION")
-        st.markdown("<p style='font-family: \"Source Serif Pro\", serif; font-size: 13px;'>Manipulate spherical coordinates to observe <strong>geometric phase accumulation</strong> via parallel transport on the Bloch manifold.</p>", unsafe_allow_html=True)
+        st.markdown(f"### {t('bloch_config_title')}")
+        st.markdown(f"<p style='font-family: \"Source Serif Pro\", serif; font-size: 13px;'>{t('bloch_config_desc')}</p>", unsafe_allow_html=True)
         
         # Glassmorphic slider with data-grid mesh
-        st.markdown("""
+        st.markdown(f"""
         <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 217, 255, 0.25); margin-bottom: 10px;'>
-            <span class='metric-label'>⚛ POLAR ANGLE θ [0, π]</span>
+            <span class='metric-label'>{t('bloch_theta_label')}</span>
         </div>
         """, unsafe_allow_html=True)
         theta_bloch = st.slider("", 0, 180, 90, 5, key="bloch_theta",
-                               help="Controls latitude on Bloch sphere (|0⟩ at θ=0, |1⟩ at θ=π)", label_visibility="collapsed")
+                               help=t('bloch_theta_help'), label_visibility="collapsed")
         st.markdown(f"""
         <div style='text-align: center; margin-top: -8px; margin-bottom: 20px;'>
             <span class='metric-value' style='font-size: 20px;'>{theta_bloch}°</span>
@@ -2672,16 +2841,16 @@ elif module_id == "bloch":
         """, unsafe_allow_html=True)
         
         # Rotary dial for phase (laboratory equipment aesthetic)
-        st.markdown("""
+        st.markdown(f"""
         <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(123, 97, 255, 0.25); margin-bottom: 10px;'>
-            <span class='metric-label'>⚡ AZIMUTHAL PHASE φ [0, 2π] - ROTARY CONTROL</span>
+            <span class='metric-label'>{t('bloch_phi_label')}</span>
         </div>
         """, unsafe_allow_html=True)
         
         col_a, col_b, col_c = st.columns([1, 2, 1])
         with col_b:
             phi_bloch = st.slider("", 0, 360, 0, 5, key="bloch_phi",
-                                 help="Determines relative phase between computational basis states", label_visibility="collapsed")
+                                 help=t('bloch_phi_help'), label_visibility="collapsed")
             
             # Render rotary dial visualization
             rotation_angle = phi_bloch - 90  # Adjust to start at top
@@ -2696,19 +2865,19 @@ elif module_id == "bloch":
             """, unsafe_allow_html=True)
         
         # Gate sequence with technical descriptions
-        st.markdown("### UNITARY GATE SEQUENCE APPLICATION")
+        st.markdown(f"### {t('bloch_gate_title')}")
         gate_sequence = st.multiselect(
-            "Compose Gate Decomposition",
-            ["H (Hadamard: X+Z Basis Change)", "X (Pauli-X: Bit Flip)", "Y (Pauli-Y: Bit+Phase Flip)", 
-             "Z (Pauli-Z: Phase Flip)", "RX(π/4): X-Axis Rotation", "RY(π/4): Y-Axis Rotation", 
-             "RZ(π/4): Z-Axis Rotation", "S (Phase Gate: π/2)", "T (π/8 Gate)"],
+            t('bloch_gate_compose'),
+            [t('bloch_gate_h'), t('bloch_gate_x'), t('bloch_gate_y'), 
+             t('bloch_gate_z'), t('bloch_gate_rx'), t('bloch_gate_ry'), 
+             t('bloch_gate_rz'), t('bloch_gate_s'), t('bloch_gate_t')],
             key="gate_seq_bloch"
         )
         
         # Measurement basis with tomography context
-        st.markdown("### MEASUREMENT BASIS (TOMOGRAPHY)")
-        meas_basis = st.radio("Select Pauli Operator for Projective Measurement", 
-                             ["Z (Computational Basis)", "X (Hadamard Basis)", "Y (Circular Basis)"], 
+        st.markdown(f"### {t('bloch_measure_title')}")
+        meas_basis = st.radio(t('bloch_measure_label'), 
+                             [t('bloch_measure_z'), t('bloch_measure_x'), t('bloch_measure_y')], 
                              horizontal=True)
         
         fig_bloch = create_bloch_sphere(theta_bloch, phi_bloch)
@@ -2728,67 +2897,69 @@ elif module_id == "bloch":
         pauli = pauli_matrices()
         
         for gate in gate_sequence:
-            if "H" in gate:
+            gate_lower = gate.lower()
+            if "h" in gate_lower or "адамар" in gate_lower:
                 current_state = hadamard() @ current_state
-            elif "X" in gate:
+            elif "x" in gate_lower and "rx" not in gate_lower:
                 current_state = pauli['X'] @ current_state
-            elif "Y" in gate:
+            elif "y" in gate_lower and "ry" not in gate_lower:
                 current_state = pauli['Y'] @ current_state
-            elif "Z" in gate:
+            elif "z" in gate_lower and "rz" not in gate_lower:
                 current_state = pauli['Z'] @ current_state
-            elif "RX" in gate:
+            elif "rx" in gate_lower:
                 current_state = rotation_gate('X', 45) @ current_state
-            elif "RY" in gate:
+            elif "ry" in gate_lower:
                 current_state = rotation_gate('Y', 45) @ current_state
-            elif "RZ" in gate:
+            elif "rz" in gate_lower:
                 current_state = rotation_gate('Z', 45) @ current_state
         
         # Display metrics
-        st.markdown("""
+        st.markdown(f"""
         <div class='metric-box'>
-            <h3>{:.4f}</h3>
-            <p>State Norm</p>
+            <h3>{np.linalg.norm(current_state):.4f}</h3>
+            <p>{t('bloch_metric_norm')}</p>
         </div>
         """.format(np.linalg.norm(current_state)), unsafe_allow_html=True)
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='metric-box'>
-            <h3>{:.3f}</h3>
-            <p>P(|0⟩)</p>
+            <h3>{abs(current_state[0])**2:.3f}</h3>
+            <p>{t('bloch_metric_p0')}</p>
         </div>
         """.format(abs(current_state[0])**2), unsafe_allow_html=True)
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='metric-box'>
-            <h3>{:.3f}</h3>
-            <p>P(|1⟩)</p>
+            <h3>{abs(current_state[1])**2:.3f}</h3>
+            <p>{t('bloch_metric_p1')}</p>
         </div>
         """.format(abs(current_state[1])**2), unsafe_allow_html=True)
         
         # Phase
         phase_deg = np.degrees(np.angle(current_state[1] / current_state[0]))
-        st.markdown("""
+        st.markdown(f"""
         <div class='metric-box'>
-            <h3>{:.1f}°</h3>
-            <p>Relative Phase</p>
+            <h3>{phase_deg if not np.isnan(phase_deg) else 0:.1f}°</h3>
+            <p>{t('bloch_metric_phase')}</p>
         </div>
         """.format(phase_deg if not np.isnan(phase_deg) else 0), unsafe_allow_html=True)
     
     # Code panel
-    st.markdown("### Executable Code")
+    st.markdown(f"### {t('bloch_code_title')}")
+    gates_str = ', '.join(gate_sequence) if gate_sequence else t('common_none')
     code = f"""
 import numpy as np
 from scipy.linalg import expm
 
-# Define initial state
+{t('bloch_code_comment_state')}
 theta = {theta_bloch} * np.pi / 180
 phi = {phi_bloch} * np.pi / 180
 state = np.array([np.cos(theta/2), np.exp(1j*phi) * np.sin(theta/2)])
 
-# Apply gate sequence: {', '.join(gate_sequence) if gate_sequence else 'None'}
+{t('bloch_code_comment_gates')} {gates_str}
 # ... gate operations ...
 
-# Measurement probabilities
+{t('bloch_code_comment_measure')}
 prob_0 = abs(state[0])**2
 prob_1 = abs(state[1])**2
 print(f"P(|0⟩) = {{prob_0:.3f}}, P(|1⟩) = {{prob_1:.3f}}")
@@ -2800,15 +2971,13 @@ elif module_id == "interference":
     add_wave_animation()
     
     st.markdown("<div class='interference-wave'>", unsafe_allow_html=True)
-    st.markdown("# Superposition & Quantum Interference")
-    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('interf_module_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_active")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>Wave-Particle Duality in Quantum Computation</h3>
-        <p>Quantum interference emerges from the coherent superposition of probability amplitudes. 
-        Unlike classical probability, amplitudes can interfere constructively or destructively 
-        depending on their relative phase.</p>
+        <h3>{t('interf_card_title')}</h3>
+        <p>{t('interf_card_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -2816,11 +2985,11 @@ elif module_id == "interference":
     P(\text{outcome}) = |\alpha_1 + \alpha_2|^2 = |\alpha_1|^2 + |\alpha_2|^2 + 2\text{Re}(\alpha_1^*\alpha_2)
     """)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='latex-display'>
-        <p>The interference term 2Re(α₁*α₂) = 2|α₁||α₂|cos(φ₁ - φ₂) depends on the relative phase.</p>
-        <p><strong>Constructive interference:</strong> φ₁ - φ₂ = 0, 2π, ... → amplitudes add</p>
-        <p><strong>Destructive interference:</strong> φ₁ - φ₂ = π, 3π, ... → amplitudes cancel</p>
+        <p>{t('interf_term_desc')}</p>
+        <p>{t('interf_constructive')}</p>
+        <p>{t('interf_destructive')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -2828,11 +2997,11 @@ elif module_id == "interference":
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### Path Amplitude Configuration")
-        amp1 = st.slider("Amplitude |α₁|", 0.0, 1.0, 0.6, 0.05, key="amp1_interf")
-        phase1 = st.slider("Phase φ₁ (degrees)", 0, 360, 0, 10, key="phase1_interf")
-        amp2 = st.slider("Amplitude |α₂|", 0.0, 1.0, 0.4, 0.05, key="amp2_interf")
-        phase2 = st.slider("Phase φ₂ (degrees)", 0, 360, 90, 10, key="phase2_interf")
+        st.markdown(f"### {t('interf_config_title')}")
+        amp1 = st.slider(t('interf_amp1_label'), 0.0, 1.0, 0.6, 0.05, key="amp1_interf")
+        phase1 = st.slider(t('interf_phase1_label'), 0, 360, 0, 10, key="phase1_interf")
+        amp2 = st.slider(t('interf_amp2_label'), 0.0, 1.0, 0.4, 0.05, key="amp2_interf")
+        phase2 = st.slider(t('interf_phase2_label'), 0, 360, 90, 10, key="phase2_interf")
         
         # Complex amplitudes
         alpha1 = amp1 * np.exp(1j * np.radians(phase1))
@@ -2847,20 +3016,20 @@ elif module_id == "interference":
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{prob_quantum:.4f}</h3>
-            <p>Quantum Probability</p>
+            <p>{t('interf_prob_quantum')}</p>
         </div>
         <div class='metric-box'>
             <h3>{prob_classical:.4f}</h3>
-            <p>Classical (No Interference)</p>
+            <p>{t('interf_prob_classical')}</p>
         </div>
         <div class='metric-box'>
             <h3 style='color: {"#84CC16" if interference_term > 0 else "#EF4444"}'>{interference_term:+.4f}</h3>
-            <p>Interference Term</p>
+            <p>{t('interf_prob_term')}</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("### Complex Amplitude Visualization")
+        st.markdown(f"### {t('interf_viz_title')}")
         
         # Phasor diagram
         fig = go.Figure()
@@ -2913,7 +3082,7 @@ elif module_id == "interference":
         st.plotly_chart(fig, use_container_width=True, key="phasor_diagram")
     
     # Interference pattern
-    st.markdown("### Interference Fringe Pattern")
+    st.markdown(f"### {t('interf_pattern_title')}")
     phase_diff_range = np.linspace(0, 2*np.pi, 200)
     prob_pattern = []
     
@@ -2933,9 +3102,9 @@ elif module_id == "interference":
     ))
     
     fig_pattern.update_layout(
-        title='Probability vs Relative Phase',
-        xaxis_title='Phase Difference φ₂ - φ₁ (degrees)',
-        yaxis_title='Detection Probability',
+        title=t('interf_chart_title'),
+        xaxis_title=t('interf_chart_x'),
+        yaxis_title=t('interf_chart_y'),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='white'),
@@ -2946,31 +3115,29 @@ elif module_id == "interference":
 
 elif module_id == "entanglement":
     st.markdown("<div class='bloch-energy'>", unsafe_allow_html=True)
-    st.markdown("# Entanglement & Bell States")
-    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('ent_module_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_active")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>Quantum Entanglement</h3>
-        <p>Entanglement is a uniquely quantum correlation where measurement outcomes of separated 
-        particles are correlated in ways that cannot be explained by classical physics. It's the 
-        foundation of quantum communication, teleportation, and quantum advantage.</p>
+        <h3>{t('ent_card_title')}</h3>
+        <p>{t('ent_card_desc')}</p>
         
-        <p><strong>Bell States:</strong> The four maximally entangled two-qubit states:</p>
+        <p>{t('ent_bell_title')}</p>
         <ul>
-            <li>$|\\Phi^+\\rangle = \\frac{1}{\\sqrt{2}}(|00\\rangle + |11\\rangle)$</li>
-            <li>$|\\Phi^-\\rangle = \\frac{1}{\\sqrt{2}}(|00\\rangle - |11\\rangle)$</li>
-            <li>$|\\Psi^+\\rangle = \\frac{1}{\\sqrt{2}}(|01\\rangle + |10\\rangle)$</li>
-            <li>$|\\Psi^-\\rangle = \\frac{1}{\\sqrt{2}}(|01\\rangle - |10\\rangle)$</li>
+            <li>$|\\Phi^+\\rangle = \\frac{{1}}{{\\sqrt{{2}}}}(|00\\rangle + |11\\rangle)$</li>
+            <li>$|\\Phi^-\\rangle = \\frac{{1}}{{\\sqrt{{2}}}}(|00\\rangle - |11\\rangle)$</li>
+            <li>$|\\Psi^+\\rangle = \\frac{{1}}{{\\sqrt{{2}}}}(|01\\rangle + |10\\rangle)$</li>
+            <li>$|\\Psi^-\\rangle = \\frac{{1}}{{\\sqrt{{2}}}}(|01\\rangle - |10\\rangle)$</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
     
     # Bell State Selection
-    st.markdown("### Bell State Preparation")
+    st.markdown(f"### {t('ent_prep_title')}")
     bell_state = st.selectbox(
-        "Select Bell State",
-        ["Φ⁺ (|00⟩ + |11⟩)", "Φ⁻ (|00⟩ - |11⟩)", "Ψ⁺ (|01⟩ + |10⟩)", "Ψ⁻ (|01⟩ - |10⟩)"]
+        t('ent_select_label'),
+        [t('ent_bell_phi_plus'), t('ent_bell_phi_minus'), t('ent_bell_psi_plus'), t('ent_bell_psi_minus')]
     )
     
     # Create Bell state
@@ -2988,13 +3155,13 @@ elif module_id == "entanglement":
         circuit_desc = "H on q0, X on q1, Z on q1, CNOT(q0, q1)"
     
     # Display circuit
-    st.markdown(f"**Circuit:** `{circuit_desc}`")
+    st.markdown(f"{t('ent_circuit_label')} `{circuit_desc}`")
     
     # State vector visualization
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("#### State Vector")
+        st.markdown(f"#### {t('ent_state_title')}")
         basis_labels = ['|00⟩', '|01⟩', '|10⟩', '|11⟩']
         amplitudes_real = np.real(state)
         amplitudes_imag = np.imag(state)
@@ -3039,7 +3206,7 @@ elif module_id == "entanglement":
         st.plotly_chart(fig_amp, use_container_width=True, config={'displayModeBar': False})
     
     with col2:
-        st.markdown("#### PROBABILITY DISTRIBUTION")
+        st.markdown(f"#### {t('ent_prob_title')}")
         probabilities = np.abs(state)**2
         
         # Area-glow fill visualization
@@ -3072,7 +3239,7 @@ elif module_id == "entanglement":
         st.plotly_chart(fig_prob, use_container_width=True)
     
     # Entanglement Measures
-    st.markdown("### Entanglement Quantification")
+    st.markdown(f"### {t('ent_quant_title')}")
     
     # Calculate reduced density matrices
     rho_full = np.outer(state, state.conj())
@@ -3103,7 +3270,7 @@ elif module_id == "entanglement":
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{entropy:.3f}</h3>
-            <p>Entanglement Entropy</p>
+            <p>{t('ent_entropy')}</p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -3111,31 +3278,29 @@ elif module_id == "entanglement":
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{concurrence:.3f}</h3>
-            <p>Concurrence</p>
+            <p>{t('ent_concurrence')}</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        is_entangled = "Yes" if entropy > 0.01 else "No"
+        is_entangled = t('common_yes') if entropy > 0.01 else t('common_no')
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{is_entangled}</h3>
-            <p>Entangled?</p>
+            <p>{t('ent_entangled')}</p>
         </div>
         """, unsafe_allow_html=True)
     
     # Bell Inequality Violation
-    st.markdown("### Bell Inequality (CHSH)")
-    st.markdown("""
+    st.markdown(f"### {t('ent_bell_inequality')}")
+    st.markdown(f"""
     <div class='research-card'>
-        <p>The CHSH inequality: $|S| \\leq 2$ for local hidden variable theories.</p>
-        <p>Quantum mechanics predicts $S = 2\\sqrt{2} \\approx 2.828$ for Bell states,
-        violating the inequality and ruling out local realism.</p>
+        {t('ent_chsh_desc')}
     </div>
     """, unsafe_allow_html=True)
     
     # Simulate CHSH measurements
-    if st.button("Run CHSH Test", type="primary"):
+    if st.button(t('ent_button_chsh'), type="primary"):
         # Measurement angles
         a0, a1 = 0, np.pi/2
         b0, b1 = np.pi/4, -np.pi/4
@@ -3165,7 +3330,7 @@ elif module_id == "entanglement":
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{abs(S):.3f}</h3>
-            <p>CHSH Parameter |S|</p>
+            <p>{t('ent_chsh_param')}</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -3183,12 +3348,12 @@ elif module_id == "entanglement":
         st.session_state.experiment_log.append(experiment)
         
         if abs(S) > 2:
-            st.success(f"✅ Bell inequality violated! |S| = {abs(S):.3f} > 2")
-            st.info("This demonstrates quantum entanglement and rules out local hidden variable theories!")
+            st.success(t('ent_violation_yes').format(abs(S)))
+            st.info(t('ent_violation_desc'))
         else:
-            st.info(f"No violation detected: |S| = {abs(S):.3f} ≤ 2")
+            st.info(t('ent_violation_no').format(abs(S)))
         
-        st.info("💾 Experiment logged! Visit 'Reproducibility & Export' to download results.")
+        st.info(t('ent_logged'))
 
 elif module_id == "noise":
     st.markdown("<div class='noise-static'>", unsafe_allow_html=True)
