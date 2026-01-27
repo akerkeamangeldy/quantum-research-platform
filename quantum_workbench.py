@@ -3645,7 +3645,7 @@ elif module_id == "interference":
             mode='lines+markers',
             line=dict(color='#6366F1', width=3),
             marker=dict(size=10),
-            name='α₁'
+            name=t('charts.common_traces.alpha1')
         ))
         
         # α₂ vector
@@ -3654,7 +3654,7 @@ elif module_id == "interference":
             mode='lines+markers',
             line=dict(color='#06B6D4', width=3),
             marker=dict(size=10),
-            name='α₂'
+            name=t('charts.common_traces.alpha2')
         ))
         
         # Total amplitude
@@ -3663,7 +3663,7 @@ elif module_id == "interference":
             mode='lines+markers',
             line=dict(color='#F59E0B', width=4),
             marker=dict(size=12),
-            name='α₁ + α₂'
+            name=t('charts.common_traces.total')
         ))
         
         # Unit circle
@@ -3676,8 +3676,8 @@ elif module_id == "interference":
         ))
         
         fig.update_layout(
-            xaxis=dict(range=[-1.2, 1.2], title='Real', gridcolor='rgba(255,255,255,0.1)'),
-            yaxis=dict(range=[-1.2, 1.2], title='Imaginary', gridcolor='rgba(255,255,255,0.1)', scaleanchor="x"),
+            xaxis=dict(range=[-1.2, 1.2], title=t('charts.interference.phasor_x_axis'), gridcolor='rgba(255,255,255,0.1)'),
+            yaxis=dict(range=[-1.2, 1.2], title=t('charts.interference.phasor_y_axis'), gridcolor='rgba(255,255,255,0.1)', scaleanchor="x"),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             font=dict(color='white'),
@@ -3707,9 +3707,9 @@ elif module_id == "interference":
     ))
     
     fig_pattern.update_layout(
-        title=t('interf_chart_title'),
-        xaxis_title=t('interf_chart_x'),
-        yaxis_title=t('interf_chart_y'),
+        title=t('charts.interference.pattern_title'),
+        xaxis_title=t('charts.interference.pattern_x_axis'),
+        yaxis_title=t('charts.interference.pattern_y_axis'),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='white'),
@@ -3797,7 +3797,7 @@ elif module_id == "entanglement":
         ))
         
         fig_amp.update_layout(
-            yaxis_title='<b>AMPLITUDE</b>',
+            yaxis_title=t('charts.interference.amplitude_y_axis'),
             barmode='group',
             plot_bgcolor='rgba(10, 10, 10, 0.5)',
             paper_bgcolor='rgba(0,0,0,0)',
@@ -3832,7 +3832,7 @@ elif module_id == "entanglement":
         ))
         
         fig_prob.update_layout(
-            yaxis_title='<b>|ψ|²</b>',
+            yaxis_title=t('charts.interference.probability_y_axis'),
             yaxis=dict(range=[0, max(0.6, max(probabilities) * 1.1)], gridcolor='rgba(0, 217, 255, 0.1)', showgrid=True),
             xaxis=dict(gridcolor='rgba(0, 217, 255, 0.05)'),
             plot_bgcolor='rgba(10, 10, 10, 0.5)',
@@ -4070,20 +4070,20 @@ elif module_id == "noise":
             x=time_points, y=population_decay,
             mode='lines',
             line=dict(color='#6366F1', width=3),
-            name='T₁ (Energy Relaxation)'
+            name=t('charts.noise.t1_trace')
         ))
         
         fig_decay.add_trace(go.Scatter(
             x=time_points, y=coherence_decay,
             mode='lines',
             line=dict(color='#06B6D4', width=3),
-            name='T₂ (Dephasing)'
+            name=t('charts.noise.t2_trace')
         ))
         
         fig_decay.update_layout(
-            title='Decoherence Time Evolution',
-            xaxis_title='Time (μs)',
-            yaxis_title='Normalized Amplitude',
+            title=t('charts.noise.decay_title'),
+            xaxis_title=t('charts.noise.decay_x_axis'),
+            yaxis_title=t('charts.noise.decay_y_axis'),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             font=dict(color='white'),
@@ -4205,9 +4205,9 @@ elif module_id == "vqe":
                 )
                 
                 fig_conv.update_layout(
-                    title='VQE Energy Convergence',
-                    xaxis_title='Iteration',
-                    yaxis_title='Energy (Hartree)',
+                    title=t('charts.vqe.convergence_title'),
+                    xaxis_title=t('charts.vqe.convergence_x_axis'),
+                    yaxis_title=t('charts.vqe.convergence_y_axis'),
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
                     font=dict(color='white'),
@@ -4564,8 +4564,8 @@ elif module_id == "qaoa":
                 fig_conv.update_layout(
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    xaxis_title='Iteration',
-                    yaxis_title='MaxCut Value',
+                    xaxis_title=t('charts.qaoa.convergence_x_axis'),
+                    yaxis_title=t('charts.qaoa.convergence_y_axis'),
                     font=dict(color='#E5E7EB'),
                     height=400
                 )
@@ -4590,8 +4590,8 @@ elif module_id == "qaoa":
                 fig_prob.update_layout(
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    xaxis_title='Bitstring',
-                    yaxis_title='Probability',
+                    xaxis_title=t('charts.qaoa.probability_x_axis'),
+                    yaxis_title=t('charts.qaoa.probability_y_axis'),
                     font=dict(color='#E5E7EB'),
                     height=400
                 )
@@ -5004,8 +5004,8 @@ elif module_id == "circuits":
                 ])
                 
                 fig_meas.update_layout(
-                    title='Measurement Results',
-                    yaxis_title='Counts',
+                    title=t('charts.circuits.measurement_title'),
+                    yaxis_title=t('charts.circuits.measurement_y_axis'),
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
                     font=dict(color='white'),

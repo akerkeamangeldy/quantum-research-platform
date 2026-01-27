@@ -123,5 +123,91 @@
     "error": "Ошибка",
     "success": "Успешно",
     "warning": "Внимание"
+  },
+  "charts": {
+    "interference": {
+      "phasor_title": "Векторная Диаграмма",
+      "phasor_x_axis": "Действительная Часть",
+      "phasor_y_axis": "Мнимая Часть",
+      "pattern_title": "Интерференционная Картина",
+      "pattern_x_axis": "Разность Фаз (градусы)",
+      "pattern_y_axis": "Полная Вероятность |ψ|²",
+      "amplitude_title": "Компоненты Амплитуды",
+      "amplitude_y_axis": "АМПЛИТУДА",
+      "probability_title": "Распределение Вероятности",
+      "probability_y_axis": "|ψ|²"
+    },
+    "noise": {
+      "decay_title": "Эволюция Декогеренции",
+      "decay_x_axis": "Время (мкс)",
+      "decay_y_axis": "Нормализованная Амплитуда",
+      "t1_trace": "T₁ (Энергетическая Релаксация)",
+      "t2_trace": "T₂ (Дефазирование)",
+      "density_matrix_title": "Эволюция Матрицы Плотности"
+    },
+    "vqe": {
+      "convergence_title": "Сходимость VQE Энергии",
+      "convergence_x_axis": "Итерация",
+      "convergence_y_axis": "Энергия (Хартри)",
+      "landscape_title": "Энергетический Ландшафт",
+      "parameters_title": "Эволюция Параметров"
+    },
+    "qaoa": {
+      "convergence_title": "Сходимость QAOA",
+      "convergence_x_axis": "Итерация",
+      "convergence_y_axis": "Значение MaxCut",
+      "probability_title": "Распределение Вероятности Решений",
+      "probability_x_axis": "Битовая Строка",
+      "probability_y_axis": "Вероятность",
+      "graph_title": "Структура Графа"
+    },
+    "qml": {
+      "decision_boundary_title": "Квантовая Граница Решений",
+      "training_data": "Обучающие Данные",
+      "test_data": "Тестовые Данные",
+      "decision_surface": "Поверхность Решений",
+      "accuracy_title": "Точность Классификации"
+    },
+    "circuits": {
+      "unitary_real_title": "Унитарная Матрица (Действительная Часть)",
+      "unitary_imag_title": "Унитарная Матрица (Мнимая Часть)",
+      "measurement_title": "Результаты Измерений",
+      "measurement_y_axis": "Счётчик",
+      "gate_decomposition": "Декомпозиция Гейта"
+    },
+    "qec": {
+      "syndrome_title": "Измерение Синдрома",
+      "error_rate_title": "Логическая Частота Ошибок",
+      "stabilizer_title": "Нарушения Стабилизатора",
+      "fidelity_title": "Точность Кода"
+    },
+    "entanglement": {
+      "bell_measurement": "Измерение Состояния Белла",
+      "correlation_title": "Квантовые Корреляции",
+      "chsh_title": "Тест Неравенства CHSH",
+      "density_matrix": "Двухкубитная Матрица Плотности"
+    },
+    "topological": {
+      "phase_diagram": "Диаграмма Топологических Фаз",
+      "braid_evolution": "Эволюция Плетения Анионов",
+      "berry_phase": "Накопление Фазы Берри"
+    },
+    "hardware": {
+      "connectivity_title": "Карта Связности КПУ",
+      "calibration_title": "Метрики Калибровки",
+      "fidelity_map": "Тепловая Карта Точности Гейтов",
+      "crosstalk_title": "Анализ Перекрёстных Помех"
+    },
+    "common_traces": {
+      "alpha1": "α₁",
+      "alpha2": "α₂",
+      "total": "α₁ + α₂",
+      "real_part": "Действительная Часть",
+      "imag_part": "Мнимая Часть",
+      "measured": "Измеренный",
+      "theoretical": "Теоретический",
+      "ground_state": "Основное Состояние",
+      "excited_state": "Возбуждённое Состояние"
+    }
   }
 }

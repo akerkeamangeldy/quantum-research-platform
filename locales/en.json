@@ -123,5 +123,91 @@
     "error": "Error",
     "success": "Success",
     "warning": "Warning"
+  },
+  "charts": {
+    "interference": {
+      "phasor_title": "Phasor Diagram",
+      "phasor_x_axis": "Real",
+      "phasor_y_axis": "Imaginary",
+      "pattern_title": "Interference Pattern",
+      "pattern_x_axis": "Phase Difference (degrees)",
+      "pattern_y_axis": "Total Probability |ψ|²",
+      "amplitude_title": "Amplitude Components",
+      "amplitude_y_axis": "AMPLITUDE",
+      "probability_title": "Probability Distribution",
+      "probability_y_axis": "|ψ|²"
+    },
+    "noise": {
+      "decay_title": "Decoherence Time Evolution",
+      "decay_x_axis": "Time (μs)",
+      "decay_y_axis": "Normalized Amplitude",
+      "t1_trace": "T₁ (Energy Relaxation)",
+      "t2_trace": "T₂ (Dephasing)",
+      "density_matrix_title": "Density Matrix Evolution"
+    },
+    "vqe": {
+      "convergence_title": "VQE Energy Convergence",
+      "convergence_x_axis": "Iteration",
+      "convergence_y_axis": "Energy (Hartree)",
+      "landscape_title": "Energy Landscape",
+      "parameters_title": "Parameter Evolution"
+    },
+    "qaoa": {
+      "convergence_title": "QAOA Convergence",
+      "convergence_x_axis": "Iteration",
+      "convergence_y_axis": "MaxCut Value",
+      "probability_title": "Solution Probability Distribution",
+      "probability_x_axis": "Bitstring",
+      "probability_y_axis": "Probability",
+      "graph_title": "Graph Structure"
+    },
+    "qml": {
+      "decision_boundary_title": "Quantum Decision Boundary",
+      "training_data": "Training Data",
+      "test_data": "Test Data",
+      "decision_surface": "Decision Surface",
+      "accuracy_title": "Classification Accuracy"
+    },
+    "circuits": {
+      "unitary_real_title": "Unitary Matrix (Real Part)",
+      "unitary_imag_title": "Unitary Matrix (Imaginary Part)",
+      "measurement_title": "Measurement Results",
+      "measurement_y_axis": "Counts",
+      "gate_decomposition": "Gate Decomposition"
+    },
+    "qec": {
+      "syndrome_title": "Syndrome Measurement",
+      "error_rate_title": "Logical Error Rate",
+      "stabilizer_title": "Stabilizer Violations",
+      "fidelity_title": "Code Fidelity"
+    },
+    "entanglement": {
+      "bell_measurement": "Bell State Measurement",
+      "correlation_title": "Quantum Correlations",
+      "chsh_title": "CHSH Inequality Test",
+      "density_matrix": "Two-Qubit Density Matrix"
+    },
+    "topological": {
+      "phase_diagram": "Topological Phase Diagram",
+      "braid_evolution": "Anyonic Braid Evolution",
+      "berry_phase": "Berry Phase Accumulation"
+    },
+    "hardware": {
+      "connectivity_title": "QPU Connectivity Map",
+      "calibration_title": "Calibration Metrics",
+      "fidelity_map": "Gate Fidelity Heatmap",
+      "crosstalk_title": "Crosstalk Analysis"
+    },
+    "common_traces": {
+      "alpha1": "α₁",
+      "alpha2": "α₂",
+      "total": "α₁ + α₂",
+      "real_part": "Real Part",
+      "imag_part": "Imaginary Part",
+      "measured": "Measured",
+      "theoretical": "Theoretical",
+      "ground_state": "Ground State",
+      "excited_state": "Excited State"
+    }
   }
 }
