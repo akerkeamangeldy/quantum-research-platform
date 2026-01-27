@@ -20,16 +20,17 @@ import hashlib
 
 # Page configuration
 st.set_page_config(
-    page_title="Quantum Research Workbench v4.0.2",
+    page_title="Quantum Research Workbench | v4.0.2",
     page_icon="⚛️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Obsidian Glassmorphism Aesthetics CSS
+# Obsidian Glassmorphism Aesthetics CSS + Lucide Icons
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700&family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
+    @import url('https://unpkg.com/lucide-static@latest/font/lucide.css');
     
     :root {
         --bg-obsidian: #0A0A0A;
@@ -991,170 +992,158 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
-    .sidebar .sidebar-content {
-        background: #151515;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    /* PROFESSIONAL RESEARCH DASHBOARD SIDEBAR */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #161616 0%, #1A1A1A 100%);
+        border-right: 1px solid rgba(99, 102, 241, 0.15);
     }
     
-    /* PROFESSIONAL SIDEBAR NAVIGATION - ROW-BASED MENU */
-    .sidebar-nav-container {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    [data-testid="stSidebar"] > div:first-child {
+        background: transparent;
         padding: 0;
+    }
+    
+    /* Sidebar Brand Header */
+    .sidebar-brand {
+        padding: 24px 20px 20px 20px;
+        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        margin-bottom: 16px;
+    }
+    
+    .sidebar-brand-title {
+        font-family: 'Inter', -apple-system, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #FFFFFF;
+        letter-spacing: -0.02em;
+        margin: 0 0 4px 0;
+        line-height: 1.2;
+    }
+    
+    .sidebar-brand-subtitle {
+        font-family: 'Inter', -apple-system, sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        color: rgba(99, 102, 241, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
         margin: 0;
     }
     
-    .sidebar-search {
-        margin: 16px 0;
-        padding: 10px 14px;
-        background: rgba(26, 26, 26, 0.8);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 8px;
-        color: #E8E8E8;
-        font-size: 13px;
-        font-family: 'Inter', sans-serif;
-        width: 100%;
-        transition: all 200ms ease;
-    }
-    
-    .sidebar-search:focus {
-        outline: none;
-        border-color: rgba(99, 102, 241, 0.8);
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        background: rgba(30, 30, 30, 0.9);
-    }
-    
-    .sidebar-search::placeholder {
-        color: rgba(180, 180, 180, 0.5);
-        font-size: 12px;
-    }
-    
-    .nav-section {
-        margin: 20px 0 12px 0;
-    }
-    
+    /* Navigation Section Headers */
     .nav-section-label {
+        font-family: 'Inter', -apple-system, sans-serif;
         font-size: 10px;
         font-weight: 700;
-        letter-spacing: 1.5px;
+        letter-spacing: 1px;
         text-transform: uppercase;
-        color: rgba(123, 97, 255, 0.7);
-        padding: 8px 12px 8px 8px;
-        cursor: pointer;
+        color: rgba(180, 180, 180, 0.5);
+        padding: 12px 20px 8px 20px;
+        margin: 12px 0 4px 0;
+        display: block;
+    }
+    
+    /* Navigation List Rows with Icons */
+    .nav-row {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        transition: color 150ms ease;
-        user-select: none;
-    }
-    
-    .nav-section-label:hover {
-        color: rgba(123, 97, 255, 1);
-    }
-    
-    .nav-section-chevron {
-        font-size: 12px;
-        transition: transform 200ms ease;
-    }
-    
-    .nav-section.expanded .nav-section-chevron {
-        transform: rotate(90deg);
-    }
-    
-    .nav-items {
-        display: none;
-        flex-direction: column;
-        gap: 2px;
-        margin-top: 4px;
-    }
-    
-    .nav-section.expanded .nav-items {
-        display: flex;
-    }
-    
-    .nav-item-row {
-        display: flex;
-        align-items: center;
-        padding: 12px 12px 12px 16px;
+        gap: 12px;
+        padding: 11px 20px 11px 17px;
+        margin: 0 8px 2px 8px;
         border-left: 3px solid transparent;
         border-radius: 0 6px 6px 0;
         cursor: pointer;
         transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         background: transparent;
-        gap: 12px;
     }
     
-    .nav-item-row:hover {
+    .nav-row:hover {
         background: rgba(99, 102, 241, 0.08);
-        border-left-color: rgba(99, 102, 241, 0.4);
+        border-left-color: rgba(99, 102, 241, 0.5);
     }
     
-    .nav-item-row.active {
+    .nav-row.active {
         background: rgba(99, 102, 241, 0.12);
         border-left-color: rgba(99, 102, 241, 1);
     }
     
-    .nav-item-row.active::before {
-        content: '';
-        position: absolute;
-        left: -3px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: rgba(99, 102, 241, 1);
-        box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
-    }
-    
-    .nav-item-number {
-        font-size: 11px;
-        font-weight: 600;
-        color: rgba(180, 180, 180, 0.5);
-        font-family: 'JetBrains Mono', monospace;
-        min-width: 28px;
+    .nav-row-icon {
+        font-size: 18px;
+        color: rgba(180, 180, 180, 0.6);
         transition: color 150ms ease;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
-    .nav-item-row:hover .nav-item-number {
-        color: rgba(99, 102, 241, 0.8);
-    }
-    
-    .nav-item-row.active .nav-item-number {
+    .nav-row:hover .nav-row-icon {
         color: rgba(99, 102, 241, 1);
-        font-weight: 700;
     }
     
-    .nav-item-title {
+    .nav-row.active .nav-row-icon {
+        color: rgba(99, 102, 241, 1);
+    }
+    
+    .nav-row-title {
+        font-family: 'Inter', -apple-system, sans-serif;
         font-size: 13px;
         font-weight: 500;
         color: #E0E0E0;
-        line-height: 1.3;
         letter-spacing: -0.01em;
+        line-height: 1.3;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transition: all 150ms ease;
+        transition: color 150ms ease;
         flex: 1;
     }
     
-    .nav-item-row:hover .nav-item-title {
+    .nav-row:hover .nav-row-title {
         color: rgba(99, 102, 241, 1);
     }
     
-    .nav-item-row.active .nav-item-title {
+    .nav-row.active .nav-row-title {
         color: rgba(99, 102, 241, 1);
         font-weight: 600;
     }
     
-    /* SIDEBAR BUTTON STYLING - PROFESSIONAL ROWS */
+    /* Sidebar Footer */
+    .sidebar-footer {
+        padding: 16px 20px;
+        margin-top: auto;
+        border-top: 1px solid rgba(99, 102, 241, 0.1);
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+    
+    .sidebar-footer-version {
+        font-size: 10px;
+        font-weight: 600;
+        color: rgba(180, 180, 180, 0.4);
+        margin: 0 0 4px 0;
+    }
+    
+    .sidebar-footer-status {
+        font-size: 9px;
+        font-weight: 500;
+        color: rgba(0, 255, 148, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+    }
+    
+    /* Streamlit Button Override for Sidebar Navigation */
     [data-testid="stSidebar"] button[kind="secondary"],
     [data-testid="stSidebar"] button[kind="primary"] {
         background: transparent !important;
         border: none !important;
         border-left: 3px solid transparent !important;
         border-radius: 0 6px 6px 0 !important;
-        padding: 12px 12px 12px 16px !important;
+        padding: 11px 20px 11px 17px !important;
+        margin: 0 8px 2px 8px !important;
         text-align: left !important;
         font-family: 'Inter', -apple-system, sans-serif !important;
         font-size: 13px !important;
@@ -1163,13 +1152,36 @@ st.markdown("""
         letter-spacing: -0.01em !important;
         transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: none !important;
-        margin: 2px 0 !important;
+        width: calc(100% - 16px) !important;
+        position: relative !important;
     }
     
-    [data-testid="stSidebar"] button[kind="secondary"]:hover {
+    /* Add icon space before button text */
+    [data-testid="stSidebar"] button[kind="secondary"]::before,
+    [data-testid="stSidebar"] button[kind="primary"]::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        vertical-align: middle;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.6;
+        transition: opacity 150ms ease;
+    }
+    
+    [data-testid="stSidebar"] button[kind="secondary"]:hover,
+    [data-testid="stSidebar"] button[kind="primary"]:hover {
         background: rgba(99, 102, 241, 0.08) !important;
-        border-left-color: rgba(99, 102, 241, 0.4) !important;
+        border-left-color: rgba(99, 102, 241, 0.5) !important;
         color: rgba(99, 102, 241, 1) !important;
+    }
+    
+    [data-testid="stSidebar"] button[kind="secondary"]:hover::before,
+    [data-testid="stSidebar"] button[kind="primary"]::before {
+        opacity: 1;
     }
     
     [data-testid="stSidebar"] button[kind="primary"] {
@@ -1177,26 +1189,108 @@ st.markdown("""
         border-left-color: rgba(99, 102, 241, 1) !important;
         color: rgba(99, 102, 241, 1) !important;
         font-weight: 600 !important;
-        position: relative;
-    }
-    
-    [data-testid="stSidebar"] button[kind="primary"]::before {
-        content: '';
-        position: absolute;
-        left: -3px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: rgba(99, 102, 241, 1);
-        box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
     }
     
     [data-testid="stSidebar"] button p {
         font-family: 'Inter', -apple-system, sans-serif !important;
         font-size: 13px !important;
         margin: 0 !important;
+        display: inline !important;
+    }
+    
+    /* Icon mappings for each module - using data URIs for SVG icons */
+    [data-testid="stSidebar"] button[key="nav_home"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_overview"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'%3E%3C/path%3E%3Cpolyline points='9 22 9 12 15 12 15 22'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_bloch"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='1'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='5'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='9'%3E%3C/circle%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_interference"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'%3E%3C/path%3E%3Cpath d='M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'%3E%3C/path%3E%3Cpath d='M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_entanglement"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'%3E%3C/path%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_topological"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'%3E%3C/path%3E%3Cpolyline points='3.27 6.96 12 12.01 20.73 6.96'%3E%3C/polyline%3E%3Cline x1='12' y1='22.08' x2='12' y2='12'%3E%3C/line%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_noise"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='13 2 3 14 12 14 11 22 21 10 12 10 13 2'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_circuits"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='4' width='16' height='16' rx='2'%3E%3C/rect%3E%3Crect x='9' y='9' width='6' height='6'%3E%3C/rect%3E%3Cpath d='M15 2v2'%3E%3C/path%3E%3Cpath d='M15 20v2'%3E%3C/path%3E%3Cpath d='M2 15h2'%3E%3C/path%3E%3Cpath d='M2 9h2'%3E%3C/path%3E%3Cpath d='M20 15h2'%3E%3C/path%3E%3Cpath d='M20 9h2'%3E%3C/path%3E%3Cpath d='M9 2v2'%3E%3C/path%3E%3Cpath d='M9 20v2'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_vqe"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='6'%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_qaoa"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='21' y1='10' x2='7' y2='10'%3E%3C/line%3E%3Cline x1='21' y1='6' x2='3' y2='6'%3E%3C/line%3E%3Cline x1='21' y1='14' x2='3' y2='14'%3E%3C/line%3E%3Cline x1='21' y1='18' x2='7' y2='18'%3E%3C/line%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_qml"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'%3E%3C/path%3E%3Cpath d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'%3E%3C/path%3E%3Cpath d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'%3E%3C/path%3E%3Cpath d='M17.599 6.5a3 3 0 0 0 .399-1.375'%3E%3C/path%3E%3Cpath d='M6.003 5.125A3 3 0 0 0 6.401 6.5'%3E%3C/path%3E%3Cpath d='M3.477 10.896a4 4 0 0 1 .585-.396'%3E%3C/path%3E%3Cpath d='M19.938 10.5a4 4 0 0 1 .585.396'%3E%3C/path%3E%3Cpath d='M6 18a4 4 0 0 1-1.967-.516'%3E%3C/path%3E%3Cpath d='M19.967 17.484A4 4 0 0 1 18 18'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_qec"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_hardware"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='2' width='20' height='8' rx='2' ry='2'%3E%3C/rect%3E%3Crect x='2' y='14' width='20' height='8' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='6' y1='6' x2='6.01' y2='6'%3E%3C/line%3E%3Cline x1='6' y1='18' x2='6.01' y2='18'%3E%3C/line%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_complexity"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='2'%3E%3C/circle%3E%3Cpath d='M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14'%3E%3C/path%3E%3C/svg%3E");
+    }
+    
+    [data-testid="stSidebar"] button[key="nav_export"]::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23B4B4B4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
+    }
+    
+    /* Update icon color on hover and active */
+    [data-testid="stSidebar"] button[kind="primary"]::before {
+        filter: brightness(0) saturate(100%) invert(52%) sepia(82%) saturate(2833%) hue-rotate(226deg) brightness(101%) contrast(96%);
+    }
+    
+    [data-testid="stSidebar"] button[kind="secondary"]:hover::before {
+        filter: brightness(0) saturate(100%) invert(52%) sepia(82%) saturate(2833%) hue-rotate(226deg) brightness(101%) contrast(96%);
+    }
+    
+    /* Language Toggle Buttons */
+    [data-testid="stSidebar"] .element-container:first-child button {
+        background: rgba(26, 26, 26, 0.6) !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        color: rgba(180, 180, 180, 0.8) !important;
+        transition: all 150ms ease !important;
+        border-left: 1px solid rgba(99, 102, 241, 0.3) !important;
+        margin: 0 !important;
+        width: auto !important;
+    }
+    
+    [data-testid="stSidebar"] .element-container:first-child button::before {
+        content: none !important;
+    }
+    
+    [data-testid="stSidebar"] .element-container:first-child button:hover {
+        background: rgba(99, 102, 241, 0.15) !important;
+        border-color: rgba(99, 102, 241, 0.6) !important;
+        color: rgba(99, 102, 241, 1) !important;
     }
 
     
@@ -1534,6 +1628,23 @@ st.markdown("""
         animation: data-flow 2s ease-in-out infinite;
     }
 </style>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    // Initialize Lucide icons on page load and after Streamlit updates
+    function initializeLucideIcons() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+    
+    // Initial load
+    initializeLucideIcons();
+    
+    // Re-initialize after Streamlit updates
+    const observer = new MutationObserver(initializeLucideIcons);
+    observer.observe(document.body, { childList: true, subtree: true });
+</script>
 """, unsafe_allow_html=True)
 
 # Add particle effect component for overview page
@@ -2053,7 +2164,7 @@ def generate_experiment_id():
 
 # Initialize session state
 if 'selected_module_id' not in st.session_state:
-    st.session_state.selected_module_id = 'overview'
+    st.session_state.selected_module_id = 'home'
 if 'language' not in st.session_state:
     st.session_state.language = 'en'
 
@@ -2084,6 +2195,7 @@ TRANSLATIONS = {
         'status_infrastructure': 'Research Infrastructure',
         
         # ===== SECTIONS =====
+        'section_home': 'HOME',
         'section_foundations': 'FOUNDATIONS',
         'section_correlations': 'QUANTUM CORRELATIONS',
         'section_dynamics': 'NOISE & DYNAMICS',
@@ -2094,6 +2206,7 @@ TRANSLATIONS = {
         'section_export': 'DATA EXPORT',
         
         # ===== MODULE TITLES & SUBTITLES =====
+        'module_home': 'Home',
         'module_overview': 'Theoretical Framework',
         'module_bloch': 'Hilbert Space Dynamics',
         'module_interference': 'Coherent Superposition',
@@ -2109,6 +2222,7 @@ TRANSLATIONS = {
         'module_complexity': 'Complexity Landscapes',
         'module_export': 'Research Reproducibility',
         
+        'subtitle_home': 'platform overview, quick start',
         'subtitle_overview': 'postulates, operators, measurement',
         'subtitle_bloch': 'unitary evolution, Hamiltonians',
         'subtitle_interference': 'phase, interference, amplitudes',
@@ -2259,6 +2373,7 @@ TRANSLATIONS = {
         'status_infrastructure': 'Исследовательская Инфраструктура',
         
         # ===== SECTIONS =====
+        'section_home': 'ГЛАВНАЯ',
         'section_foundations': 'ОСНОВЫ',
         'section_correlations': 'КВАНТОВЫЕ КОРРЕЛЯЦИИ',
         'section_dynamics': 'ШУМЫ И ДИНАМИКА',
@@ -2269,6 +2384,7 @@ TRANSLATIONS = {
         'section_export': 'ЭКСПОРТ ДАННЫХ',
         
         # ===== MODULE TITLES & SUBTITLES =====
+        'module_home': 'Главная',
         'module_overview': 'Теоретическая Основа',
         'module_bloch': 'Динамика Пространства Гильберта',
         'module_interference': 'Когерентная Суперпозиция',
@@ -2284,6 +2400,7 @@ TRANSLATIONS = {
         'module_complexity': 'Ландшафты Сложности',
         'module_export': 'Воспроизводимость Исследований',
         
+        'subtitle_home': 'обзор платформы, быстрый старт',
         'subtitle_overview': 'постулаты, операторы, измерения',
         'subtitle_bloch': 'унитарная эволюция, гамильтонианы',
         'subtitle_interference': 'фаза, интерференция, амплитуды',
@@ -2432,76 +2549,76 @@ with col_lang2:
 
 st.sidebar.markdown("---")
 
-st.sidebar.markdown(f"## {t('title')}")
-st.sidebar.markdown(f"**{t('system_status')}:** `{t('operational')}`")
-st.sidebar.markdown(f"**{t('coherence_time')}:** `{t('optimized')}`")
-
-# Real-time telemetry ticker in sidebar
-telemetry_html = f"""
-<div class='telemetry-ticker'>
-    <span>{t('gate_fidelity')}:</span> <span class='telemetry-value'>99.94%</span> | 
-    <span>T₂:</span> <span class='telemetry-value'>103{t('units_microseconds')}</span> | 
-    <span>{t('temp')}:</span> <span class='telemetry-value'>18.7{t('units_millikelvin')}</span>
+# Professional brand header
+brand_header = f"""
+<div class='sidebar-brand'>
+    <div class='sidebar-brand-title'>{t('title')}</div>
+    <div class='sidebar-brand-subtitle'>Quantum Research Platform</div>
 </div>
 """
-st.sidebar.markdown(telemetry_html, unsafe_allow_html=True)
-st.sidebar.markdown("---")
-
-# Search field
-st.sidebar.text_input("", placeholder=t('search_placeholder'), key="nav_search", label_visibility="collapsed")
+st.sidebar.markdown(brand_header, unsafe_allow_html=True)
 
 # Navigation structure with organized groups
 nav_groups = [
+    ("section_home", [
+        ("home", "00", 'module_home', 'subtitle_home'),
+    ]),
     ("section_foundations", [
-        ("overview", "01", 'module_overview', 'subtitle_overview'),
-        ("bloch", "02", 'module_bloch', 'subtitle_bloch'),
-        ("interference", "03", 'module_interference', 'subtitle_interference'),
+        ("bloch", "01", 'module_bloch', 'subtitle_bloch'),
+        ("interference", "02", 'module_interference', 'subtitle_interference'),
     ]),
     ("section_correlations", [
-        ("entanglement", "04", 'module_entanglement', 'subtitle_entanglement'),
-        ("topological", "05", 'module_topological', 'subtitle_topological'),
+        ("entanglement", "03", 'module_entanglement', 'subtitle_entanglement'),
+        ("topological", "04", 'module_topological', 'subtitle_topological'),
     ]),
     ("section_dynamics", [
-        ("noise", "06", 'module_noise', 'subtitle_noise'),
-        ("circuits", "07", 'module_circuits', 'subtitle_circuits'),
+        ("noise", "05", 'module_noise', 'subtitle_noise'),
+        ("circuits", "06", 'module_circuits', 'subtitle_circuits'),
     ]),
     ("section_variational", [
-        ("vqe", "08", 'module_vqe', 'subtitle_vqe'),
-        ("qaoa", "09", 'module_qaoa', 'subtitle_qaoa'),
+        ("vqe", "07", 'module_vqe', 'subtitle_vqe'),
+        ("qaoa", "08", 'module_qaoa', 'subtitle_qaoa'),
     ]),
     ("section_qml", [
-        ("qml", "10", 'module_qml', 'subtitle_qml'),
+        ("qml", "09", 'module_qml', 'subtitle_qml'),
     ]),
     ("section_hardware", [
-        ("qec", "11", 'module_qec', 'subtitle_qec'),
-        ("hardware", "12", 'module_hardware', 'subtitle_hardware'),
+        ("qec", "10", 'module_qec', 'subtitle_qec'),
+        ("hardware", "11", 'module_hardware', 'subtitle_hardware'),
     ]),
     ("section_complexity", [
-        ("complexity", "13", 'module_complexity', 'subtitle_complexity'),
+        ("complexity", "12", 'module_complexity', 'subtitle_complexity'),
     ]),
     ("section_export", [
-        ("export", "14", 'module_export', 'subtitle_export'),
+        ("export", "13", 'module_export', 'subtitle_export'),
     ]),
 ]
 
-# Render professional row-based navigation
+# Render professional row-based navigation with icons
 for section_key, modules in nav_groups:
     st.sidebar.markdown(f"<div class='nav-section-label'>{t(section_key)}</div>", unsafe_allow_html=True)
     
-    # Render each module as a clickable row
+    # Render each module as a clickable row with icon
     for module_id, number, title_key, subtitle_key in modules:
-        active_class = "active" if st.session_state.selected_module_id == module_id else ""
-        
-        # Use Streamlit button with custom styling
-        button_label = f"{number} — {t(title_key)}"
+        # Use Streamlit button with custom styling (icons added via CSS)
         if st.sidebar.button(
-            button_label, 
+            t(title_key),
             key=f"nav_{module_id}",
             type="secondary" if st.session_state.selected_module_id != module_id else "primary",
             use_container_width=True
         ):
             st.session_state.selected_module_id = module_id
             st.rerun()
+
+# Professional sidebar footer
+st.sidebar.markdown("---")
+sidebar_footer = """
+<div class='sidebar-footer'>
+    <div class='sidebar-footer-version'>Quantum Workbench v4.0.2</div>
+    <div class='sidebar-footer-status'>● System Operational</div>
+</div>
+"""
+st.sidebar.markdown(sidebar_footer, unsafe_allow_html=True)
 
 module_id = st.session_state.selected_module_id
 
@@ -2512,7 +2629,252 @@ if 'experiment_log' not in st.session_state:
 # Main content area with cyber-physical transition
 st.markdown("<div class='module-content'>", unsafe_allow_html=True)
 
-if module_id == "overview":
+if module_id == "home":
+    # Professional Home / Overview Landing Page
+    st.markdown("""
+    <div style='text-align: center; margin: 60px 0 40px 0;'>
+        <h1 style='font-size: 42px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; color: #FFFFFF;'>
+            Quantum Research Workbench
+        </h1>
+        <div style='font-size: 12px; font-weight: 600; color: rgba(99, 102, 241, 0.8); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;'>
+            Version 4.0.2
+        </div>
+        <p style='font-family: "Source Serif Pro", serif; font-size: 16px; color: rgba(230, 230, 230, 0.9); max-width: 720px; margin: 0 auto 32px auto; line-height: 1.7;'>
+            A high-fidelity computational environment for quantum state manipulation, variational optimization, and reproducible quantum experiments with publication-ready visualizations.
+        </p>
+        <button onclick="document.querySelector('[key=nav_bloch]').click()" style='
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(123, 97, 255, 0.9));
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: Inter, sans-serif;
+            letter-spacing: 0.02em;
+            transition: all 200ms ease;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        '>
+            Open Workbench →
+        </button>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # What You Can Do Here
+    st.markdown("""
+    <div style='margin: 60px 0 40px 0;'>
+        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+            Research Capabilities
+        </h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+        <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
+            <div style='font-size: 32px; margin-bottom: 16px;'>⚛️</div>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>State Manipulation</h3>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
+                Unitary evolution, Bloch sphere dynamics, density matrix formalism, and projective measurements in complex Hilbert spaces.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
+            <div style='font-size: 32px; margin-bottom: 16px;'>🔬</div>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Noise Modeling</h3>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
+                Realistic decoherence channels, T₁/T₂ relaxation, amplitude damping, and depolarizing noise with adjustable parameters.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
+            <div style='font-size: 32px; margin-bottom: 16px;'>🧬</div>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Variational Algorithms</h3>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
+                VQE, QAOA, and hybrid quantum-classical optimization with gradient-based training and ansatz design tools.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
+            <div style='font-size: 32px; margin-bottom: 16px;'>💾</div>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Reproducible Exports</h3>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
+                JSON snapshots with SHA-256 verification, circuit diagrams, measurement statistics, and research metadata.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Quick Start Guide
+    st.markdown("""
+    <div style='margin: 80px 0 40px 0;'>
+        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+            Quick Start Guide
+        </h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div style='text-align: center; padding: 24px;'>
+            <div style='
+                width: 60px; 
+                height: 60px; 
+                background: rgba(99, 102, 241, 0.15); 
+                border: 2px solid rgba(99, 102, 241, 0.5); 
+                border-radius: 50%; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                margin: 0 auto 20px auto;
+                font-size: 24px;
+                font-weight: 700;
+                color: rgba(99, 102, 241, 1);
+            '>1</div>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Select Module</h4>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
+                Choose from 12 specialized modules covering quantum foundations, algorithms, and hardware interfaces.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style='text-align: center; padding: 24px;'>
+            <div style='
+                width: 60px; 
+                height: 60px; 
+                background: rgba(99, 102, 241, 0.15); 
+                border: 2px solid rgba(99, 102, 241, 0.5); 
+                border-radius: 50%; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                margin: 0 auto 20px auto;
+                font-size: 24px;
+                font-weight: 700;
+                color: rgba(99, 102, 241, 1);
+            '>2</div>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Configure Parameters</h4>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
+                Adjust quantum parameters, noise models, backend selection, and measurement basis configurations.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style='text-align: center; padding: 24px;'>
+            <div style='
+                width: 60px; 
+                height: 60px; 
+                background: rgba(99, 102, 241, 0.15); 
+                border: 2px solid rgba(99, 102, 241, 0.5); 
+                border-radius: 50%; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                margin: 0 auto 20px auto;
+                font-size: 24px;
+                font-weight: 700;
+                color: rgba(99, 102, 241, 1);
+            '>3</div>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Run & Export</h4>
+            <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
+                Execute experiments, analyze results, and export research snapshots as JSON or PDF reports.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Featured Modules
+    st.markdown("""
+    <div style='margin: 80px 0 40px 0;'>
+        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+            Featured Modules
+        </h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3, col4, col5 = st.columns(5)
+    
+    featured_modules = [
+        ("bloch", "⚛️", "Bloch Sphere", "Hilbert space dynamics"),
+        ("entanglement", "🔗", "Entanglement", "Bell state correlations"),
+        ("noise", "📉", "Noise Models", "Decoherence channels"),
+        ("vqe", "🧬", "VQE", "Variational eigensolver"),
+        ("qml", "🧠", "Quantum ML", "Neural networks"),
+    ]
+    
+    for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
+        with col:
+            st.markdown(f"""
+            <div style='background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 200ms ease;'>
+                <div style='font-size: 36px; margin-bottom: 12px;'>{icon}</div>
+                <h4 style='font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #E8E8E8;'>{title}</h4>
+                <p style='font-size: 11px; color: rgba(180, 180, 180, 0.7);'>{subtitle}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"Open {title}", key=f"feat_{mod_id}", use_container_width=True):
+                st.session_state.selected_module_id = mod_id
+                st.rerun()
+    
+    # System Status Panel
+    st.markdown("""
+    <div style='margin: 80px 0 40px 0;'>
+        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+            System Status
+        </h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+        <div style='background: rgba(0, 255, 148, 0.05); border: 1px solid rgba(0, 255, 148, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Status</div>
+            <div style='font-size: 18px; font-weight: 700; color: rgba(0, 255, 148, 1);'>● OPERATIONAL</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style='background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Gate Fidelity</div>
+            <div style='font-size: 18px; font-weight: 700; color: rgba(99, 102, 241, 1);'>F > 99.9%</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style='background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Coherence Time</div>
+            <div style='font-size: 18px; font-weight: 700; color: rgba(99, 102, 241, 1);'>T₂ = 103μs</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div style='background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Backend</div>
+            <div style='font-size: 18px; font-weight: 700; color: rgba(99, 102, 241, 1);'>Simulator</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif module_id == "overview":
     # Add particle effect background
     add_particle_effect()
     
@@ -5051,7 +5413,7 @@ elif module_id == "topological":
     """, unsafe_allow_html=True)
 
 else:
-    st.markdown(f"# {selected_module}")
+    st.markdown(f"# {module_id.upper()}")
     st.markdown('<span class="research-status status-frontier">Module In Development</span>', unsafe_allow_html=True)
     
     st.markdown("""
