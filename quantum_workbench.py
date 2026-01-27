@@ -2402,7 +2402,10 @@ TRANSLATIONS = {
             "simulate": "Simulate",
             "calculate": "Calculate",
             "measure": "Measure",
-            "compose": "Compose"
+            "compose": "Compose",
+            "train_qk_svm": "Train Quantum Kernel SVM",
+            "run_vqe": "Run VQE Optimization",
+            "run_qaoa": "Run QAOA Optimization"
         },
         "common": {
             "yes": "Yes",
@@ -2412,6 +2415,30 @@ TRANSLATIONS = {
             "error": "Error",
             "success": "Success",
             "warning": "Warning"
+        },
+        "qml": {
+            "page_title": "Quantum Machine Learning",
+            "card_title": "Quantum Kernels & Variational Quantum Circuits",
+            "card_desc": "Quantum machine learning exploits quantum feature spaces and variational circuits for classification and regression tasks. We compare quantum kernel methods with classical baselines.",
+            "select_method": "Select QML Method",
+            "method_qk_svm": "Quantum Kernel SVM",
+            "method_vqc": "Variational Quantum Classifier",
+            "section_kernel": "Quantum Kernel Methods",
+            "feature_map_label": "Feature Map:",
+            "feature_map_desc": "U(x) embeds classical data into quantum Hilbert space",
+            "kernel_label": "Kernel:",
+            "kernel_desc": "Inner product in feature space computed via quantum circuits",
+            "classical_ml_label": "Classical ML:",
+            "classical_ml_desc": "Use kernel matrix K for SVM training",
+            "slider_samples": "Number of Samples",
+            "slider_noise": "Dataset Noise",
+            "status_computing": "Computing quantum kernel matrix...",
+            "status_training": "Training quantum kernel SVM...",
+            "metric_classical": "Classical RBF Kernel Accuracy",
+            "metric_quantum": "Quantum Kernel Accuracy",
+            "chart_classical": "Classical RBF Kernel",
+            "chart_quantum": "Quantum Kernel",
+            "success_training": "✓ Training complete. Quantum advantage:"
         },
         "charts": {
             "interference": {
@@ -2615,7 +2642,10 @@ TRANSLATIONS = {
             "simulate": "Симулировать",
             "calculate": "Вычислить",
             "measure": "Измерить",
-            "compose": "Составить"
+            "compose": "Составить",
+            "train_qk_svm": "Обучить Квантовое Ядерное SVM",
+            "run_vqe": "Запустить Оптимизацию VQE",
+            "run_qaoa": "Запустить Оптимизацию QAOA"
         },
         "common": {
             "yes": "Да",
@@ -2625,6 +2655,30 @@ TRANSLATIONS = {
             "error": "Ошибка",
             "success": "Успешно",
             "warning": "Внимание"
+        },
+        "qml": {
+            "page_title": "Квантовое Машинное Обучение",
+            "card_title": "Квантовые Ядра и Вариационные Квантовые Схемы",
+            "card_desc": "Квантовое машинное обучение использует квантовые пространства признаков и вариационные схемы для задач классификации и регрессии. Мы сравниваем методы квантовых ядер с классическими базовыми моделями.",
+            "select_method": "Выберите Метод КМО",
+            "method_qk_svm": "Квантовое Ядерное SVM",
+            "method_vqc": "Вариационный Квантовый Классификатор",
+            "section_kernel": "Методы Квантовых Ядер",
+            "feature_map_label": "Карта Признаков:",
+            "feature_map_desc": "U(x) вкладывает классические данные в квантовое пространство Гильберта",
+            "kernel_label": "Ядро:",
+            "kernel_desc": "Внутреннее произведение в пространстве признаков вычисляется с помощью квантовых схем",
+            "classical_ml_label": "Классическое МО:",
+            "classical_ml_desc": "Используйте ядерную матрицу K для обучения SVM",
+            "slider_samples": "Количество Образцов",
+            "slider_noise": "Шум Данных",
+            "status_computing": "Вычисление квантовой ядерной матрицы...",
+            "status_training": "Обучение квантового ядерного SVM...",
+            "metric_classical": "Точность Классического RBF Ядра",
+            "metric_quantum": "Точность Квантового Ядра",
+            "chart_classical": "Классическое RBF Ядро",
+            "chart_quantum": "Квантовое Ядро",
+            "success_training": "✓ Обучение завершено. Квантовое преимущество:"
         },
         "charts": {
             "interference": {
@@ -5042,33 +5096,30 @@ elif module_id == "qml":
     add_neural_network_bg()
     
     st.markdown("<div class='qml-neural'>", unsafe_allow_html=True)
-    st.markdown("# Quantum Machine Learning")
-    st.markdown('<span class="research-status status-active">Hybrid QML</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('qml.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.hybrid")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class='research-card'>
-        <h3>Quantum Kernels & Variational Quantum Circuits</h3>
-        <p>Quantum machine learning exploits quantum feature spaces and variational circuits for 
-        classification and regression tasks. We compare quantum kernel methods with classical baselines.</p>
+    st.markdown(f"""<div class='research-card'>
+        <h3>{t('qml.card_title')}</h3>
+        <p>{t('qml.card_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
-    qml_method = st.selectbox("Select QML Method", 
-                              ["Quantum Kernel SVM", "Variational Quantum Classifier"],
+    qml_method = st.selectbox(t('qml.select_method'), 
+                              [t('qml.method_qk_svm'), t('qml.method_vqc')],
                               key="qml_method")
     
-    if qml_method == "Quantum Kernel SVM":
-        st.markdown("### Quantum Kernel Methods")
+    if qml_method == t('qml.method_qk_svm'):
+        st.markdown(f"### {t('qml.section_kernel')}")
         
         st.latex(r"""
         K(x, x') = |\langle\phi(x)|\phi(x')\rangle|^2
         """)
         
-        st.markdown("""
-        <div class='latex-display'>
-            <p><strong>Feature Map:</strong> U(x) embeds classical data into quantum Hilbert space</p>
-            <p><strong>Kernel:</strong> Inner product in feature space computed via quantum circuits</p>
-            <p><strong>Classical ML:</strong> Use kernel matrix K for SVM training</p>
+        st.markdown(f"""<div class='latex-display'>
+            <p><strong>{t('qml.feature_map_label')}</strong> {t('qml.feature_map_desc')}</p>
+            <p><strong>{t('qml.kernel_label')}</strong> {t('qml.kernel_desc')}</p>
+            <p><strong>{t('qml.classical_ml_label')}</strong> {t('qml.classical_ml_desc')}</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -5077,10 +5128,10 @@ elif module_id == "qml":
         from sklearn.svm import SVC
         from sklearn.model_selection import train_test_split
         
-        n_samples = st.slider("Number of Samples", 50, 200, 100, 10, key="qml_samples")
-        noise_level = st.slider("Dataset Noise", 0.0, 0.3, 0.1, 0.05, key="qml_noise")
+        n_samples = st.slider(t('qml.slider_samples'), 50, 200, 100, 10, key="qml_samples")
+        noise_level = st.slider(t('qml.slider_noise'), 0.0, 0.3, 0.1, 0.05, key="qml_noise")
         
-        if st.button("Train Quantum Kernel SVM", type="primary", key="train_qk_svm"):
+        if st.button(t('buttons.train_qk_svm'), type="primary", key="train_qk_svm"):
             # Generate data
             X, y = make_moons(n_samples=n_samples, noise=noise_level, random_state=42)
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -5092,7 +5143,7 @@ elif module_id == "qml":
             progress = st.progress(0)
             status = st.empty()
             
-            status.markdown("**Computing quantum kernel matrix...**")
+            status.markdown(f"**{t('qml.status_computing')}**")
             progress.progress(0.3)
             time.sleep(0.5)
             
@@ -5101,7 +5152,7 @@ elif module_id == "qml":
             clf_classical.fit(X_train, y_train)
             acc_classical = clf_classical.score(X_test, y_test)
             
-            status.markdown("**Training quantum kernel SVM...**")
+            status.markdown(f"**{t('qml.status_training')}**")
             progress.progress(0.6)
             time.sleep(0.5)
             
@@ -5120,7 +5171,7 @@ elif module_id == "qml":
                 st.markdown(f"""
                 <div class='metric-box'>
                     <h3>{acc_classical:.3f}</h3>
-                    <p>Classical RBF Kernel Accuracy</p>
+                    <p>{t('qml.metric_classical')}</p>
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -5128,7 +5179,7 @@ elif module_id == "qml":
                 st.markdown(f"""
                 <div class='metric-box'>
                     <h3>{acc_quantum:.3f}</h3>
-                    <p>Quantum Kernel Accuracy</p>
+                    <p>{t('qml.metric_quantum')}</p>
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -5145,7 +5196,7 @@ elif module_id == "qml":
             Z_quantum = Z_quantum.reshape(xx.shape)
             
             fig_decision = make_subplots(rows=1, cols=2, 
-                                        subplot_titles=('Classical RBF Kernel', 'Quantum Kernel'))
+                                        subplot_titles=(t('qml.chart_classical'), t('qml.chart_quantum')))
             
             fig_decision.add_trace(go.Contour(
                 x=xx[0], y=yy[:, 0], z=Z_classical,
@@ -5180,7 +5231,7 @@ elif module_id == "qml":
             
             st.plotly_chart(fig_decision, use_container_width=True, key="qml_decision_boundary")
             
-            st.success(f"✓ Training complete. Quantum advantage: {(acc_quantum - acc_classical)*100:+.2f}%")
+            st.success(f"{t('qml.success_training')} {(acc_quantum - acc_classical)*100:+.2f}%")
 
 elif module_id == "circuits":
     # Add matrix rain effect
