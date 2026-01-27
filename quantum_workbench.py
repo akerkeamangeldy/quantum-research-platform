@@ -2416,6 +2416,69 @@ TRANSLATIONS = {
             "success": "Success",
             "warning": "Warning"
         },
+        "noise": {
+            "page_title": "Noise, Decoherence & Density Matrix Formalism",
+            "card_title": "Open Quantum Systems & Mixed States",
+            "card_desc": "Real quantum systems interact with their environment, leading to decoherence. The density matrix formalism describes both pure and mixed states, essential for modeling NISQ-era quantum computing.",
+            "section_init": "Initial State Configuration",
+            "slider_theta": "Initial θ",
+            "slider_phi": "Initial φ",
+            "section_channel": "Noise Channel Selection",
+            "select_channel": "Noise Channel",
+            "channel_depolarizing": "Depolarizing",
+            "channel_dephasing": "Dephasing",
+            "channel_amplitude": "Amplitude Damping",
+            "slider_strength": "Noise Strength",
+            "metric_purity": "Purity (Tr(ρ²))",
+            "metric_bloch": "Bloch Vector Length",
+            "section_relaxation": "T₁ & T₂ Relaxation",
+            "input_t1": "T₁ (μs)",
+            "input_t2": "T₂ (μs)",
+            "chart_re_initial": "Re(ρ) - Initial",
+            "chart_im_initial": "Im(ρ) - Initial",
+            "chart_re_noise": "Re(ρ) - After Noise",
+            "chart_im_noise": "Im(ρ) - After Noise"
+        },
+        "vqe": {
+            "page_title": "VQE: Variational Quantum Eigensolver",
+            "card_title": "Hybrid Quantum-Classical Ground State Search",
+            "card_desc": "VQE combines parameterized quantum circuits (ansätze) with classical optimizers to find molecular ground states. Crucial for quantum chemistry and materials science.",
+            "section_config": "Experiment Configuration",
+            "slider_depth": "Ansatz Depth (layers)",
+            "slider_iterations": "Optimization Iterations",
+            "select_optimizer": "Optimizer",
+            "optimizer_cobyla": "COBYLA",
+            "optimizer_nelder": "Nelder-Mead",
+            "optimizer_powell": "Powell",
+            "button_run": "Run VQE Optimization",
+            "status_running": "Running VQE optimization...",
+            "metric_energy": "Ground State Energy",
+            "metric_exact": "Exact Energy (FCI)",
+            "metric_error": "Chemical Accuracy",
+            "section_background": "Theoretical Background",
+            "bg_hamiltonian": "Hamiltonian:",
+            "bg_ansatz": "Ansatz:",
+            "bg_optimization": "Optimization:"
+        },
+        "qaoa": {
+            "page_title": "QAOA: Quantum Approximate Optimization",
+            "card_title": "Variational Combinatorial Optimization",
+            "card_desc": "QAOA solves NP-hard combinatorial problems using alternating problem and mixer Hamiltonians. Promising for logistics, scheduling, and graph problems.",
+            "select_problem": "Select Optimization Problem",
+            "problem_maxcut": "MaxCut",
+            "problem_partition": "Number Partitioning",
+            "problem_coloring": "Graph Coloring",
+            "section_maxcut": "MaxCut Problem",
+            "slider_nodes": "Number of Nodes",
+            "slider_layers": "QAOA Layers (p)",
+            "button_run": "Run QAOA Optimization",
+            "section_solution": "Solution Probability Distribution",
+            "msg_found": "✅ Found MaxCut solution:",
+            "msg_value": "with cut value",
+            "msg_logged": "💾 Experiment logged! Visit 'Reproducibility & Export' to download results.",
+            "msg_partition": "Number Partitioning implementation coming soon!",
+            "msg_coloring": "Graph Coloring implementation coming soon!"
+        },
         "qml": {
             "page_title": "Quantum Machine Learning",
             "card_title": "Quantum Kernels & Variational Quantum Circuits",
@@ -2439,6 +2502,73 @@ TRANSLATIONS = {
             "chart_classical": "Classical RBF Kernel",
             "chart_quantum": "Quantum Kernel",
             "success_training": "✓ Training complete. Quantum advantage:"
+        },
+        "circuits": {
+            "page_title": "Quantum Circuits & Unitaries",
+            "card_title": "Circuit-to-Physics Bridge",
+            "card_desc": "Quantum circuits are sequences of unitary operations acting on qubits. This module demonstrates circuit construction, unitary evolution, and the mapping between gate sequences and quantum state transformations.",
+            "section_build": "Build Quantum Circuit",
+            "select_init": "Initial State",
+            "state_0": "|0⟩",
+            "state_1": "|1⟩",
+            "state_plus": "|+⟩ = (|0⟩+|1⟩)/√2",
+            "state_minus": "|-⟩ = (|0⟩-|1⟩)/√2",
+            "state_custom": "Custom",
+            "slider_custom_theta": "Custom θ",
+            "slider_custom_phi": "Custom φ",
+            "section_gates": "Gate Sequence (applied left to right)",
+            "select_gates": "Add gates to circuit",
+            "button_simulate": "Simulate Measurement (1000 shots)"
+        },
+        "export": {
+            "page_title": "Reproducibility & Data Export",
+            "card_title": "Research Data Management",
+            "card_desc": "Export experimental results, state vectors, and circuit configurations for reproducible research. All exports include SHA-256 verification hashes.",
+            "section_log": "Experiment Log",
+            "button_export": "Export All Experiments",
+            "msg_no_experiments": "No experiments logged yet. Run experiments in other modules to populate this log.",
+            "msg_no_export": "No experiments to export.",
+            "msg_pdf": "PDF generation would create a publication-ready report with experiment details, circuit diagrams, and full parameter specifications."
+        },
+        "qec": {
+            "page_title": "Quantum Error Correction",
+            "card_title": "Surface Codes & Logical Qubits",
+            "card_desc": "Quantum error correction is essential for fault-tolerant quantum computation. Surface codes detect and correct both bit-flip and phase-flip errors using stabilizer measurements.",
+            "section_config": "Error Correction Configuration",
+            "select_code": "QEC Code",
+            "button_simulate": "Simulate Error Correction"
+        },
+        "hardware": {
+            "page_title": "QPU Hardware Topology",
+            "card_title": "Quantum Processing Unit Architectures",
+            "card_desc": "Modern QPUs have specific connectivity constraints affecting gate decomposition and circuit depth. Understanding topology is crucial for optimizing quantum algorithms.",
+            "select_platform": "Select Quantum Platform",
+            "platform_ibm": "IBM Heavy-Hex",
+            "platform_google": "Google Sycamore",
+            "platform_ionq": "IonQ All-to-All",
+            "section_analysis": "Connectivity Analysis",
+            "metric_qubits": "Qubits",
+            "metric_avg_connect": "Avg Connectivity",
+            "metric_diameter": "Graph Diameter"
+        },
+        "complexity": {
+            "page_title": "Complexity Theory & Quantum Advantage",
+            "card_title": "BQP vs Classical Complexity Classes",
+            "card_desc": "Quantum complexity theory studies the computational power of quantum algorithms. BQP (Bounded-error Quantum Polynomial time) is believed to be strictly larger than P but not containing NP-complete problems.",
+            "select_algorithm": "Select Algorithm",
+            "algo_shor": "Shor's Factoring",
+            "algo_grover": "Grover's Search",
+            "algo_simon": "Simon's Algorithm",
+            "button_run": "Find Factors"
+        },
+        "topological": {
+            "page_title": "Topological Quantum Computing",
+            "card_title": "Anyonic Braiding & Fault Tolerance",
+            "card_desc": "Topological quantum computing encodes information in topologically protected states immune to local perturbations. Anyonic braiding operations are inherently fault-tolerant.",
+            "select_braid": "Braid Type",
+            "braid_identity": "Identity (No Braid)",
+            "braid_exchange": "Simple Exchange",
+            "braid_fibonacci": "Fibonacci Braid"
         },
         "charts": {
             "interference": {
@@ -2656,6 +2786,69 @@ TRANSLATIONS = {
             "success": "Успешно",
             "warning": "Внимание"
         },
+        "noise": {
+            "page_title": "Шумы, Декогеренция и Формализм Матрицы Плотности",
+            "card_title": "Открытые Квантовые Системы и Смешанные Состояния",
+            "card_desc": "Реальные квантовые системы взаимодействуют с окружающей средой, что приводит к декогеренции. Формализм матрицы плотности описывает как чистые, так и смешанные состояния, что необходимо для моделирования квантовых вычислений эпохи NISQ.",
+            "section_init": "Конфигурация Начального Состояния",
+            "slider_theta": "Начальный θ",
+            "slider_phi": "Начальный φ",
+            "section_channel": "Выбор Канала Шума",
+            "select_channel": "Канал Шума",
+            "channel_depolarizing": "Деполяризующий",
+            "channel_dephasing": "Дефазирующий",
+            "channel_amplitude": "Затухание Амплитуды",
+            "slider_strength": "Сила Шума",
+            "metric_purity": "Чистота (Tr(ρ²))",
+            "metric_bloch": "Длина Вектора Блоха",
+            "section_relaxation": "Релаксация T₁ и T₂",
+            "input_t1": "T₁ (мкс)",
+            "input_t2": "T₂ (мкс)",
+            "chart_re_initial": "Re(ρ) - Начальное",
+            "chart_im_initial": "Im(ρ) - Начальное",
+            "chart_re_noise": "Re(ρ) - После Шума",
+            "chart_im_noise": "Im(ρ) - После Шума"
+        },
+        "vqe": {
+            "page_title": "VQE: Вариационный Квантовый Собственный Решатель",
+            "card_title": "Гибридный Квантово-Классический Поиск Основного Состояния",
+            "card_desc": "VQE сочетает параметризованные квантовые схемы (ансацы) с классическими оптимизаторами для поиска основных состояний молекул. Критически важен для квантовой химии и материаловедения.",
+            "section_config": "Конфигурация Эксперимента",
+            "slider_depth": "Глубина Ансаца (слои)",
+            "slider_iterations": "Итерации Оптимизации",
+            "select_optimizer": "Оптимизатор",
+            "optimizer_cobyla": "COBYLA",
+            "optimizer_nelder": "Нелдера-Мида",
+            "optimizer_powell": "Пауэлла",
+            "button_run": "Запустить Оптимизацию VQE",
+            "status_running": "Выполнение оптимизации VQE...",
+            "metric_energy": "Энергия Основного Состояния",
+            "metric_exact": "Точная Энергия (FCI)",
+            "metric_error": "Химическая Точность",
+            "section_background": "Теоретическая Основа",
+            "bg_hamiltonian": "Гамильтониан:",
+            "bg_ansatz": "Ансац:",
+            "bg_optimization": "Оптимизация:"
+        },
+        "qaoa": {
+            "page_title": "QAOA: Квантовая Приближенная Оптимизация",
+            "card_title": "Вариационная Комбинаторная Оптимизация",
+            "card_desc": "QAOA решает NP-сложные комбинаторные задачи, используя чередующиеся гамильтонианы проблемы и смешивания. Перспективен для логистики, планирования и задач на графах.",
+            "select_problem": "Выберите Задачу Оптимизации",
+            "problem_maxcut": "Максимальный Разрез",
+            "problem_partition": "Разбиение Чисел",
+            "problem_coloring": "Раскраска Графа",
+            "section_maxcut": "Задача Максимального Разреза",
+            "slider_nodes": "Количество Узлов",
+            "slider_layers": "Слои QAOA (p)",
+            "button_run": "Запустить Оптимизацию QAOA",
+            "section_solution": "Распределение Вероятности Решений",
+            "msg_found": "✅ Найдено решение MaxCut:",
+            "msg_value": "со значением разреза",
+            "msg_logged": "💾 Эксперимент зарегистрирован! Посетите 'Воспроизводимость и Экспорт' для загрузки результатов.",
+            "msg_partition": "Реализация разбиения чисел скоро появится!",
+            "msg_coloring": "Реализация раскраски графа скоро появится!"
+        },
         "qml": {
             "page_title": "Квантовое Машинное Обучение",
             "card_title": "Квантовые Ядра и Вариационные Квантовые Схемы",
@@ -2679,6 +2872,73 @@ TRANSLATIONS = {
             "chart_classical": "Классическое RBF Ядро",
             "chart_quantum": "Квантовое Ядро",
             "success_training": "✓ Обучение завершено. Квантовое преимущество:"
+        },
+        "circuits": {
+            "page_title": "Квантовые Схемы и Унитарные Операторы",
+            "card_title": "Мост между Схемами и Физикой",
+            "card_desc": "Квантовые схемы — это последовательности унитарных операций, действующих на кубиты. Этот модуль демонстрирует построение схем, унитарную эволюцию и отображение между последовательностями гейтов и трансформациями квантовых состояний.",
+            "section_build": "Построение Квантовой Схемы",
+            "select_init": "Начальное Состояние",
+            "state_0": "|0⟩",
+            "state_1": "|1⟩",
+            "state_plus": "|+⟩ = (|0⟩+|1⟩)/√2",
+            "state_minus": "|-⟩ = (|0⟩-|1⟩)/√2",
+            "state_custom": "Пользовательское",
+            "slider_custom_theta": "Пользовательский θ",
+            "slider_custom_phi": "Пользовательский φ",
+            "section_gates": "Последовательность Гейтов (применяется слева направо)",
+            "select_gates": "Добавить гейты в схему",
+            "button_simulate": "Симулировать Измерение (1000 выстрелов)"
+        },
+        "export": {
+            "page_title": "Воспроизводимость и Экспорт Данных",
+            "card_title": "Управление Исследовательскими Данными",
+            "card_desc": "Экспортируйте экспериментальные результаты, векторы состояний и конфигурации схем для воспроизводимых исследований. Все экспорты включают хеши верификации SHA-256.",
+            "section_log": "Журнал Экспериментов",
+            "button_export": "Экспортировать Все Эксперименты",
+            "msg_no_experiments": "Эксперименты пока не зарегистрированы. Запустите эксперименты в других модулях, чтобы заполнить этот журнал.",
+            "msg_no_export": "Нет экспериментов для экспорта.",
+            "msg_pdf": "Генерация PDF создаст готовый к публикации отчет с деталями эксперимента, диаграммами схем и полной спецификацией параметров."
+        },
+        "qec": {
+            "page_title": "Квантовая Коррекция Ошибок",
+            "card_title": "Поверхностные Коды и Логические Кубиты",
+            "card_desc": "Квантовая коррекция ошибок необходима для отказоустойчивых квантовых вычислений. Поверхностные коды обнаруживают и исправляют как переворот бита, так и переворот фазы, используя измерения стабилизаторов.",
+            "section_config": "Конфигурация Коррекции Ошибок",
+            "select_code": "Код ККО",
+            "button_simulate": "Симулировать Коррекцию Ошибок"
+        },
+        "hardware": {
+            "page_title": "Топология Оборудования КПУ",
+            "card_title": "Архитектуры Квантового Процессора",
+            "card_desc": "Современные КПУ имеют специфические ограничения связности, влияющие на декомпозицию гейтов и глубину схем. Понимание топологии критически важно для оптимизации квантовых алгоритмов.",
+            "select_platform": "Выберите Квантовую Платформу",
+            "platform_ibm": "IBM Heavy-Hex",
+            "platform_google": "Google Sycamore",
+            "platform_ionq": "IonQ Все-со-Всеми",
+            "section_analysis": "Анализ Связности",
+            "metric_qubits": "Кубиты",
+            "metric_avg_connect": "Средняя Связность",
+            "metric_diameter": "Диаметр Графа"
+        },
+        "complexity": {
+            "page_title": "Теория Сложности и Квантовое Преимущество",
+            "card_title": "BQP против Классических Классов Сложности",
+            "card_desc": "Теория квантовой сложности изучает вычислительную мощность квантовых алгоритмов. Считается, что BQP (Полиномиальное время с ограниченной ошибкой) строго больше P, но не содержит NP-полные задачи.",
+            "select_algorithm": "Выберите Алгоритм",
+            "algo_shor": "Алгоритм Шора (факторизация)",
+            "algo_grover": "Поиск Гровера",
+            "algo_simon": "Алгоритм Саймона",
+            "button_run": "Найти Множители"
+        },
+        "topological": {
+            "page_title": "Топологические Квантовые Вычисления",
+            "card_title": "Плетение Анионов и Отказоустойчивость",
+            "card_desc": "Топологические квантовые вычисления кодируют информацию в топологически защищенных состояниях, невосприимчивых к локальным возмущениям. Операции плетения анионов по своей природе отказоустойчивы.",
+            "select_braid": "Тип Плетения",
+            "braid_identity": "Тождество (Без Плетения)",
+            "braid_exchange": "Простой Обмен",
+            "braid_fibonacci": "Плетение Фибоначчи"
         },
         "charts": {
             "interference": {
@@ -4433,15 +4693,12 @@ elif module_id == "entanglement":
 
 elif module_id == "noise":
     st.markdown("<div class='noise-static'>", unsafe_allow_html=True)
-    st.markdown("# Noise, Decoherence & Density Matrix Formalism")
-    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('noise.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.active")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class='research-card'>
-        <h3>Open Quantum Systems & Mixed States</h3>
-        <p>Real quantum systems interact with their environment, leading to decoherence. 
-        The density matrix formalism describes both pure and mixed states, essential for 
-        modeling NISQ-era quantum computing.</p>
+    st.markdown(f"""<div class='research-card'>
+        <h3>{t('noise.card_title')}</h3>
+        <p>{t('noise.card_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -4461,9 +4718,9 @@ elif module_id == "noise":
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.markdown("### Initial State Configuration")
-        theta_noise = st.slider("Initial θ", 0, 180, 90, 5, key="theta_noise")
-        phi_noise = st.slider("Initial φ", 0, 360, 0, 5, key="phi_noise")
+        st.markdown(f"### {t('noise.section_init')}")
+        theta_noise = st.slider(t('noise.slider_theta'), 0, 180, 90, 5, key="theta_noise")
+        phi_noise = st.slider(t('noise.slider_phi'), 0, 360, 0, 5, key="phi_noise")
         
         # Prepare initial density matrix
         theta_rad = np.radians(theta_noise)
@@ -4471,11 +4728,11 @@ elif module_id == "noise":
         psi = np.array([np.cos(theta_rad/2), np.exp(1j*phi_rad)*np.sin(theta_rad/2)])
         rho_initial = np.outer(psi, psi.conj())
         
-        st.markdown("### Noise Channel Selection")
-        noise_type = st.selectbox("Noise Channel", 
-                                  ["Depolarizing", "Dephasing", "Amplitude Damping"],
+        st.markdown(f"### {t('noise.section_channel')}")
+        noise_type = st.selectbox(t('noise.select_channel'), 
+                                  [t('noise.channel_depolarizing'), t('noise.channel_dephasing'), t('noise.channel_amplitude')],
                                   key="noise_channel")
-        noise_strength = st.slider("Noise Strength", 0.0, 1.0, 0.3, 0.05, key="noise_str")
+        noise_strength = st.slider(t('noise.slider_strength'), 0.0, 1.0, 0.3, 0.05, key="noise_str")
         
         # Apply noise
         rho_noisy = apply_noise_channel(rho_initial, noise_type, noise_strength)
