@@ -3184,7 +3184,9 @@ TRANSLATIONS = {
             }
         }
     }
-}
+
+# Legacy translations (empty for backward compatibility)  
+TRANSLATIONS_LEGACY = {}
 
 # Translation helper function with dot-notation support
 def t(key, fallback=None):
@@ -3243,9 +3245,7 @@ with col_lang2:
 st.sidebar.markdown("---")
 
 # Professional brand header
-        
-        # ===== MODULE TITLES & SUBTITLES =====
-        'module_home': 'Home',
+brand_header = f"""
         'module_overview': 'Theoretical Framework',
         'module_bloch': 'Hilbert Space Dynamics',
         'module_interference': 'Coherent Superposition',
@@ -3389,9 +3389,20 @@ st.sidebar.markdown("---")
     }
 }
 
+# Legacy translations (empty for backward compatibility)  
+TRANSLATIONS_LEGACY = {}
+
 # Translation helper function with dot-notation support
-        # ===== GLOBAL UI =====
-        'title': 'КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2',
+def t(key, fallback=None):
+    """
+    Get translation for current language with fallback
+    Supports dot notation: t('home_page.hero_title') or legacy flat keys: t('title')
+    """
+    lang = st.session_state.get('language', 'en')
+    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
+    
+    # Support dot notation for nested JSON structure
+    if '.' in key:
         'system_status': 'СТАТУС СИСТЕМЫ',
         'operational': 'РАБОТАЕТ',
         'coherence_time': 'ВРЕМЯ КОГЕРЕНТНОСТИ',
