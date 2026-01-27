@@ -3345,15 +3345,21 @@ elif module_id == "bloch":
     \alpha = \cos(\theta/2), \quad \beta = e^{i\phi}\sin(\theta/2) \quad \text{(Bloch Parameterization)}
     """)
     
+    manifold_title = t('bloch_manifold_title')
+    manifold_desc = t('bloch_manifold_desc')
+    pure_state = t('bloch_pure_state')
+    mixed_state = t('bloch_mixed_state')
+    maximally_mixed = t('bloch_maximally_mixed')
+    
     st.markdown(f"""
     <div class='latex-display'>
-        <p style='font-family: "Source Serif Pro", serif;'><strong>{t('bloch_manifold_title')}</strong> 
-        {t('bloch_manifold_desc')}</p>
+        <p style='font-family: "Source Serif Pro", serif;'><strong>{manifold_title}</strong> 
+        {manifold_desc}</p>
         
         <p style='font-family: "JetBrains Mono", monospace; font-size: 13px; margin-top: 16px;'>
-        <strong>{t('bloch_pure_state')}</strong> <code>|r| = 1</code> (sphere surface)<br>
-        <strong>{t('bloch_mixed_state')}</strong> <code>|r| < 1</code> (interior volume, density matrix $\\rho$)<br>
-        <strong>{t('bloch_maximally_mixed')}</strong> <code>|r| = 0</code> (sphere center, $\\rho = \\mathbb{I}/2$)
+        <strong>{pure_state}</strong> <code>|r| = 1</code> (sphere surface)<br>
+        <strong>{mixed_state}</strong> <code>|r| &lt; 1</code> (interior volume, density matrix $\\rho$)<br>
+        <strong>{maximally_mixed}</strong> <code>|r| = 0</code> (sphere center, $\\rho = \\mathbb{{I}}/2$)
         </p>
     </div>
     """, unsafe_allow_html=True)
