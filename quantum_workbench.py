@@ -2939,7 +2939,7 @@ if module_id == "home":
         </div>
         """, unsafe_allow_html=True)
     
-    # Featured Modules - Professional Research Dashboard Style
+    # Featured Modules - Compact Grid with Professional Styling
     st.markdown("""
     <div style='margin: 80px 0 40px 0;'>
         <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
@@ -2948,74 +2948,66 @@ if module_id == "home":
     </div>
     """, unsafe_allow_html=True)
     
-    # Create responsive grid with proper spacing
-    st.markdown("""
-    <div style='
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 18px;
-        margin-bottom: 60px;
-    '>
-    """, unsafe_allow_html=True)
+    col1, col2, col3, col4, col5 = st.columns(5, gap="medium")
     
     featured_modules = [
-        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
-        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
-        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
-        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
-        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
+        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
+        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
+        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
+        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
+        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
     ]
     
-    for mod_id, icon, title, subtitle in featured_modules:
-        st.markdown(f"""
-        <div class='featured-module-card' style='
-            background: rgba(26, 26, 26, 0.4);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            border-radius: 12px;
-            padding: 24px 20px;
-            text-align: center;
-            transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        '>
-            <div style='margin-bottom: 6px; display: flex; justify-content: center; align-items: center;'>
-                {icon}
-            </div>
-            <div style='flex: 1; display: flex; flex-direction: column; gap: 6px;'>
+    for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
+        with col:
+            # Card content
+            st.markdown(f"""
+            <div class='featured-module-card' style='
+                background: rgba(26, 26, 26, 0.4);
+                border: 1px solid rgba(99, 102, 241, 0.15);
+                border-radius: 12px;
+                padding: 20px 16px 16px 16px;
+                text-align: center;
+                transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+                margin-bottom: 10px;
+            '>
+                <div style='margin-bottom: 12px; display: flex; justify-content: center; align-items: center;'>
+                    {icon}
+                </div>
                 <h4 style='
                     font-family: Inter, sans-serif;
-                    font-size: 14px;
+                    font-size: 13px;
                     font-weight: 600;
                     line-height: 1.3;
                     color: #E8E8E8;
-                    margin: 0;
-                    word-break: normal;
+                    margin: 0 0 6px 0;
+                    word-break: keep-all;
                     overflow-wrap: normal;
                     hyphens: none;
                     white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 '>{title}</h4>
                 <p style='
                     font-family: Inter, sans-serif;
                     font-size: 11px;
-                    line-height: 1.4;
+                    line-height: 1.35;
                     color: rgba(180, 180, 180, 0.65);
                     margin: 0;
-                    word-break: normal;
+                    word-break: keep-all;
                     overflow-wrap: normal;
                     hyphens: none;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 '>{subtitle}</p>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Professional compact button below card
-        if st.button("Launch", key=f"feat_{mod_id}", use_container_width=True):
-            st.session_state.selected_module_id = mod_id
-            st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+            
+            # Compact professional button
+            if st.button("Launch", key=f"feat_{mod_id}", use_container_width=True):
+                st.session_state.selected_module_id = mod_id
+                st.rerun()
     
     # System Status Panel
     st.markdown("""
