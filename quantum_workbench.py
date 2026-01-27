@@ -2688,7 +2688,13 @@ if module_id == "home":
     with col1:
         st.markdown("""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
-            <div style='font-size: 32px; margin-bottom: 16px;'>⚛️</div>
+            <div style='margin-bottom: 18px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                    <circle cx='12' cy='12' r='1'/>
+                    <circle cx='12' cy='12' r='5'/>
+                    <circle cx='12' cy='12' r='9'/>
+                </svg>
+            </div>
             <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>State Manipulation</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
                 Unitary evolution, Bloch sphere dynamics, density matrix formalism, and projective measurements in complex Hilbert spaces.
@@ -2699,7 +2705,11 @@ if module_id == "home":
     with col2:
         st.markdown("""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
-            <div style='font-size: 32px; margin-bottom: 16px;'>🔬</div>
+            <div style='margin-bottom: 18px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                    <path d='M22 12h-4l-3 9L9 3l-3 9H2'/>
+                </svg>
+            </div>
             <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Noise Modeling</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
                 Realistic decoherence channels, T₁/T₂ relaxation, amplitude damping, and depolarizing noise with adjustable parameters.
@@ -2710,7 +2720,14 @@ if module_id == "home":
     with col3:
         st.markdown("""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
-            <div style='font-size: 32px; margin-bottom: 16px;'>🧬</div>
+            <div style='margin-bottom: 18px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                    <line x1='6' y1='3' x2='6' y2='15'/>
+                    <circle cx='18' cy='6' r='3'/>
+                    <circle cx='6' cy='18' r='3'/>
+                    <path d='M18 9a9 9 0 0 1-9 9'/>
+                </svg>
+            </div>
             <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Variational Algorithms</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
                 VQE, QAOA, and hybrid quantum-classical optimization with gradient-based training and ansatz design tools.
@@ -2721,7 +2738,13 @@ if module_id == "home":
     with col4:
         st.markdown("""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
-            <div style='font-size: 32px; margin-bottom: 16px;'>💾</div>
+            <div style='margin-bottom: 18px;'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                    <path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/>
+                    <polyline points='7 10 12 15 17 10'/>
+                    <line x1='12' y1='15' x2='12' y2='3'/>
+                </svg>
+            </div>
             <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Reproducible Exports</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
                 JSON snapshots with SHA-256 verification, circuit diagrams, measurement statistics, and research metadata.
@@ -2824,18 +2847,18 @@ if module_id == "home":
     col1, col2, col3, col4, col5 = st.columns(5)
     
     featured_modules = [
-        ("bloch", "⚛️", "Bloch Sphere", "Hilbert space dynamics"),
-        ("entanglement", "🔗", "Entanglement", "Bell state correlations"),
-        ("noise", "📉", "Noise Models", "Decoherence channels"),
-        ("vqe", "🧬", "VQE", "Variational eigensolver"),
-        ("qml", "🧠", "Quantum ML", "Neural networks"),
+        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space dynamics"),
+        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell state correlations"),
+        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence channels"),
+        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Variational eigensolver"),
+        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural networks"),
     ]
     
     for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
         with col:
             st.markdown(f"""
             <div style='background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 200ms ease;'>
-                <div style='font-size: 36px; margin-bottom: 12px;'>{icon}</div>
+                <div style='margin-bottom: 14px; display: flex; justify-content: center; align-items: center;'>{icon}</div>
                 <h4 style='font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #E8E8E8;'>{title}</h4>
                 <p style='font-size: 11px; color: rgba(180, 180, 180, 0.7);'>{subtitle}</p>
             </div>
