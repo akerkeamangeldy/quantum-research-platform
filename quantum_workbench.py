@@ -609,6 +609,34 @@ st.markdown("""
         }
     }
     
+    /* Featured modules responsive grid - professional breakpoints */
+    @media (max-width: 1200px) {
+        .featured-module-card {
+            min-height: 180px;
+        }
+    }
+    
+    @media (max-width: 900px) {
+        .featured-module-card h4 {
+            font-size: 13px;
+            white-space: normal !important;
+            word-break: normal;
+            overflow-wrap: break-word;
+            hyphens: none;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .featured-module-card {
+            padding: 20px 16px;
+        }
+        .stButton button {
+            font-size: 12px;
+            padding: 8px 16px;
+            height: 36px;
+        }
+    }
+    
     .research-nav-card {
         background: linear-gradient(145deg, #1A1A1A 0%, #151515 100%);
         border-left: 3px solid rgba(99, 102, 241, 0.4);
@@ -1028,20 +1056,43 @@ st.markdown("""
         letter-spacing: 0.1em;
     }
     
+    /* PROFESSIONAL COMPACT BUTTONS - RESEARCH DASHBOARD STYLE */
     .stButton button {
-        background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 24px;
-        font-weight: 600;
-        font-family: 'Inter', sans-serif;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(120, 130, 255, 0.08) 100%);
+        color: rgba(140, 150, 255, 0.95);
+        border: 1px solid rgba(120, 130, 255, 0.25);
+        border-radius: 10px;
+        padding: 10px 20px;
+        height: 38px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 13px;
+        letter-spacing: -0.01em;
+        transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: normal;
     }
     
     .stButton button:hover {
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(120, 130, 255, 0.12) 100%);
+        border-color: rgba(120, 130, 255, 0.4);
+        color: rgba(140, 150, 255, 1);
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transform: translateY(-1px);
+    }
+    
+    .stButton button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    }
+    
+    /* Featured module card hover effect */
+    .featured-module-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.08);
+        transform: translateY(-3px);
     }
     
     /* SOFT PREMIUM RESEARCH DASHBOARD SIDEBAR */
@@ -2888,7 +2939,7 @@ if module_id == "home":
         </div>
         """, unsafe_allow_html=True)
     
-    # Featured Modules
+    # Featured Modules - Professional Research Dashboard Style
     st.markdown("""
     <div style='margin: 80px 0 40px 0;'>
         <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
@@ -2897,28 +2948,74 @@ if module_id == "home":
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3, col4, col5 = st.columns(5)
+    # Create responsive grid with proper spacing
+    st.markdown("""
+    <div style='
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 18px;
+        margin-bottom: 60px;
+    '>
+    """, unsafe_allow_html=True)
     
     featured_modules = [
-        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space dynamics"),
-        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell state correlations"),
-        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence channels"),
-        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Variational eigensolver"),
-        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural networks"),
+        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
+        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
+        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
+        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
+        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
     ]
     
-    for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
-        with col:
-            st.markdown(f"""
-            <div style='background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 200ms ease;'>
-                <div style='margin-bottom: 14px; display: flex; justify-content: center; align-items: center;'>{icon}</div>
-                <h4 style='font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #E8E8E8;'>{title}</h4>
-                <p style='font-size: 11px; color: rgba(180, 180, 180, 0.7);'>{subtitle}</p>
+    for mod_id, icon, title, subtitle in featured_modules:
+        st.markdown(f"""
+        <div class='featured-module-card' style='
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        '>
+            <div style='margin-bottom: 6px; display: flex; justify-content: center; align-items: center;'>
+                {icon}
             </div>
-            """, unsafe_allow_html=True)
-            if st.button(f"Open {title}", key=f"feat_{mod_id}", use_container_width=True):
-                st.session_state.selected_module_id = mod_id
-                st.rerun()
+            <div style='flex: 1; display: flex; flex-direction: column; gap: 6px;'>
+                <h4 style='
+                    font-family: Inter, sans-serif;
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 1.3;
+                    color: #E8E8E8;
+                    margin: 0;
+                    word-break: normal;
+                    overflow-wrap: normal;
+                    hyphens: none;
+                    white-space: nowrap;
+                '>{title}</h4>
+                <p style='
+                    font-family: Inter, sans-serif;
+                    font-size: 11px;
+                    line-height: 1.4;
+                    color: rgba(180, 180, 180, 0.65);
+                    margin: 0;
+                    word-break: normal;
+                    overflow-wrap: normal;
+                    hyphens: none;
+                '>{subtitle}</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Professional compact button below card
+        if st.button("Launch", key=f"feat_{mod_id}", use_container_width=True):
+            st.session_state.selected_module_id = mod_id
+            st.rerun()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
     
     # System Status Panel
     st.markdown("""
