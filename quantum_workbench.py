@@ -992,10 +992,11 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
-    /* PROFESSIONAL RESEARCH DASHBOARD SIDEBAR */
+    /* SOFT PREMIUM RESEARCH DASHBOARD SIDEBAR */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #161616 0%, #1A1A1A 100%);
-        border-right: 1px solid rgba(99, 102, 241, 0.15);
+        background: linear-gradient(180deg, #0F1116 0%, #141824 100%);
+        border-right: 1px solid rgba(120, 130, 180, 0.08);
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.02);
     }
     
     [data-testid="stSidebar"] > div:first-child {
@@ -1003,156 +1004,160 @@ st.markdown("""
         padding: 0;
     }
     
-    /* Sidebar Brand Header */
+    /* Sidebar Brand Header - Softer Typography */
     .sidebar-brand {
-        padding: 24px 20px 20px 20px;
-        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-        margin-bottom: 16px;
+        padding: 28px 20px 22px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        margin-bottom: 20px;
     }
     
     .sidebar-brand-title {
         font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 16px;
-        font-weight: 700;
-        color: #FFFFFF;
-        letter-spacing: -0.02em;
-        margin: 0 0 4px 0;
-        line-height: 1.2;
+        font-size: 15px;
+        font-weight: 600;
+        color: #E6E6E6;
+        letter-spacing: -0.015em;
+        margin: 0 0 6px 0;
+        line-height: 1.3;
     }
     
     .sidebar-brand-subtitle {
         font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 500;
-        color: rgba(99, 102, 241, 0.8);
+        color: #A8A8A8;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
         margin: 0;
     }
     
-    /* Navigation Section Headers */
+    /* Navigation Section Headers - Muted & Refined */
     .nav-section-label {
         font-family: 'Inter', -apple-system, sans-serif;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 1px;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(180, 180, 180, 0.5);
-        padding: 12px 20px 8px 20px;
-        margin: 12px 0 4px 0;
+        color: #7B7B7B;
+        padding: 18px 20px 8px 20px;
+        margin: 8px 0 6px 0;
         display: block;
     }
     
-    /* Navigation List Rows with Icons */
+    /* Navigation Rows - Soft Pills with Elegant States */
     .nav-row {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 11px 20px 11px 17px;
-        margin: 0 8px 2px 8px;
-        border-left: 3px solid transparent;
-        border-radius: 0 6px 6px 0;
+        padding: 12px 20px 12px 20px;
+        margin: 0 12px 3px 12px;
+        border-left: 2px solid transparent;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         background: transparent;
     }
     
     .nav-row:hover {
-        background: rgba(99, 102, 241, 0.08);
-        border-left-color: rgba(99, 102, 241, 0.5);
+        background: rgba(120, 130, 255, 0.06);
+        border-left-color: rgba(120, 130, 255, 0.3);
     }
     
     .nav-row.active {
-        background: rgba(99, 102, 241, 0.12);
-        border-left-color: rgba(99, 102, 241, 1);
+        background: linear-gradient(90deg, rgba(120, 130, 255, 0.08) 0%, rgba(120, 130, 255, 0.04) 100%);
+        border-left-color: rgba(120, 130, 200, 0.6);
+        box-shadow: inset 0 0 0 1px rgba(120, 130, 200, 0.12);
     }
     
     .nav-row-icon {
         font-size: 18px;
-        color: rgba(180, 180, 180, 0.6);
-        transition: color 150ms ease;
+        color: #A8A8A8;
+        transition: all 200ms ease;
         flex-shrink: 0;
         width: 20px;
         height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
+        opacity: 0.7;
     }
     
     .nav-row:hover .nav-row-icon {
-        color: rgba(99, 102, 241, 1);
+        color: rgba(140, 150, 255, 0.9);
+        opacity: 1;
     }
     
     .nav-row.active .nav-row-icon {
-        color: rgba(99, 102, 241, 1);
+        color: rgba(140, 150, 255, 0.95);
+        opacity: 1;
     }
     
     .nav-row-title {
         font-family: 'Inter', -apple-system, sans-serif;
         font-size: 13px;
         font-weight: 500;
-        color: #E0E0E0;
-        letter-spacing: -0.01em;
-        line-height: 1.3;
+        color: #E6E6E6;
+        letter-spacing: -0.005em;
+        line-height: 1.4;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transition: color 150ms ease;
+        transition: all 200ms ease;
         flex: 1;
     }
     
     .nav-row:hover .nav-row-title {
-        color: rgba(99, 102, 241, 1);
+        color: rgba(140, 150, 255, 0.95);
     }
     
     .nav-row.active .nav-row-title {
-        color: rgba(99, 102, 241, 1);
+        color: rgba(140, 150, 255, 1);
         font-weight: 600;
     }
     
-    /* Sidebar Footer */
+    /* Sidebar Footer - Subtle & Refined */
     .sidebar-footer {
-        padding: 16px 20px;
+        padding: 18px 20px;
         margin-top: auto;
-        border-top: 1px solid rgba(99, 102, 241, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
         font-family: 'Inter', -apple-system, sans-serif;
     }
     
     .sidebar-footer-version {
         font-size: 10px;
-        font-weight: 600;
-        color: rgba(180, 180, 180, 0.4);
+        font-weight: 500;
+        color: #7B7B7B;
         margin: 0 0 4px 0;
     }
     
     .sidebar-footer-status {
         font-size: 9px;
         font-weight: 500;
-        color: rgba(0, 255, 148, 0.6);
+        color: rgba(120, 200, 160, 0.7);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.05em;
         margin: 0;
     }
     
-    /* Streamlit Button Override for Sidebar Navigation */
+    /* Streamlit Button Override - Soft Pill Navigation */
     [data-testid="stSidebar"] button[kind="secondary"],
     [data-testid="stSidebar"] button[kind="primary"] {
         background: transparent !important;
         border: none !important;
-        border-left: 3px solid transparent !important;
-        border-radius: 0 6px 6px 0 !important;
-        padding: 11px 20px 11px 17px !important;
-        margin: 0 8px 2px 8px !important;
+        border-left: 2px solid transparent !important;
+        border-radius: 10px !important;
+        padding: 12px 20px 12px 20px !important;
+        margin: 0 12px 3px 12px !important;
         text-align: left !important;
         font-family: 'Inter', -apple-system, sans-serif !important;
         font-size: 13px !important;
         font-weight: 500 !important;
-        color: #E0E0E0 !important;
-        letter-spacing: -0.01em !important;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        color: #E6E6E6 !important;
+        letter-spacing: -0.005em !important;
+        transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: none !important;
-        width: calc(100% - 16px) !important;
+        width: calc(100% - 24px) !important;
         position: relative !important;
     }
     
@@ -1168,15 +1173,15 @@ st.markdown("""
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        opacity: 0.6;
-        transition: opacity 150ms ease;
+        opacity: 0.7;
+        transition: all 200ms ease;
     }
     
     [data-testid="stSidebar"] button[kind="secondary"]:hover,
     [data-testid="stSidebar"] button[kind="primary"]:hover {
-        background: rgba(99, 102, 241, 0.08) !important;
-        border-left-color: rgba(99, 102, 241, 0.5) !important;
-        color: rgba(99, 102, 241, 1) !important;
+        background: rgba(120, 130, 255, 0.06) !important;
+        border-left-color: rgba(120, 130, 255, 0.3) !important;
+        color: rgba(140, 150, 255, 0.95) !important;
     }
     
     [data-testid="stSidebar"] button[kind="secondary"]:hover::before,
@@ -1185,10 +1190,11 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] button[kind="primary"] {
-        background: rgba(99, 102, 241, 0.12) !important;
-        border-left-color: rgba(99, 102, 241, 1) !important;
-        color: rgba(99, 102, 241, 1) !important;
+        background: linear-gradient(90deg, rgba(120, 130, 255, 0.08) 0%, rgba(120, 130, 255, 0.04) 100%) !important;
+        border-left-color: rgba(120, 130, 200, 0.6) !important;
+        color: rgba(140, 150, 255, 1) !important;
         font-weight: 600 !important;
+        box-shadow: inset 0 0 0 1px rgba(120, 130, 200, 0.12) !important;
     }
     
     [data-testid="stSidebar"] button p {
@@ -1268,17 +1274,17 @@ st.markdown("""
         filter: brightness(0) saturate(100%) invert(52%) sepia(82%) saturate(2833%) hue-rotate(226deg) brightness(101%) contrast(96%);
     }
     
-    /* Language Toggle Buttons */
+    /* Language Toggle Buttons - Soft Segmented Controls */
     [data-testid="stSidebar"] .element-container:first-child button {
-        background: rgba(26, 26, 26, 0.6) !important;
-        border: 1px solid rgba(99, 102, 241, 0.3) !important;
-        border-radius: 6px !important;
-        padding: 8px 12px !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        color: rgba(180, 180, 180, 0.8) !important;
-        transition: all 150ms ease !important;
-        border-left: 1px solid rgba(99, 102, 241, 0.3) !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        padding: 8px 14px !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        color: #A8A8A8 !important;
+        transition: all 200ms ease !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
         margin: 0 !important;
         width: auto !important;
     }
@@ -1288,9 +1294,16 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] .element-container:first-child button:hover {
-        background: rgba(99, 102, 241, 0.15) !important;
-        border-color: rgba(99, 102, 241, 0.6) !important;
-        color: rgba(99, 102, 241, 1) !important;
+        background: rgba(120, 130, 255, 0.08) !important;
+        border-color: rgba(120, 130, 180, 0.2) !important;
+        color: rgba(140, 150, 255, 0.9) !important;
+    }
+    
+    [data-testid="stSidebar"] .element-container:first-child button[kind="primary"] {
+        background: linear-gradient(135deg, rgba(120, 130, 255, 0.12) 0%, rgba(120, 130, 255, 0.08) 100%) !important;
+        border-color: rgba(120, 130, 200, 0.3) !important;
+        color: rgba(140, 150, 255, 0.95) !important;
+        font-weight: 600 !important;
     }
 
     
