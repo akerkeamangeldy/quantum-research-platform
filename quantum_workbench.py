@@ -2290,14 +2290,29 @@ if 'language' not in st.session_state:
 def load_translations():
     """Load translation JSON files with caching for performance"""
     import os
-    base_dir = os.path.dirname(__file__)
-    
-    with open(os.path.join(base_dir, 'locales', 'en.json'), 'r', encoding='utf-8') as f:
-        en = json.load(f)
-    with open(os.path.join(base_dir, 'locales', 'ru.json'), 'r', encoding='utf-8') as f:
-        ru = json.load(f)
-    
-    return {'en': en, 'ru': ru}
+    try:
+        # Try multiple path resolution strategies
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        en_path = os.path.join(base_dir, 'locales', 'en.json')
+        ru_path = os.path.join(base_dir, 'locales', 'ru.json')
+        
+        # Debug: Check if files exist
+        if not os.path.exists(en_path):
+            st.warning(f"English translation file not found at: {en_path}")
+            return None
+        if not os.path.exists(ru_path):
+            st.warning(f"Russian translation file not found at: {ru_path}")
+            return None
+        
+        with open(en_path, 'r', encoding='utf-8') as f:
+            en = json.load(f)
+        with open(ru_path, 'r', encoding='utf-8') as f:
+            ru = json.load(f)
+        
+        return {'en': en, 'ru': ru}
+    except Exception as e:
+        st.error(f"Failed to load translations: {str(e)}")
+        return None
 
 TRANSLATIONS = load_translations()
 
@@ -2667,8 +2682,15 @@ def t(key, fallback=None):
     Get translation for current language with fallback
     Supports dot notation: t('home_page.hero_title') or legacy flat keys: t('title')
     """
+    # Handle case where JSON loading failed
+    if TRANSLATIONS is None:
+        # Fallback to legacy embedded translations
+        lang = st.session_state.get('language', 'en')
+        legacy_dict = TRANSLATIONS_LEGACY.get(lang, TRANSLATIONS_LEGACY['en'])
+        return legacy_dict.get(key, fallback or key)
+    
     lang = st.session_state.get('language', 'en')
-    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS['en'])
+    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
     
     # Support dot notation for nested JSON structure
     if '.' in key:
@@ -2696,21 +2718,24 @@ def t(key, fallback=None):
         return fallback
     
     # Try English as fallback
-    en_dict = TRANSLATIONS['en']
-    if '.' in key:
-        keys = key.split('.')
-        value = en_dict
-        for k in keys:
-            if isinstance(value, dict):
-                value = value.get(k)
-            else:
-                break
-        if value:
-            return value
+    if TRANSLATIONS and 'en' in TRANSLATIONS:
+        en_dict = TRANSLATIONS['en']
+        if '.' in key:
+            keys = key.split('.')
+            value = en_dict
+            for k in keys:
+                if isinstance(value, dict):
+                    value = value.get(k)
+                else:
+                    break
+            if value:
+                return value
+    
+    # Last resort: try legacy translations
+    if key in TRANSLATIONS_LEGACY.get('en', {}):
+        return TRANSLATIONS_LEGACY['en'][key]
     
     return key  # Return key itself if no translation found
-
-lang = TRANSLATIONS[st.session_state.language]
 
 # Language selector
 col_lang1, col_lang2 = st.sidebar.columns(2)
