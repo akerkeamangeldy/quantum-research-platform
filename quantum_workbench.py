@@ -1061,12 +1061,12 @@ st.markdown("""
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(120, 130, 255, 0.08) 100%);
         color: rgba(140, 150, 255, 0.95);
         border: 1px solid rgba(120, 130, 255, 0.25);
-        border-radius: 10px;
-        padding: 10px 20px;
-        height: 38px;
+        border-radius: 8px;
+        padding: 8px 16px;
+        height: 34px;
         font-weight: 500;
         font-family: 'Inter', sans-serif !important;
-        font-size: 13px;
+        font-size: 12px;
         letter-spacing: -0.01em;
         transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
         white-space: nowrap;
@@ -1079,7 +1079,7 @@ st.markdown("""
         background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(120, 130, 255, 0.12) 100%);
         border-color: rgba(120, 130, 255, 0.4);
         color: rgba(140, 150, 255, 1);
-        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        box-shadow: 0 3px 12px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         transform: translateY(-1px);
     }
     
@@ -2941,21 +2941,21 @@ if module_id == "home":
     
     # Featured Modules - Compact Grid with Professional Styling
     st.markdown("""
-    <div style='margin: 80px 0 40px 0;'>
-        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+    <div style='margin: 60px 0 28px 0;'>
+        <h2 style='text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 32px;'>
             Featured Modules
         </h2>
     </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3, col4, col5 = st.columns(5, gap="medium")
+    col1, col2, col3, col4, col5 = st.columns(5, gap="small")
     
     featured_modules = [
-        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
-        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
-        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
-        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
-        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
+        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
+        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
+        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
+        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
+        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
     ]
     
     for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
@@ -2965,22 +2965,22 @@ if module_id == "home":
             <div class='featured-module-card' style='
                 background: rgba(26, 26, 26, 0.4);
                 border: 1px solid rgba(99, 102, 241, 0.15);
-                border-radius: 12px;
-                padding: 20px 16px 16px 16px;
+                border-radius: 10px;
+                padding: 16px 14px 14px 14px;
                 text-align: center;
                 transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             '>
-                <div style='margin-bottom: 12px; display: flex; justify-content: center; align-items: center;'>
+                <div style='margin-bottom: 10px; display: flex; justify-content: center; align-items: center;'>
                     {icon}
                 </div>
                 <h4 style='
                     font-family: Inter, sans-serif;
-                    font-size: 13px;
+                    font-size: 12px;
                     font-weight: 600;
                     line-height: 1.3;
                     color: #E8E8E8;
-                    margin: 0 0 6px 0;
+                    margin: 0 0 5px 0;
                     word-break: keep-all;
                     overflow-wrap: normal;
                     hyphens: none;
@@ -2990,8 +2990,8 @@ if module_id == "home":
                 '>{title}</h4>
                 <p style='
                     font-family: Inter, sans-serif;
-                    font-size: 11px;
-                    line-height: 1.35;
+                    font-size: 10px;
+                    line-height: 1.3;
                     color: rgba(180, 180, 180, 0.65);
                     margin: 0;
                     word-break: keep-all;
@@ -3011,8 +3011,8 @@ if module_id == "home":
     
     # System Status Panel
     st.markdown("""
-    <div style='margin: 80px 0 40px 0;'>
-        <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
+    <div style='margin: 60px 0 32px 0;'>
+        <h2 style='text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 32px;'>
             System Status
         </h2>
     </div>
