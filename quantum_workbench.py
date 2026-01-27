@@ -2533,31 +2533,63 @@ TRANSLATIONS = {
             "page_title": "Quantum Circuits & Unitaries",
             "card_title": "Circuit-to-Physics Bridge",
             "card_desc": "Quantum circuits are sequences of unitary operations acting on qubits. This module demonstrates circuit construction, unitary evolution, and the mapping between gate sequences and quantum state transformations.",
+            "theory_unitary": "Unitary Evolution:",
+            "theory_unitary_desc": "Quantum gates are unitary matrices satisfying U†U = I",
+            "theory_reversible": "Reversibility:",
+            "theory_reversible_desc": "All quantum gates are reversible (except measurement)",
+            "theory_composition": "Composition:",
+            "theory_composition_desc": "Gates compose via matrix multiplication (right-to-left)",
             "section_build": "Build Quantum Circuit",
             "select_init": "Initial State",
-            "state_0": "|0⟩",
-            "state_1": "|1⟩",
-            "state_plus": "|+⟩ = (|0⟩+|1⟩)/√2",
-            "state_minus": "|-⟩ = (|0⟩-|1⟩)/√2",
             "state_custom": "Custom",
             "slider_custom_theta": "Custom θ",
             "slider_custom_phi": "Custom φ",
             "section_gates": "Gate Sequence (applied left to right)",
             "select_gates": "Add gates to circuit",
-            "button_simulate": "Simulate Measurement (1000 shots)"
+            "section_diagram": "Circuit Diagram",
+            "section_evolution": "State Evolution",
+            "section_unitary": "Total Circuit Unitary",
+            "unitary_desc": "Matrix representation of the entire circuit:",
+            "real_part": "Real Part",
+            "imag_part": "Imaginary Part",
+            "verify_title": "Unitary Verification",
+            "verify_identity": "U†U = I:",
+            "verify_det": "det(U):",
+            "verify_det_suffix": "(should be 1)",
+            "verify_phase": "Phase factor:",
+            "section_bloch_evolution": "Bloch Sphere Evolution",
+            "button_simulate": "Simulate Measurement (1000 shots)",
+            "section_code": "Executable Python Code"
         },
         "export": {
             "page_title": "Reproducibility & Data Export",
-            "card_title": "Research Data Management",
-            "card_desc": "Export experimental results, state vectors, and circuit configurations for reproducible research. All exports include SHA-256 verification hashes.",
+            "card_title": "Experiment Reproducibility",
+            "card_desc": "Every experiment execution generates a comprehensive snapshot including parameters, results, code, and metadata. Export as JSON for programmatic access or PDF for publications.",
             "section_log": "Experiment Log",
-            "button_export": "Export All Experiments",
             "msg_no_experiments": "No experiments logged yet. Run experiments in other modules to populate this log.",
-            "msg_no_export": "No experiments to export.",
-            "msg_pdf": "PDF generation would create a publication-ready report with experiment details, circuit diagrams, and full parameter specifications."
+            "button_export_json": "Export JSON",
+            "button_download_json": "Download JSON",
+            "button_pdf": "Generate PDF Report",
+            "msg_pdf": "PDF generation would create a publication-ready report with experiment details, plots, and interpretation.",
+            "section_checklist": "Reproducibility Checklist",
+            "checklist_title": "Publication-Grade Experiment Requirements",
+            "button_export_all": "Export All Experiments",
+            "button_download_all": "Download Complete Experiment Log (JSON)",
+            "msg_no_export": "No experiments to export."
         },
         "qec": {
             "page_title": "Quantum Error Correction",
+            "card_title": "Topological Error Correction",
+            "card_desc": "Surface codes are the leading candidate for fault-tolerant quantum computing. They use a 2D lattice of physical qubits with local interactions to encode logical qubits, achieving error correction with realistic hardware constraints.",
+            "key_features": "Key Features:",
+            "section_distance": "Distance-3 Surface Code",
+            "distance_desc": "A distance-3 surface code uses 9 data qubits and 8 syndrome qubits (17 total)",
+            "section_simulation": "Error Simulation",
+            "slider_error": "Physical Error Rate",
+            "slider_help": "Probability of error per qubit per gate",
+            "button_simulate": "Simulate Error Correction",
+            "repetition_code": "3-Qubit Repetition Code (Simplified Model)"
+        },
             "card_title": "Surface Codes & Logical Qubits",
             "card_desc": "Quantum error correction is essential for fault-tolerant quantum computation. Surface codes detect and correct both bit-flip and phase-flip errors using stabilizer measurements.",
             "section_config": "Error Correction Configuration",
@@ -2925,35 +2957,63 @@ TRANSLATIONS = {
             "page_title": "Квантовые Схемы и Унитарные Операторы",
             "card_title": "Мост между Схемами и Физикой",
             "card_desc": "Квантовые схемы — это последовательности унитарных операций, действующих на кубиты. Этот модуль демонстрирует построение схем, унитарную эволюцию и отображение между последовательностями гейтов и трансформациями квантовых состояний.",
+            "theory_unitary": "Унитарная Эволюция:",
+            "theory_unitary_desc": "Квантовые гейты — это унитарные матрицы, удовлетворяющие U†U = I",
+            "theory_reversible": "Обратимость:",
+            "theory_reversible_desc": "Все квантовые гейты обратимы (кроме измерения)",
+            "theory_composition": "Композиция:",
+            "theory_composition_desc": "Гейты композируются путем умножения матриц (справа налево)",
             "section_build": "Построение Квантовой Схемы",
             "select_init": "Начальное Состояние",
-            "state_0": "|0⟩",
-            "state_1": "|1⟩",
-            "state_plus": "|+⟩ = (|0⟩+|1⟩)/√2",
-            "state_minus": "|-⟩ = (|0⟩-|1⟩)/√2",
             "state_custom": "Пользовательское",
             "slider_custom_theta": "Пользовательский θ",
             "slider_custom_phi": "Пользовательский φ",
             "section_gates": "Последовательность Гейтов (применяется слева направо)",
             "select_gates": "Добавить гейты в схему",
-            "button_simulate": "Симулировать Измерение (1000 выстрелов)"
+            "section_diagram": "Диаграмма Схемы",
+            "section_evolution": "Эволюция Состояния",
+            "section_unitary": "Общая Унитарная Матрица Схемы",
+            "unitary_desc": "Матричное представление всей схемы:",
+            "real_part": "Действительная Часть",
+            "imag_part": "Мнимая Часть",
+            "verify_title": "Проверка Унитарности",
+            "verify_identity": "U†U = I:",
+            "verify_det": "det(U):",
+            "verify_det_suffix": "(должно быть 1)",
+            "verify_phase": "Фазовый множитель:",
+            "section_bloch_evolution": "Эволюция на Сфере Блоха",
+            "button_simulate": "Симулировать Измерение (1000 повторений)",
+            "section_code": "Исполняемый Python Код"
         },
         "export": {
             "page_title": "Воспроизводимость и Экспорт Данных",
-            "card_title": "Управление Исследовательскими Данными",
-            "card_desc": "Экспортируйте экспериментальные результаты, векторы состояний и конфигурации схем для воспроизводимых исследований. Все экспорты включают хеши верификации SHA-256.",
+            "card_title": "Воспроизводимость Эксперимента",
+            "card_desc": "Каждое выполнение эксперимента генерирует полный снимок, включающий параметры, результаты, код и метаданные. Экспортируйте в JSON для программного доступа или в PDF для публикаций.",
             "section_log": "Журнал Экспериментов",
-            "button_export": "Экспортировать Все Эксперименты",
-            "msg_no_experiments": "Эксперименты пока не зарегистрированы. Запустите эксперименты в других модулях, чтобы заполнить этот журнал.",
-            "msg_no_export": "Нет экспериментов для экспорта.",
-            "msg_pdf": "Генерация PDF создаст готовый к публикации отчет с деталями эксперимента, диаграммами схем и полной спецификацией параметров."
+            "msg_no_experiments": "Эксперименты еще не зарегистрированы. Запустите эксперименты в других модулях, чтобы заполнить этот журнал.",
+            "button_export_json": "Экспортировать JSON",
+            "button_download_json": "Скачать JSON",
+            "button_pdf": "Генерировать PDF Отчёт",
+            "msg_pdf": "Генерация PDF создаст отчёт для публикаций с деталями эксперимента, графиками и интерпретацией.",
+            "section_checklist": "Контрольный Список Воспроизводимости",
+            "checklist_title": "Требования к Эксперименту для Публикаций",
+            "button_export_all": "Экспортировать Все Эксперименты",
+            "button_download_all": "Скачать Полный Журнал Экспериментов (JSON)",
+            "msg_no_export": "Нет экспериментов для экспорта."
         },
         "qec": {
             "page_title": "Квантовая Коррекция Ошибок",
-            "card_title": "Поверхностные Коды и Логические Кубиты",
-            "card_desc": "Квантовая коррекция ошибок необходима для отказоустойчивых квантовых вычислений. Поверхностные коды обнаруживают и исправляют как переворот бита, так и переворот фазы, используя измерения стабилизаторов.",
-            "section_config": "Конфигурация Коррекции Ошибок",
-            "select_code": "Код ККО",
+            "card_title": "Топологическая Коррекция Ошибок",
+            "card_desc": "Поверхностные коды являются ведущим кандидатом для устойчивых к ошибкам квантовых вычислений. Они используют 2D-решетку физических кубитов с локальными взаимодействиями для кодирования логических кубитов, обеспечивая коррекцию ошибок при реалистичных аппаратных ограничениях.",
+            "key_features": "Ключевые Особенности:",
+            "section_distance": "Поверхностный Код Расстояния 3",
+            "distance_desc": "Поверхностный код расстояния 3 использует 9 кубитов данных и 8 синдромных кубитов (17 всего)",
+            "section_simulation": "Симуляция Ошибок",
+            "slider_error": "Физическая Частота Ошибок",
+            "slider_help": "Вероятность ошибки на кубит на гейт",
+            "button_simulate": "Симулировать Коррекцию Ошибок",
+            "repetition_code": "3-кубитный Код Повторения (Упрощенная Модель)"
+        },
             "button_simulate": "Симулировать Коррекцию Ошибок"
         },
         "hardware": {
@@ -5544,11 +5604,10 @@ elif module_id == "circuits":
     st.markdown(f"# {t('circuits.page_title')}")
     st.markdown(f'<span class="research-status status-active">{t("status_badges.active")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>Circuit-to-Physics Bridge</h3>
-        <p>Quantum circuits are sequences of unitary operations acting on qubits. This module demonstrates 
-        circuit construction, unitary evolution, and the mapping between gate sequences and quantum state transformations.</p>
+        <h3>{t('circuits.card_title')}</h3>
+        <p>{t('circuits.card_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -5556,11 +5615,11 @@ elif module_id == "circuits":
     U_{\text{total}} = U_n \cdots U_2 U_1, \quad |\psi_{\text{out}}\rangle = U_{\text{total}}|\psi_{\text{in}}\rangle
     """)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='latex-display'>
-        <p><strong>Unitary Evolution:</strong> Quantum gates are unitary matrices satisfying U†U = I</p>
-        <p><strong>Reversibility:</strong> All quantum gates are reversible (except measurement)</p>
-        <p><strong>Composition:</strong> Gates compose via matrix multiplication (right-to-left)</p>
+        <p><strong>{t('circuits.theory_unitary')}</strong> {t('circuits.theory_unitary_desc')}</p>
+        <p><strong>{t('circuits.theory_reversible')}</strong> {t('circuits.theory_reversible_desc')}</p>
+        <p><strong>{t('circuits.theory_composition')}</strong> {t('circuits.theory_composition_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -5568,16 +5627,16 @@ elif module_id == "circuits":
     col1, col2 = st.columns([3, 2])
     
     with col1:
-        st.markdown("### Build Quantum Circuit")
+        st.markdown(f"### {t('circuits.section_build')}")
         
         # Initial state selection
-        init_state = st.radio("Initial State", 
-                             ["|0⟩", "|1⟩", "|+⟩ = (|0⟩+|1⟩)/√2", "|-⟩ = (|0⟩-|1⟩)/√2", "Custom"],
+        init_state = st.radio(t('circuits.select_init'), 
+                             ["|0⟩", "|1⟩", "|+⟩ = (|0⟩+|1⟩)/√2", "|-⟩ = (|0⟩-|1⟩)/√2", t('circuits.state_custom')],
                              key="circuit_init_state")
         
-        if "Custom" in init_state:
-            custom_theta = st.slider("Custom θ", 0, 180, 90, 5, key="custom_circuit_theta")
-            custom_phi = st.slider("Custom φ", 0, 360, 0, 5, key="custom_circuit_phi")
+        if t('circuits.state_custom') in init_state:
+            custom_theta = st.slider(t('circuits.slider_custom_theta'), 0, 180, 90, 5, key="custom_circuit_theta")
+            custom_phi = st.slider(t('circuits.slider_custom_phi'), 0, 360, 0, 5, key="custom_circuit_phi")
             theta_rad = np.radians(custom_theta)
             phi_rad = np.radians(custom_phi)
             state = np.array([np.cos(theta_rad/2), np.exp(1j*phi_rad)*np.sin(theta_rad/2)])
@@ -5591,10 +5650,10 @@ elif module_id == "circuits":
             state = np.array([1, -1], dtype=complex) / np.sqrt(2)
         
         # Gate palette
-        st.markdown("### Gate Sequence (applied left to right)")
+        st.markdown(f"### {t('circuits.section_gates')}")
         
         gate_options = ["H", "X", "Y", "Z", "S", "T", "RX(π/2)", "RY(π/2)", "RZ(π/2)", "RX(π)", "RY(π)"]
-        selected_gates = st.multiselect("Add gates to circuit", gate_options, key="circuit_gates")
+        selected_gates = st.multiselect(t('circuits.select_gates'), gate_options, key="circuit_gates")
         
         # Build circuit and track evolution
         circuit_states = [state.copy()]
@@ -5664,13 +5723,13 @@ elif module_id == "circuits":
         st.dataframe(df_evolution, use_container_width=True)
         
         # Total unitary matrix
-        st.markdown("### Total Circuit Unitary")
-        st.markdown("Matrix representation of the entire circuit:")
+        st.markdown(f"### {t('circuits.section_unitary')}")
+        st.markdown(t('circuits.unitary_desc'))
         
         col_u1, col_u2 = st.columns(2)
         
         with col_u1:
-            st.markdown("**Real Part**")
+            st.markdown(f"**{t('circuits.real_part')}**")
             fig_u_real = go.Figure(data=go.Heatmap(
                 z=total_unitary.real,
                 colorscale='RdBu',
