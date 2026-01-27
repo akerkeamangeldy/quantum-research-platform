@@ -2578,6 +2578,10 @@ TRANSLATIONS = {
             "braid_exchange": "Simple Exchange",
             "braid_fibonacci": "Fibonacci Braid"
         },
+        "overview": {
+            "page_title": "QUANTUM RESEARCH TERMINAL v4.0.2",
+            "status_line": "SYSTEM STATUS: OPERATIONAL | QUBITS: STABLE | FIDELITY: >99.9%"
+        },
         "charts": {
             "interference": {
                 "phasor_title": "Phasor Diagram",
@@ -2947,6 +2951,10 @@ TRANSLATIONS = {
             "braid_identity": "Тождество (Без Плетения)",
             "braid_exchange": "Простой Обмен",
             "braid_fibonacci": "Плетение Фибоначчи"
+        },
+        "overview": {
+            "page_title": "КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ТЕРМИНАЛ v4.0.2",
+            "status_line": "СТАТУС СИСТЕМЫ: РАБОТАЕТ | КУБИТЫ: СТАБИЛЬНЫ | ТОЧНОСТЬ: >99.9%"
         },
         "charts": {
             "interference": {
@@ -3855,8 +3863,8 @@ elif module_id == "overview":
     add_particle_effect()
     
     st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
-    st.markdown("# QUANTUM RESEARCH TERMINAL v4.0.2")
-    st.markdown('<span class="research-status status-active">SYSTEM STATUS: OPERATIONAL | QUBITS: STABLE | FIDELITY: >99.9%</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('overview.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("overview.status_line")}</span>', unsafe_allow_html=True)
     
     # Clean System Status Panel (Sanitized UI)
     st.markdown("""
@@ -4842,8 +4850,8 @@ elif module_id == "vqe":
     add_energy_field()
     
     st.markdown("<div class='vqe-landscape'>", unsafe_allow_html=True)
-    st.markdown("# VQE: Variational Quantum Eigensolver")
-    st.markdown('<span class="research-status status-active">Variational Algorithm</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('vqe.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.variational")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -5030,8 +5038,8 @@ elif module_id == "qaoa":
     add_energy_field()
     
     st.markdown("<div class='vqe-landscape'>", unsafe_allow_html=True)
-    st.markdown("# QAOA: Quantum Approximate Optimization Algorithm")
-    st.markdown('<span class="research-status status-active">Combinatorial Optimization</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('qaoa.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.combinatorial")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -5503,8 +5511,8 @@ elif module_id == "circuits":
     add_matrix_rain()
     
     st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
-    st.markdown("# Quantum Circuits & Unitaries")
-    st.markdown('<span class="research-status status-active">Core Module</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('circuits.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.active")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -5785,8 +5793,8 @@ print(f"Probabilities: P(|0⟩) = {{abs(state[0])**2:.3f}}, P(|1⟩) = {{abs(sta
 
 elif module_id == "export":
     st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
-    st.markdown("# Reproducibility & Export System")
-    st.markdown('<span class="research-status status-active">Research Infrastructure</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('export.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.infrastructure")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -5872,8 +5880,8 @@ elif module_id == "export":
 
 elif module_id == "qec":
     st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
-    st.markdown("# Quantum Error Correction: Surface Codes")
-    st.markdown('<span class="research-status status-active">Fault-Tolerant QC</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('qec.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.fault_tolerant")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -5963,8 +5971,8 @@ elif module_id == "qec":
 
 elif module_id == "hardware":
     st.markdown("<div class='overview-bg'>", unsafe_allow_html=True)
-    st.markdown("# Hardware Topology & Connectivity")
-    st.markdown('<span class="research-status status-active">Physical Implementation</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('hardware.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.active")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -6151,8 +6159,8 @@ elif module_id == "hardware":
 
 elif module_id == "complexity":
     st.markdown("<div class='qml-neural'>", unsafe_allow_html=True)
-    st.markdown("# Complexity Classes: P, NP, BQP")
-    st.markdown('<span class="research-status status-active">Computational Theory</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('complexity.page_title')}")
+    st.markdown(f'<span class="research-status status-active">{t("status_badges.frontier")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
@@ -6296,8 +6304,8 @@ elif module_id == "complexity":
 
 elif module_id == "topological":
     st.markdown("<div class='circuit-flow'>", unsafe_allow_html=True)
-    st.markdown("# Topological Quantum Computing")
-    st.markdown('<span class="research-status status-frontier">Advanced Topic</span>', unsafe_allow_html=True)
+    st.markdown(f"# {t('topological.page_title')}")
+    st.markdown(f'<span class="research-status status-frontier">{t("status_badges.frontier")}</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class='research-card'>
