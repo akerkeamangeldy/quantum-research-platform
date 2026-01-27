@@ -50,5 +50,19 @@
         "hardware": "Physical Implementation",
         "complexity": "Computational Complexity",
         "export": "Research Data Management"
-    }
+    },
+    "home_page": {
+        "hero_title": "Quantum Research Workbench",
+        "hero_subtitle": "Advanced quantum computing simulation and research platform",
+        "capabilities_title": "Research Capabilities",
+        "featured_title": "Featured Modules"
+    },
+    "buttons": {
+        "open": "OPEN",
+        "launch": "Launch"
+    },
+    "bloch_module_title": "Bloch Sphere Dynamics",
+    "bloch_status_badge": "Active Module",
+    "bloch_math_title": "Mathematical Framework",
+    "bloch_math_intro": "The Bloch sphere provides a geometric representation of qubit states."
 }
