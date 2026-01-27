@@ -3225,15 +3225,12 @@ def t(key, fallback=None):
             value = en_dict.get(key)
     
     return value if value is not None else (fallback if fallback else key)
-# ====================================
-# MAIN STREAMLIT APP
-# ====================================
 
-# LANGUAGE SWITCHER
+# Language selector
 col_lang1, col_lang2 = st.sidebar.columns(2)
 
 with col_lang1:
-    if st.button(t("global.language_english"), key="lang_en"):
+    if st.button(t("global.language_en"), key="lang_en"):
         st.session_state.language = 'en'
         st.rerun()
 
@@ -3252,8 +3249,69 @@ brand_header = f"""
 </div>
 """
 st.sidebar.markdown(brand_header, unsafe_allow_html=True)
-        'module_bloch': 'Hilbert Space Dynamics',
-        'module_interference': 'Coherent Superposition',
+
+# Navigation structure with organized groups
+nav_groups = [
+    ("navigation.section_home", [
+        ("home", "00", 'modules.home', 'module_subtitles.home'),
+    ]),
+    ("navigation.section_foundations", [
+        ("bloch", "01", 'modules.bloch', 'module_subtitles.bloch'),
+        ("interference", "02", 'modules.interference', 'module_subtitles.interference'),
+    ]),
+    ("navigation.section_correlations", [
+        ("entanglement", "03", 'modules.entanglement', 'module_subtitles.entanglement'),
+        ("topological", "04", 'modules.topological', 'module_subtitles.topological'),
+    ]),
+    ("navigation.section_dynamics", [
+        ("noise", "05", 'modules.noise', 'module_subtitles.noise'),
+        ("circuits", "06", 'modules.circuits', 'module_subtitles.circuits'),
+    ]),
+    ("navigation.section_variational", [
+        ("vqe", "07", 'modules.vqe', 'module_subtitles.vqe'),
+        ("qaoa", "08", 'modules.qaoa', 'module_subtitles.qaoa'),
+    ]),
+    ("navigation.section_qml", [
+        ("qml", "09", 'modules.qml', 'module_subtitles.qml'),
+    ]),
+    ("navigation.section_hardware", [
+        ("qec", "10", 'modules.qec', 'module_subtitles.qec'),
+        ("hardware", "11", 'modules.hardware', 'module_subtitles.hardware'),
+    ]),
+    ("navigation.section_complexity", [
+        ("complexity", "12", 'modules.complexity', 'module_subtitles.complexity'),
+    ]),
+    ("navigation.section_export", [
+        ("export", "13", 'modules.export', 'module_subtitles.export'),
+    ]),
+]
+
+# Render professional row-based navigation with icons
+for section_key, modules in nav_groups:
+        st.session_state.language = 'en'
+        st.rerun()
+
+with col_lang2:
+    if st.button(t("global.language_russian"), key="lang_ru"):
+        st.session_state.language = 'ru'
+        st.rerun()
+
+st.sidebar.markdown("---")
+
+# Professional brand header  
+brand_header = f"""
+<div class='sidebar-brand'>
+    <div class='sidebar-brand-title'>{t('global.title')}</div>
+    <div class='sidebar-brand-subtitle'>Quantum Research Platform</div>
+</div>
+"""
+st.sidebar.markdown(brand_header, unsafe_allow_html=True)
+
+# Navigation structure with organized groups
+nav_groups = [
+    ("navigation.section_home", [
+        ("home", "00", 'modules.home', 'module_subtitles.home'),
+    ]),
         'module_entanglement': 'Bell-State Correlations',
         'module_topological': 'Topological Phases',
         'module_noise': 'Dissipative Decoherence',
