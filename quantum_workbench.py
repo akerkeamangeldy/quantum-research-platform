@@ -2449,37 +2449,51 @@ TRANSLATIONS = {
         },
         "vqe": {
             "page_title": "VQE: Variational Quantum Eigensolver",
-            "card_title": "Hybrid Quantum-Classical Ground State Search",
-            "card_desc": "VQE combines parameterized quantum circuits (ansätze) with classical optimizers to find molecular ground states. Crucial for quantum chemistry and materials science.",
+            "card_title": "Hybrid Quantum-Classical Optimization",
+            "card_desc": "VQE combines quantum state preparation with classical optimization to find ground state energies of molecular Hamiltonians. This is a cornerstone NISQ algorithm with applications in quantum chemistry and materials science.",
             "section_config": "Experiment Configuration",
             "slider_depth": "Ansatz Depth (layers)",
             "slider_iterations": "Optimization Iterations",
             "select_optimizer": "Optimizer",
-            "optimizer_cobyla": "COBYLA",
-            "optimizer_nelder": "Nelder-Mead",
-            "optimizer_powell": "Powell",
+            "checkbox_noise": "Include shot noise",
             "button_run": "Run VQE Optimization",
-            "status_running": "Running VQE optimization...",
-            "metric_energy": "Ground State Energy",
-            "metric_exact": "Exact Energy (FCI)",
-            "metric_error": "Chemical Accuracy",
-            "section_background": "Theoretical Background",
-            "bg_hamiltonian": "Hamiltonian:",
-            "bg_ansatz": "Ansatz:",
-            "bg_optimization": "Optimization:"
+            "status_iteration": "Iteration",
+            "success_converged": "VQE Converged! Final Energy:",
+            "metric_error": "Error",
+            "metric_accuracy": "Accuracy",
+            "section_theory": "Theoretical Background",
+            "theory_ansatz_title": "Ansatz Structure",
+            "theory_ansatz_subtitle": "Hardware-efficient ansatz:",
+            "theory_ansatz_depth": "Depth",
+            "theory_ansatz_params": "Parameters",
+            "theory_landscape_title": "Energy Landscape",
+            "theory_landscape_desc": "VQE navigates a high-dimensional energy landscape E(θ) in parameter space.",
+            "theory_challenges": "Challenges:",
+            "theory_challenge_1": "Barren plateaus (gradient vanishing)",
+            "theory_challenge_2": "Local minima traps",
+            "theory_challenge_3": "Shot noise from measurements"
         },
         "qaoa": {
             "page_title": "QAOA: Quantum Approximate Optimization",
-            "card_title": "Variational Combinatorial Optimization",
-            "card_desc": "QAOA solves NP-hard combinatorial problems using alternating problem and mixer Hamiltonians. Promising for logistics, scheduling, and graph problems.",
+            "card_title": "Quantum Combinatorial Optimization",
+            "card_desc": "QAOA is a hybrid quantum-classical algorithm designed for solving combinatorial optimization problems. It uses a parametrized quantum circuit with alternating cost and mixer Hamiltonians to find approximate solutions to NP-hard problems.",
+            "key_concept_label": "Key Concept:",
+            "key_concept_text": "QAOA prepares quantum states that encode solutions to optimization problems by evolving under problem-specific and mixing Hamiltonians, with parameters optimized classically to maximize solution quality.",
+            "section_problem": "Problem Type",
             "select_problem": "Select Optimization Problem",
+            "problem_help": "Choose the combinatorial optimization problem to solve",
             "problem_maxcut": "MaxCut",
             "problem_partition": "Number Partitioning",
             "problem_coloring": "Graph Coloring",
             "section_maxcut": "MaxCut Problem",
             "slider_nodes": "Number of Nodes",
+            "nodes_help": "Number of vertices in the graph",
             "slider_layers": "QAOA Layers (p)",
+            "layers_help": "Number of QAOA layers",
+            "graph_structure": "Graph Structure",
+            "qaoa_params": "QAOA Parameters",
             "button_run": "Run QAOA Optimization",
+            "status_running": "Running QAOA optimization...",
             "section_solution": "Solution Probability Distribution",
             "msg_found": "✅ Found MaxCut solution:",
             "msg_value": "with cut value",
@@ -2823,37 +2837,51 @@ TRANSLATIONS = {
         },
         "vqe": {
             "page_title": "VQE: Вариационный Квантовый Собственный Решатель",
-            "card_title": "Гибридный Квантово-Классический Поиск Основного Состояния",
-            "card_desc": "VQE сочетает параметризованные квантовые схемы (ансацы) с классическими оптимизаторами для поиска основных состояний молекул. Критически важен для квантовой химии и материаловедения.",
+            "card_title": "Гибридная Квантово-Классическая Оптимизация",
+            "card_desc": "VQE сочетает подготовку квантовых состояний с классической оптимизацией для поиска энергий основных состояний молекулярных гамильтонианов. Это краеугольный алгоритм NISQ с приложениями в квантовой химии и материаловедении.",
             "section_config": "Конфигурация Эксперимента",
             "slider_depth": "Глубина Ансаца (слои)",
             "slider_iterations": "Итерации Оптимизации",
             "select_optimizer": "Оптимизатор",
-            "optimizer_cobyla": "COBYLA",
-            "optimizer_nelder": "Нелдера-Мида",
-            "optimizer_powell": "Пауэлла",
+            "checkbox_noise": "Включить дробовой шум",
             "button_run": "Запустить Оптимизацию VQE",
-            "status_running": "Выполнение оптимизации VQE...",
-            "metric_energy": "Энергия Основного Состояния",
-            "metric_exact": "Точная Энергия (FCI)",
-            "metric_error": "Химическая Точность",
-            "section_background": "Теоретическая Основа",
-            "bg_hamiltonian": "Гамильтониан:",
-            "bg_ansatz": "Ансац:",
-            "bg_optimization": "Оптимизация:"
+            "status_iteration": "Итерация",
+            "success_converged": "VQE Сошёлся! Финальная Энергия:",
+            "metric_error": "Ошибка",
+            "metric_accuracy": "Точность",
+            "section_theory": "Теоретическая Основа",
+            "theory_ansatz_title": "Структура Ансаца",
+            "theory_ansatz_subtitle": "Аппаратно-эффективный ансац:",
+            "theory_ansatz_depth": "Глубина",
+            "theory_ansatz_params": "Параметры",
+            "theory_landscape_title": "Энергетический Ландшафт",
+            "theory_landscape_desc": "VQE навигирует по многомерному энергетическому ландшафту E(θ) в пространстве параметров.",
+            "theory_challenges": "Вызовы:",
+            "theory_challenge_1": "Пустынные плато (исчезновение градиента)",
+            "theory_challenge_2": "Ловушки локальных минимумов",
+            "theory_challenge_3": "Дробовой шум от измерений"
         },
         "qaoa": {
             "page_title": "QAOA: Квантовая Приближенная Оптимизация",
-            "card_title": "Вариационная Комбинаторная Оптимизация",
-            "card_desc": "QAOA решает NP-сложные комбинаторные задачи, используя чередующиеся гамильтонианы проблемы и смешивания. Перспективен для логистики, планирования и задач на графах.",
+            "card_title": "Квантовая Комбинаторная Оптимизация",
+            "card_desc": "QAOA — это гибридный квантово-классический алгоритм, предназначенный для решения комбинаторных задач оптимизации. Он использует параметризованную квантовую схему с чередующимися гамильтонианами стоимости и смешивания для поиска приближенных решений NP-сложных задач.",
+            "key_concept_label": "Ключевая Концепция:",
+            "key_concept_text": "QAOA подготавливает квантовые состояния, кодирующие решения задач оптимизации путем эволюции под действием проблемно-зависимых и смешивающих гамильтонианов, с параметрами, оптимизированными классически для максимизации качества решения.",
+            "section_problem": "Тип Задачи",
             "select_problem": "Выберите Задачу Оптимизации",
+            "problem_help": "Выберите комбинаторную задачу оптимизации для решения",
             "problem_maxcut": "Максимальный Разрез",
             "problem_partition": "Разбиение Чисел",
             "problem_coloring": "Раскраска Графа",
             "section_maxcut": "Задача Максимального Разреза",
             "slider_nodes": "Количество Узлов",
+            "nodes_help": "Количество вершин в графе",
             "slider_layers": "Слои QAOA (p)",
+            "layers_help": "Количество слоев QAOA",
+            "graph_structure": "Структура Графа",
+            "qaoa_params": "Параметры QAOA",
             "button_run": "Запустить Оптимизацию QAOA",
+            "status_running": "Выполнение оптимизации QAOA...",
             "section_solution": "Распределение Вероятности Решений",
             "msg_found": "✅ Найдено решение MaxCut:",
             "msg_value": "со значением разреза",
@@ -4853,12 +4881,10 @@ elif module_id == "vqe":
     st.markdown(f"# {t('vqe.page_title')}")
     st.markdown(f'<span class="research-status status-active">{t("status_badges.variational")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>Hybrid Quantum-Classical Optimization</h3>
-        <p>VQE combines quantum state preparation with classical optimization to find ground state 
-        energies of molecular Hamiltonians. This is a cornerstone NISQ algorithm with applications 
-        in quantum chemistry and materials science.</p>
+        <h3>{t('vqe.card_title')}</h3>
+        <p>{t('vqe.card_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -4883,12 +4909,12 @@ elif module_id == "vqe":
     col1, col2 = st.columns([3, 2])
     
     with col1:
-        st.markdown("### Experiment Configuration")
+        st.markdown(f"### {t('vqe.section_config')}")
         
-        ansatz_depth = st.slider("Ansatz Depth (layers)", 1, 5, 2, key="vqe_depth")
-        n_iterations = st.slider("Optimization Iterations", 20, 100, 50, 10, key="vqe_iter")
-        optimizer_choice = st.selectbox("Optimizer", ["COBYLA", "SPSA", "Powell"], key="vqe_opt")
-        noise_model = st.checkbox("Include shot noise", value=True, key="vqe_noise")
+        ansatz_depth = st.slider(t('vqe.slider_depth'), 1, 5, 2, key="vqe_depth")
+        n_iterations = st.slider(t('vqe.slider_iterations'), 20, 100, 50, 10, key="vqe_iter")
+        optimizer_choice = st.selectbox(t('vqe.select_optimizer'), ["COBYLA", "SPSA", "Powell"], key="vqe_opt")
+        noise_model = st.checkbox(t('vqe.checkbox_noise'), value=True, key="vqe_noise")
         
         # Hamiltonian (H₂ molecule example)
         st.markdown("**Hamiltonian:** H₂ molecule (STO-3G basis)")
@@ -4897,7 +4923,7 @@ elif module_id == "vqe":
         # Exact ground state (for comparison)
         E_exact = -1.137  # H₂ exact ground state energy
         
-        if st.button("Run VQE Optimization", type="primary", key="run_vqe"):
+        if st.button(t('vqe.button_run'), type="primary", key="run_vqe"):
             progress_bar = st.progress(0)
             status_text = st.empty()
             energy_plot = st.empty()
@@ -4912,7 +4938,7 @@ elif module_id == "vqe":
             
             for iteration in range(n_iterations):
                 progress_bar.progress((iteration + 1) / n_iterations)
-                status_text.markdown(f"**Iteration {iteration + 1}/{n_iterations}**")
+                status_text.markdown(f"**{t('vqe.status_iteration')} {iteration + 1}/{n_iterations}**")
                 
                 # Simulate energy convergence
                 # Real VQE would compute ⟨ψ(θ)|H|ψ(θ)⟩
@@ -4965,7 +4991,7 @@ elif module_id == "vqe":
             error = abs(final_energy - E_exact)
             accuracy = (1 - error / abs(E_exact)) * 100
             
-            st.success(f"✓ VQE Converged! Final Energy: {final_energy:.6f} Ha | Error: {error:.6f} Ha | Accuracy: {accuracy:.2f}%")
+            st.success(f"✓ {t('vqe.success_converged')} {final_energy:.6f} Ha | {t('vqe.metric_error')}: {error:.6f} Ha | {t('vqe.metric_accuracy')}: {accuracy:.2f}%")
             
             # Chemical accuracy check
             chemical_accuracy = 0.0016  # 1 kcal/mol in Hartree
@@ -4997,31 +5023,31 @@ elif module_id == "vqe":
             st.session_state.experiment_log.append(experiment_data)
     
     with col2:
-        st.markdown("### Theoretical Background")
+        st.markdown(f"### {t('vqe.section_theory')}")
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='experiment-panel'>
-            <h4>Ansatz Structure</h4>
-            <p>Hardware-efficient ansatz:</p>
+            <h4>{t('vqe.theory_ansatz_title')}</h4>
+            <p>{t('vqe.theory_ansatz_subtitle')}</p>
             <ul>
                 <li>RY(θ) rotations</li>
                 <li>RZ(φ) rotations</li>
                 <li>CNOT entangling layers</li>
             </ul>
-            <p>Depth = {}</p>
-            <p>Parameters = {}</p>
+            <p>{t('vqe.theory_ansatz_depth')} = {ansatz_depth}</p>
+            <p>{t('vqe.theory_ansatz_params')} = {ansatz_depth * 3}</p>
         </div>
-        """.format(ansatz_depth, ansatz_depth * 3), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='experiment-panel'>
-            <h4>Energy Landscape</h4>
-            <p>VQE navigates a high-dimensional energy landscape E(θ) in parameter space.</p>
-            <p><strong>Challenges:</strong></p>
+            <h4>{t('vqe.theory_landscape_title')}</h4>
+            <p>{t('vqe.theory_landscape_desc')}</p>
+            <p><strong>{t('vqe.theory_challenges')}</strong></p>
             <ul>
-                <li>Barren plateaus (gradient vanishing)</li>
-                <li>Local minima traps</li>
-                <li>Shot noise from measurements</li>
+                <li>{t('vqe.theory_challenge_1')}</li>
+                <li>{t('vqe.theory_challenge_2')}</li>
+                <li>{t('vqe.theory_challenge_3')}</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -5041,25 +5067,21 @@ elif module_id == "qaoa":
     st.markdown(f"# {t('qaoa.page_title')}")
     st.markdown(f'<span class="research-status status-active">{t("status_badges.combinatorial")}</span>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='research-card'>
-        <h3>Quantum Combinatorial Optimization</h3>
-        <p>QAOA is a hybrid quantum-classical algorithm designed for solving combinatorial optimization 
-        problems. It uses a parametrized quantum circuit with alternating cost and mixer Hamiltonians 
-        to find approximate solutions to NP-hard problems.</p>
+        <h3>{t('qaoa.card_title')}</h3>
+        <p>{t('qaoa.card_desc')}</p>
         
-        <p><strong>Key Concept:</strong> QAOA prepares quantum states that encode solutions to optimization 
-        problems by evolving under problem-specific and mixing Hamiltonians, with parameters optimized 
-        classically to maximize solution quality.</p>
+        <p><strong>{t('qaoa.key_concept_label')}</strong> {t('qaoa.key_concept_text')}</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Problem Selection
-    st.markdown("### Problem Type")
+    st.markdown(f"### {t('qaoa.section_problem')}")
     problem_type = st.selectbox(
-        "Select Optimization Problem",
-        ["MaxCut", "Number Partitioning", "Graph Coloring"],
-        help="Choose the combinatorial optimization problem to solve"
+        t('qaoa.select_problem'),
+        [t('qaoa.problem_maxcut'), t('qaoa.problem_partition'), t('qaoa.problem_coloring')],
+        help=t('qaoa.problem_help')
     )
     
     if problem_type == "MaxCut":
@@ -5077,9 +5099,9 @@ elif module_id == "qaoa":
         # Graph configuration
         col1, col2 = st.columns(2)
         with col1:
-            num_nodes = st.slider("Number of Nodes", 3, 6, 4, help="Number of vertices in the graph")
+            num_nodes = st.slider(t('qaoa.slider_nodes'), 3, 6, 4, help=t('qaoa.nodes_help'))
         with col2:
-            p_layers = st.slider("QAOA Layers (p)", 1, 5, 2, help="Number of QAOA layers")
+            p_layers = st.slider(t('qaoa.slider_layers'), 1, 5, 2, help=t('qaoa.layers_help'))
         
         # Generate random graph (adjacency matrix)
         np.random.seed(42)
@@ -5088,7 +5110,7 @@ elif module_id == "qaoa":
         adj_matrix = adj_matrix + adj_matrix.T  # Make symmetric
         
         # Display graph
-        st.markdown("#### Graph Structure")
+        st.markdown(f"#### {t('qaoa.graph_structure')}")
         fig_graph = go.Figure()
         
         # Create graph layout (circular)
@@ -5142,10 +5164,10 @@ elif module_id == "qaoa":
         st.plotly_chart(fig_graph, use_container_width=True)
         
         # QAOA Circuit Parameters
-        st.markdown("#### QAOA Parameters")
+        st.markdown(f"#### {t('qaoa.qaoa_params')}")
         
-        if st.button("Run QAOA Optimization", type="primary"):
-            with st.spinner("Running QAOA optimization..."):
+        if st.button(t('qaoa.button_run'), type="primary"):
+            with st.spinner(t('qaoa.status_running')):
                 # Initialize parameters
                 gamma_init = np.random.uniform(0, 2*np.pi, p_layers)
                 beta_init = np.random.uniform(0, np.pi, p_layers)
