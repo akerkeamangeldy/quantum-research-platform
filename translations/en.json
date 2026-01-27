@@ -1,0 +1,54 @@
+{
+    "global": {
+        "title": "QUANTUM RESEARCH WORKBENCH v4.0.2",
+        "platform_name": "Quantum Research Workbench",
+        "version": "v4.0.2",
+        "search_placeholder": "🔍 Search modules...",
+        "language_en": "🇬🇧 EN",
+        "language_ru": "🇷🇺 RU"
+    },
+    "navigation": {
+        "home": "Home",
+        "section_home": "HOME",
+        "section_foundations": "FOUNDATIONS",
+        "section_correlations": "QUANTUM CORRELATIONS",
+        "section_dynamics": "NOISE & DYNAMICS",
+        "section_variational": "VARIATIONAL ALGORITHMS",
+        "section_qml": "QUANTUM ML",
+        "section_hardware": "ERROR CORRECTION & HARDWARE",
+        "section_complexity": "COMPLEXITY THEORY",
+        "section_export": "DATA EXPORT"
+    },
+    "modules": {
+        "home": "Home",
+        "bloch": "Hilbert Space Dynamics",
+        "interference": "Coherent Superposition",
+        "entanglement": "Bell-State Correlations",
+        "topological": "Topological Phases",
+        "noise": "Dissipative Decoherence",
+        "circuits": "Unitary Synthesis",
+        "vqe": "VQE Architectures",
+        "qaoa": "Optimization Manifolds",
+        "qml": "Quantum Neural Networks",
+        "qec": "Surface Code Protocols",
+        "hardware": "QPU Topology Maps",
+        "complexity": "Quantum Complexity Theory",
+        "export": "Data Export & Analysis"
+    },
+    "module_subtitles": {
+        "home": "Platform Overview",
+        "bloch": "Single Qubit Dynamics",
+        "interference": "Superposition Phenomena",
+        "entanglement": "Bell State Analysis",
+        "topological": "Exotic Quantum Phases",
+        "noise": "Decoherence Models",
+        "circuits": "Gate Synthesis",
+        "vqe": "Variational Eigensolvers",
+        "qaoa": "Combinatorial Optimization",
+        "qml": "Machine Learning Integration",
+        "qec": "Error Correction Protocols",
+        "hardware": "Physical Implementation",
+        "complexity": "Computational Complexity",
+        "export": "Research Data Management"
+    }
+}

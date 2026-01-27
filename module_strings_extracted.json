@@ -1,0 +1,274 @@
+{
+  "overview": {
+    "headings": [
+      "QUANTUM RESEARCH TERMINAL v4.0.2",
+      "REAL-TIME TELEMETRY STREAM",
+      "🌐 LIVE STATE VECTOR MANIPULATION",
+      "→ RESEARCH TERMINAL CAPABILITIES"
+    ],
+    "paragraphs": [],
+    "labels": [],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "bloch": {
+    "headings": [
+      "{t('bloch_math_title')}"
+    ],
+    "paragraphs": [],
+    "labels": [],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "interference": {
+    "headings": [
+      "{t('interf_card_title')}"
+    ],
+    "paragraphs": [
+      "{t('interf_card_desc')}"
+    ],
+    "labels": [],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "entanglement": {
+    "headings": [
+      "{t('ent_card_title')}"
+    ],
+    "paragraphs": [
+      "{t('ent_card_desc')}",
+      "{t('ent_bell_title')}"
+    ],
+    "labels": [],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "noise": {
+    "headings": [
+      "Noise, Decoherence & Density Matrix Formalism",
+      "Initial State Configuration",
+      "Noise Channel Selection",
+      "T₁ & T₂ Relaxation",
+      "Open Quantum Systems & Mixed States"
+    ],
+    "paragraphs": [
+      "Real quantum systems interact with their environment, leading to decoherence. \n        The density matrix formalism describes both pure and mixed states, essential for \n        modeling NISQ-era quantum computing."
+    ],
+    "labels": [
+      "Noise Channel",
+      "Initial θ",
+      "Initial φ",
+      "Noise Strength"
+    ],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "vqe": {
+    "headings": [
+      "VQE: Variational Quantum Eigensolver",
+      "Experiment Configuration",
+      "Theoretical Background",
+      "Hybrid Quantum-Classical Optimization"
+    ],
+    "paragraphs": [
+      "VQE combines quantum state preparation with classical optimization to find ground state \n        energies of molecular Hamiltonians. This is a cornerstone NISQ algorithm with applications \n        in quantum chemistry and materials science."
+    ],
+    "labels": [
+      "Optimizer",
+      "Ansatz Depth (layers)",
+      "Optimization Iterations"
+    ],
+    "buttons": [
+      "Run VQE Optimization"
+    ],
+    "messages": [],
+    "chart_titles": []
+  },
+  "qaoa": {
+    "headings": [
+      "QAOA: Quantum Approximate Optimization Algorithm",
+      "Problem Type",
+      "Graph Structure",
+      "QAOA Parameters",
+      "Optimization Convergence",
+      "Solution Probability Distribution",
+      "Quantum Combinatorial Optimization",
+      "MaxCut Problem"
+    ],
+    "paragraphs": [
+      "QAOA is a hybrid quantum-classical algorithm designed for solving combinatorial optimization \n        problems. It uses a parametrized quantum circuit with alternating cost and mixer Hamiltonians \n        to find approximate solutions to NP-hard problems.",
+      "Given a graph, partition vertices into two sets to maximize the number of edges \n            between the sets. This is a canonical NP-hard problem in combinatorial optimization."
+    ],
+    "labels": [
+      "Select Optimization Problem",
+      "Number of Nodes",
+      "QAOA Layers (p)"
+    ],
+    "buttons": [
+      "Run QAOA Optimization"
+    ],
+    "messages": [
+      "💾 Experiment logged! Visit",
+      "Number Partitioning implementation coming soon!",
+      "Graph Coloring implementation coming soon!"
+    ],
+    "chart_titles": []
+  },
+  "qml": {
+    "headings": [
+      "{t('qml.card_title')}"
+    ],
+    "paragraphs": [
+      "{t('qml.card_desc')}"
+    ],
+    "labels": [],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "circuits": {
+    "headings": [
+      "Quantum Circuits & Unitaries",
+      "Build Quantum Circuit",
+      "Gate Sequence (applied left to right)",
+      "Circuit Diagram",
+      "State Evolution",
+      "Total Circuit Unitary",
+      "Bloch Sphere Evolution",
+      "Executable Python Code",
+      "Circuit-to-Physics Bridge"
+    ],
+    "paragraphs": [
+      "Quantum circuits are sequences of unitary operations acting on qubits. This module demonstrates \n        circuit construction, unitary evolution, and the mapping between gate sequences and quantum state transformations."
+    ],
+    "labels": [
+      "Initial State",
+      "Custom θ",
+      "Custom φ"
+    ],
+    "buttons": [
+      "Simulate Measurement (1000 shots)"
+    ],
+    "messages": [],
+    "chart_titles": []
+  },
+  "export": {
+    "headings": [
+      "Reproducibility & Export System",
+      "Experiment Log",
+      "Reproducibility Checklist",
+      "Experiment Reproducibility"
+    ],
+    "paragraphs": [
+      "Every experiment execution generates a comprehensive snapshot including parameters, \n        results, code, and metadata. Export as JSON for programmatic access or PDF for publications."
+    ],
+    "labels": [],
+    "buttons": [
+      "Export All Experiments"
+    ],
+    "messages": [
+      "No experiments logged yet. Run experiments in other modules to populate this log.",
+      "PDF generation would create a publication-ready report with experiment details, plots, and interpretation.",
+      "No experiments to export."
+    ],
+    "chart_titles": []
+  },
+  "qec": {
+    "headings": [
+      "Quantum Error Correction: Surface Codes",
+      "Distance-3 Surface Code",
+      "Error Simulation",
+      "Topological Error Correction",
+      "Threshold Theorem"
+    ],
+    "paragraphs": [
+      "Surface codes are the leading candidate for fault-tolerant quantum computing. They use \n        a 2D lattice of physical qubits with local interactions to encode logical qubits, achieving \n        error correction with realistic hardware constraints."
+    ],
+    "labels": [
+      "Physical Error Rate"
+    ],
+    "buttons": [
+      "Simulate Error Correction"
+    ],
+    "messages": [],
+    "chart_titles": []
+  },
+  "hardware": {
+    "headings": [
+      "Hardware Topology & Connectivity",
+      "IBM Heavy-Hexagon Topology",
+      "Google Sycamore Grid Topology",
+      "IonQ All-to-All Connectivity",
+      "Rigetti Linear Chain",
+      "Quantum Hardware Architectures"
+    ],
+    "paragraphs": [
+      "Real quantum processors have limited qubit connectivity. Understanding topology is \n        crucial for circuit compilation, SWAP insertion, and benchmarking different platforms.",
+      "IBM's heavy-hex architecture provides higher connectivity than square lattice while \n            maintaining manufacturability. Each qubit connects to 2-3 neighbors.",
+      "2D grid with nearest-neighbor connectivity. Each qubit connects to 2-4 neighbors.",
+      "Trapped ion systems can perform gates between any qubit pair (all-to-all connectivity).",
+      "Linear chain topology where each qubit connects to nearest neighbors only."
+    ],
+    "labels": [
+      "Select Quantum Platform"
+    ],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  },
+  "complexity": {
+    "headings": [
+      "Complexity Classes: P, NP, BQP",
+      "Complexity Classes",
+      "Landmark Quantum Algorithms",
+      "Quantum Computational Complexity",
+      "Shor's Algorithm (1994)",
+      "Grover's Algorithm (1996)",
+      "Quantum Simulation (Feynman 1982)"
+    ],
+    "paragraphs": [
+      "Understanding the power and limitations of quantum computers requires studying \n        complexity classes - the sets of problems solvable efficiently by different computational models.",
+      "Problems solvable by classical deterministic computers in polynomial time.",
+      "Problems whose solutions can be verified in polynomial time.",
+      "Problems solvable by quantum computers in polynomial time with high probability.",
+      "$P \\\\subseteq BQP \\\\subseteq PSPACE$",
+      "$BQP$ and $NP$ are believed to be incomparable",
+      "Quantum advantage lies in problems in $BQP \\\\setminus P$"
+    ],
+    "labels": [
+      "Select Algorithm",
+      "Database size N"
+    ],
+    "buttons": [
+      "Find Factors"
+    ],
+    "messages": [],
+    "chart_titles": []
+  },
+  "topological": {
+    "headings": [
+      "Topological Quantum Computing",
+      "Anyons & Braiding",
+      "Braid Diagram",
+      "Physical Realizations",
+      "Topology-Based Quantum Information",
+      "Advanced Research Module"
+    ],
+    "paragraphs": [
+      "Topological quantum computing encodes quantum information in non-local topological \n        properties of systems, providing inherent protection against local errors. Information \n        is stored in the braiding of anyons (exotic quasiparticles in 2D systems).",
+      "Universal topological quantum computing can be achieved with Fibonacci anyons, \n        which have fusion rules: $\\\\tau \\\\times \\\\tau = 1 + \\\\tau$",
+      "This module is under active development. Check back for implementation of cutting-edge \n        quantum computing research topics."
+    ],
+    "labels": [
+      "Braid Type"
+    ],
+    "buttons": [],
+    "messages": [],
+    "chart_titles": []
+  }
+}
