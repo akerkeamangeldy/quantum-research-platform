@@ -2455,11 +2455,21 @@ TRANSLATIONS = {
             "page_title": "VQE: Variational Quantum Eigensolver",
             "card_title": "Hybrid Quantum-Classical Optimization",
             "card_desc": "VQE combines quantum state preparation with classical optimization to find ground state energies of molecular Hamiltonians. This is a cornerstone NISQ algorithm with applications in quantum chemistry and materials science.",
+            "intro_ansatz": "Ansatz:",
+            "intro_ansatz_desc": "Parameterized quantum circuit |ψ(θ)⟩",
+            "intro_hamiltonian": "Hamiltonian:",
+            "intro_hamiltonian_desc": "Sum of Pauli strings (e.g., H₂ molecule)",
+            "intro_optimizer": "Optimizer:",
+            "intro_optimizer_desc": "Classical (COBYLA, SPSA, gradient descent)",
+            "intro_output": "Output:",
+            "intro_output_desc": "Ground state energy E₀ and optimal parameters θ*",
             "section_config": "Experiment Configuration",
             "slider_depth": "Ansatz Depth (layers)",
             "slider_iterations": "Optimization Iterations",
             "select_optimizer": "Optimizer",
             "checkbox_noise": "Include shot noise",
+            "hamiltonian_label": "Hamiltonian:",
+            "hamiltonian_h2": "H₂ molecule (STO-3G basis)",
             "button_run": "Run VQE Optimization",
             "status_iteration": "Iteration",
             "success_converged": "VQE Converged! Final Energy:",
@@ -2468,6 +2478,9 @@ TRANSLATIONS = {
             "section_theory": "Theoretical Background",
             "theory_ansatz_title": "Ansatz Structure",
             "theory_ansatz_subtitle": "Hardware-efficient ansatz:",
+            "theory_ansatz_ry": "RY(θ) rotations",
+            "theory_ansatz_rz": "RZ(φ) rotations",
+            "theory_ansatz_cnot": "CNOT entangling layers",
             "theory_ansatz_depth": "Depth",
             "theory_ansatz_params": "Parameters",
             "theory_landscape_title": "Energy Landscape",
@@ -2475,7 +2488,10 @@ TRANSLATIONS = {
             "theory_challenges": "Challenges:",
             "theory_challenge_1": "Barren plateaus (gradient vanishing)",
             "theory_challenge_2": "Local minima traps",
-            "theory_challenge_3": "Shot noise from measurements"
+            "theory_challenge_3": "Shot noise from measurements",
+            "metric_hilbert": "Hilbert Space Dimension",
+            "chem_accuracy_title": "Chemical Accuracy Achieved",
+            "chem_accuracy_desc": "Error < 1.6 mHa (1 kcal/mol). Sufficient for molecular property prediction."
         },
         "qaoa": {
             "page_title": "QAOA: Quantum Approximate Optimization",
@@ -2657,6 +2673,8 @@ TRANSLATIONS = {
                 "convergence_title": "VQE Energy Convergence",
                 "convergence_x_axis": "Iteration",
                 "convergence_y_axis": "Energy (Hartree)",
+                "energy_trace": "Energy",
+                "exact_annotation": "Exact:",
                 "landscape_title": "Energy Landscape",
                 "parameters_title": "Parameter Evolution"
             },
@@ -2879,11 +2897,44 @@ TRANSLATIONS = {
             "page_title": "VQE: Вариационный Квантовый Собственный Решатель",
             "card_title": "Гибридная Квантово-Классическая Оптимизация",
             "card_desc": "VQE сочетает подготовку квантовых состояний с классической оптимизацией для поиска энергий основных состояний молекулярных гамильтонианов. Это краеугольный алгоритм NISQ с приложениями в квантовой химии и материаловедении.",
+            "intro_ansatz": "Анзац:",
+            "intro_ansatz_desc": "параметризованная квантовая схема |ψ(θ)⟩",
+            "intro_hamiltonian": "Гамильтониан:",
+            "intro_hamiltonian_desc": "сумма паулиевских строк (например, молекула H₂)",
+            "intro_optimizer": "Оптимизатор:",
+            "intro_optimizer_desc": "классический (COBYLA, SPSA, градиентный спуск)",
+            "intro_output": "Результат:",
+            "intro_output_desc": "энергия основного состояния E₀ и оптимальные параметры θ*",
             "section_config": "Конфигурация Эксперимента",
             "slider_depth": "Глубина Ансаца (слои)",
             "slider_iterations": "Итерации Оптимизации",
             "select_optimizer": "Оптимизатор",
             "checkbox_noise": "Включить дробовой шум",
+            "hamiltonian_label": "Гамильтониан:",
+            "hamiltonian_h2": "молекула H₂ (базис STO-3G)",
+            "button_run": "Запустить Оптимизацию VQE",
+            "status_iteration": "Итерация",
+            "success_converged": "VQE Сошёлся! Финальная Энергия:",
+            "metric_error": "Ошибка",
+            "metric_accuracy": "Точность",
+            "section_theory": "Теоретическая Основа",
+            "theory_ansatz_title": "Структура Ансаца",
+            "theory_ansatz_subtitle": "Аппаратно-эффективный ансац:",
+            "theory_ansatz_ry": "Повороты RY(θ)",
+            "theory_ansatz_rz": "Повороты RZ(φ)",
+            "theory_ansatz_cnot": "Запутывающие слои CNOT",
+            "theory_ansatz_depth": "Глубина",
+            "theory_ansatz_params": "Параметры",
+            "theory_landscape_title": "Энергетический Ландшафт",
+            "theory_landscape_desc": "VQE навигирует по многомерному энергетическому ландшафту E(θ) в пространстве параметров.",
+            "theory_challenges": "Вызовы:",
+            "theory_challenge_1": "Пустынные плато (исчезновение градиента)",
+            "theory_challenge_2": "Ловушки локальных минимумов",
+            "theory_challenge_3": "Дробовой шум от измерений",
+            "metric_hilbert": "Размерность гильбертова пространства",
+            "chem_accuracy_title": "Достигнута Химическая Точность",
+            "chem_accuracy_desc": "Ошибка < 1.6 мХа (1 ккал/моль). Достаточно для предсказания молекулярных свойств."
+        },
             "button_run": "Запустить Оптимизацию VQE",
             "status_iteration": "Итерация",
             "success_converged": "VQE Сошёлся! Финальная Энергия:",
@@ -3077,6 +3128,8 @@ TRANSLATIONS = {
                 "convergence_title": "Сходимость VQE Энергии",
                 "convergence_x_axis": "Итерация",
                 "convergence_y_axis": "Энергия (Хартри)",
+                "energy_trace": "Энергия",
+                "exact_annotation": "Точное значение:",
                 "landscape_title": "Энергетический Ландшафт",
                 "parameters_title": "Эволюция Параметров"
             },
@@ -4964,12 +5017,12 @@ elif module_id == "vqe":
     \theta^* = \arg\min_\theta E(\theta)
     """)
     
-    st.markdown("""
+    st.markdown(f"""
     <div class='latex-display'>
-        <p><strong>Ansatz:</strong> Parameterized quantum circuit |ψ(θ)⟩</p>
-        <p><strong>Hamiltonian:</strong> Sum of Pauli strings (e.g., H₂ molecule)</p>
-        <p><strong>Optimizer:</strong> Classical (COBYLA, SPSA, gradient descent)</p>
-        <p><strong>Output:</strong> Ground state energy E₀ and optimal parameters θ*</p>
+        <p><strong>{t('vqe.intro_ansatz')}</strong> {t('vqe.intro_ansatz_desc')}</p>
+        <p><strong>{t('vqe.intro_hamiltonian')}</strong> {t('vqe.intro_hamiltonian_desc')}</p>
+        <p><strong>{t('vqe.intro_optimizer')}</strong> {t('vqe.intro_optimizer_desc')}</p>
+        <p><strong>{t('vqe.intro_output')}</strong> {t('vqe.intro_output_desc')}</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -4985,7 +5038,7 @@ elif module_id == "vqe":
         noise_model = st.checkbox(t('vqe.checkbox_noise'), value=True, key="vqe_noise")
         
         # Hamiltonian (H₂ molecule example)
-        st.markdown("**Hamiltonian:** H₂ molecule (STO-3G basis)")
+        st.markdown(f"**{t('vqe.hamiltonian_label')}** {t('vqe.hamiltonian_h2')}")
         st.code("H = -1.0523 * II + 0.3979 * ZZ + 0.3979 * XX - 0.0112 * ZI - 0.0112 * IZ", language="text")
         
         # Exact ground state (for comparison)
@@ -5031,14 +5084,14 @@ elif module_id == "vqe":
                     mode='lines+markers',
                     line=dict(color='#06B6D4', width=2),
                     marker=dict(size=4),
-                    name='Energy'
+                    name=t('charts.vqe.energy_trace')
                 ))
                 
                 fig_conv.add_hline(
                     y=E_exact,
                     line_dash="dash",
                     line_color='#84CC16',
-                    annotation_text=f"Exact: {E_exact:.6f} Ha",
+                    annotation_text=f"{t('charts.vqe.exact_annotation')} {E_exact:.6f} Ha",
                     annotation_position="right"
                 )
                 
@@ -5064,10 +5117,10 @@ elif module_id == "vqe":
             # Chemical accuracy check
             chemical_accuracy = 0.0016  # 1 kcal/mol in Hartree
             if error < chemical_accuracy:
-                st.markdown("""
+                st.markdown(f"""
                 <div class='experiment-panel' style='border-left-color: #84CC16;'>
-                    <h4 style='color: #84CC16;'>Chemical Accuracy Achieved</h4>
-                    <p>Error < 1.6 mHa (1 kcal/mol). Sufficient for molecular property prediction.</p>
+                    <h4 style='color: #84CC16;'>{t('vqe.chem_accuracy_title')}</h4>
+                    <p>{t('vqe.chem_accuracy_desc')}</p>
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -5098,9 +5151,9 @@ elif module_id == "vqe":
             <h4>{t('vqe.theory_ansatz_title')}</h4>
             <p>{t('vqe.theory_ansatz_subtitle')}</p>
             <ul>
-                <li>RY(θ) rotations</li>
-                <li>RZ(φ) rotations</li>
-                <li>CNOT entangling layers</li>
+                <li>{t('vqe.theory_ansatz_ry')}</li>
+                <li>{t('vqe.theory_ansatz_rz')}</li>
+                <li>{t('vqe.theory_ansatz_cnot')}</li>
             </ul>
             <p>{t('vqe.theory_ansatz_depth')} = {ansatz_depth}</p>
             <p>{t('vqe.theory_ansatz_params')} = {ansatz_depth * 3}</p>
@@ -5120,12 +5173,12 @@ elif module_id == "vqe":
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='metric-box'>
-            <h3>{}</h3>
-            <p>Hilbert Space Dimension</p>
+            <h3>{2**2}</h3>
+            <p>{t('vqe.metric_hilbert')}</p>
         </div>
-        """.format(2**2), unsafe_allow_html=True)  # 2 qubits for H₂
+        """, unsafe_allow_html=True)
 
 elif module_id == "qaoa":
     # Add energy field effect for optimization landscape
