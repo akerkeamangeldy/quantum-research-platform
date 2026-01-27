@@ -2250,6 +2250,14 @@ def density_matrix_to_bloch(rho):
 
 def apply_noise_channel(rho, channel_type, strength):
     """Apply noise channel to density matrix."""
+    # Map translated channel names to English for internal logic
+    channel_map = {
+        "Depolяризующий": "Depolarizing",
+        "Дефазирующий": "Dephasing",
+        "Затухание Амплитуды": "Amplitude Damping"
+    }
+    channel_type = channel_map.get(channel_type, channel_type)
+    
     if channel_type == "Depolarizing":
         I = pauli_matrices()['I']
         return (1 - strength) * rho + strength * I / 2
@@ -4750,19 +4758,19 @@ elif module_id == "noise":
         st.markdown(f"""
         <div class='metric-box'>
             <h3>{purity_initial:.4f} → {purity_noisy:.4f}</h3>
-            <p>Purity (Tr(ρ²))</p>
+            <p>{t('noise.metric_purity')}</p>
         </div>
         <div class='metric-box'>
             <h3>{bloch_length_initial:.4f} → {bloch_length_noisy:.4f}</h3>
-            <p>Bloch Vector Length</p>
+            <p>{t('noise.metric_bloch')}</p>
         </div>
         """, unsafe_allow_html=True)
         
         # Density matrix heatmaps
         fig_dm = make_subplots(
             rows=2, cols=2,
-            subplot_titles=('Re(ρ) - Initial', 'Im(ρ) - Initial', 
-                          'Re(ρ) - After Noise', 'Im(ρ) - After Noise'),
+            subplot_titles=(t('noise.chart_re_initial'), t('noise.chart_im_initial'), 
+                          t('noise.chart_re_noise'), t('noise.chart_im_noise')),
             specs=[[{'type': 'heatmap'}, {'type': 'heatmap'}],
                    [{'type': 'heatmap'}, {'type': 'heatmap'}]]
         )
@@ -4782,10 +4790,10 @@ elif module_id == "noise":
         st.plotly_chart(fig_dm, use_container_width=True, key="density_matrix_viz")
     
     with col2:
-        st.markdown("### T₁ & T₂ Relaxation")
+        st.markdown(f"### {t('noise.section_relaxation')}")
         
-        T1 = st.number_input("T₁ (μs)", min_value=10, max_value=200, value=100, key="T1_val")
-        T2 = st.number_input("T₂ (μs)", min_value=10, max_value=200, value=50, key="T2_val")
+        T1 = st.number_input(t('noise.input_t1'), min_value=10, max_value=200, value=100, key="T1_val")
+        T2 = st.number_input(t('noise.input_t2'), min_value=10, max_value=200, value=50, key="T2_val")
         
         # Time evolution
         time_points = np.linspace(0, 200, 100)
