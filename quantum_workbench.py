@@ -2606,12 +2606,6 @@ TRANSLATIONS = {
             "button_simulate": "Simulate Error Correction",
             "repetition_code": "3-Qubit Repetition Code (Simplified Model)"
         },
-            "card_title": "Surface Codes & Logical Qubits",
-            "card_desc": "Quantum error correction is essential for fault-tolerant quantum computation. Surface codes detect and correct both bit-flip and phase-flip errors using stabilizer measurements.",
-            "section_config": "Error Correction Configuration",
-            "select_code": "QEC Code",
-            "button_simulate": "Simulate Error Correction"
-        },
         "hardware": {
             "page_title": "QPU Hardware Topology",
             "card_title": "Quantum Processing Unit Architectures",
@@ -3065,8 +3059,6 @@ TRANSLATIONS = {
             "button_simulate": "Симулировать Коррекцию Ошибок",
             "repetition_code": "3-кубитный Код Повторения (Упрощенная Модель)"
         },
-            "button_simulate": "Симулировать Коррекцию Ошибок"
-        },
         "hardware": {
             "page_title": "Топология Оборудования КПУ",
             "card_title": "Архитектуры Квантового Процессора",
@@ -3194,42 +3186,63 @@ TRANSLATIONS = {
     }
 }
 
-# Legacy embedded translations for backward compatibility (to be removed after full migration)
-TRANSLATIONS_LEGACY = {
-    'en': {
-        # ===== GLOBAL UI =====
-        'title': 'QUANTUM RESEARCH WORKBENCH v4.0.2',
-        'system_status': 'SYSTEM STATUS',
-        'operational': 'OPERATIONAL',
-        'coherence_time': 'COHERENCE TIME',
-        'optimized': 'OPTIMIZED',
-        'gate_fidelity': 'GATE FIDELITY',
-        'temp': 'TEMP',
-        'search_placeholder': '🔍 Search modules...',
-        'button_navigate': '→',
-        'units_degrees': '°',
-        'units_microseconds': 'μs',
-        'units_millikelvin': 'mK',
-        'units_mbar': 'mbar',
-        'label_greater_than': '>',
-        'status_active': 'Core Module',
-        'status_variational': 'Variational Algorithm',
-        'status_frontier': 'Advanced Topic',
-        'status_combinatorial': 'Combinatorial Optimization',
-        'status_hybrid': 'Hybrid QML',
-        'status_fault_tolerant': 'Fault-Tolerant QC',
-        'status_infrastructure': 'Research Infrastructure',
-        
-        # ===== SECTIONS =====
-        'section_home': 'HOME',
-        'section_foundations': 'FOUNDATIONS',
-        'section_correlations': 'QUANTUM CORRELATIONS',
-        'section_dynamics': 'NOISE & DYNAMICS',
-        'section_variational': 'VARIATIONAL ALGORITHMS',
-        'section_qml': 'QUANTUM ML',
-        'section_hardware': 'ERROR CORRECTION & HARDWARE',
-        'section_complexity': 'COMPLEXITY THEORY',
-        'section_export': 'DATA EXPORT',
+# Translation helper function with dot-notation support
+def t(key, fallback=None):
+    """
+    Get translation for current language with fallback
+    Supports dot notation: t('home_page.hero_title') or legacy flat keys: t('title')
+    """
+    lang = st.session_state.get('language', 'en')
+    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
+    
+    if '.' in key:
+        keys = key.split('.')
+        value = lang_dict
+        for k in keys:
+            if isinstance(value, dict):
+                value = value.get(k)
+            else:
+                break
+    else:
+        # Legacy flat-key fallback  
+        value = lang_dict.get(key)
+    
+    # Multiple fallback layers
+    if value is None:
+        en_dict = TRANSLATIONS.get('en', {})
+        if '.' in key:
+            keys = key.split('.')
+            en_value = en_dict
+            for k in keys:
+                if isinstance(en_value, dict):
+                    en_value = en_value.get(k)
+                else:
+                    break
+            value = en_value
+        else:
+            value = en_dict.get(key)
+    
+    return value if value is not None else (fallback if fallback else key)
+# ====================================
+# MAIN STREAMLIT APP
+# ====================================
+
+# LANGUAGE SWITCHER
+col_lang1, col_lang2 = st.sidebar.columns(2)
+
+with col_lang1:
+    if st.button(t("global.language_english"), key="lang_en"):
+        st.session_state.language = 'en'
+        st.rerun()
+
+with col_lang2:
+    if st.button(t("global.language_russian"), key="lang_ru"):
+        st.session_state.language = 'ru'
+        st.rerun()
+
+st.sidebar.markdown("---")
+
+# Professional brand header
         
         # ===== MODULE TITLES & SUBTITLES =====
         'module_home': 'Home',
@@ -3373,8 +3386,10 @@ TRANSLATIONS_LEGACY = {
         'common_yes': 'Yes',
         'common_no': 'No',
         'common_none': 'None',
-    },
-    'ru': {
+    }
+}
+
+# Translation helper function with dot-notation support
         # ===== GLOBAL UI =====
         'title': 'КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2',
         'system_status': 'СТАТУС СИСТЕМЫ',
