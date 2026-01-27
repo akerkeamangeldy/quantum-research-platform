@@ -2285,8 +2285,24 @@ if 'selected_module_id' not in st.session_state:
 if 'language' not in st.session_state:
     st.session_state.language = 'en'
 
-# COMPREHENSIVE TRANSLATION SYSTEM - ALL MODULES
-TRANSLATIONS = {
+# COMPREHENSIVE TRANSLATION SYSTEM - JSON-BASED i18n
+@st.cache_data
+def load_translations():
+    """Load translation JSON files with caching for performance"""
+    import os
+    base_dir = os.path.dirname(__file__)
+    
+    with open(os.path.join(base_dir, 'locales', 'en.json'), 'r', encoding='utf-8') as f:
+        en = json.load(f)
+    with open(os.path.join(base_dir, 'locales', 'ru.json'), 'r', encoding='utf-8') as f:
+        ru = json.load(f)
+    
+    return {'en': en, 'ru': ru}
+
+TRANSLATIONS = load_translations()
+
+# Legacy embedded translations for backward compatibility (to be removed after full migration)
+TRANSLATIONS_LEGACY = {
     'en': {
         # ===== GLOBAL UI =====
         'title': 'QUANTUM RESEARCH WORKBENCH v4.0.2',
@@ -2645,22 +2661,65 @@ TRANSLATIONS = {
     }
 }
 
-# Translation helper function
+# Translation helper function with dot-notation support
 def t(key, fallback=None):
-    """Get translation for current language with fallback"""
-    lang_dict = TRANSLATIONS.get(st.session_state.language, TRANSLATIONS['en'])
-    return lang_dict.get(key, fallback or TRANSLATIONS['en'].get(key, key))
+    """
+    Get translation for current language with fallback
+    Supports dot notation: t('home_page.hero_title') or legacy flat keys: t('title')
+    """
+    lang = st.session_state.get('language', 'en')
+    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS['en'])
+    
+    # Support dot notation for nested JSON structure
+    if '.' in key:
+        keys = key.split('.')
+        value = lang_dict
+        for k in keys:
+            if isinstance(value, dict):
+                value = value.get(k)
+            else:
+                value = None
+                break
+        if value:
+            return value
+    else:
+        # Legacy flat key support
+        if key in lang_dict:
+            return lang_dict[key]
+        # Try searching in all nested dicts for backward compatibility
+        for section_dict in lang_dict.values():
+            if isinstance(section_dict, dict) and key in section_dict:
+                return section_dict[key]
+    
+    # Fallback handling
+    if fallback:
+        return fallback
+    
+    # Try English as fallback
+    en_dict = TRANSLATIONS['en']
+    if '.' in key:
+        keys = key.split('.')
+        value = en_dict
+        for k in keys:
+            if isinstance(value, dict):
+                value = value.get(k)
+            else:
+                break
+        if value:
+            return value
+    
+    return key  # Return key itself if no translation found
 
 lang = TRANSLATIONS[st.session_state.language]
 
 # Language selector
 col_lang1, col_lang2 = st.sidebar.columns(2)
 with col_lang1:
-    if st.button("🇬🇧 EN", key="lang_en", type="primary" if st.session_state.language == 'en' else "secondary", use_container_width=True):
+    if st.button(t('global.language_en'), key="lang_en", type="primary" if st.session_state.language == 'en' else "secondary", use_container_width=True):
         st.session_state.language = 'en'
         st.rerun()
 with col_lang2:
-    if st.button("🇷🇺 RU", key="lang_ru", type="primary" if st.session_state.language == 'ru' else "secondary", use_container_width=True):
+    if st.button(t('global.language_ru'), key="lang_ru", type="primary" if st.session_state.language == 'ru' else "secondary", use_container_width=True):
         st.session_state.language = 'ru'
         st.rerun()
 
@@ -2669,7 +2728,7 @@ st.sidebar.markdown("---")
 # Professional brand header
 brand_header = f"""
 <div class='sidebar-brand'>
-    <div class='sidebar-brand-title'>{t('title')}</div>
+    <div class='sidebar-brand-title'>{t('global.title')}</div>
     <div class='sidebar-brand-subtitle'>Quantum Research Platform</div>
 </div>
 """
@@ -2677,37 +2736,37 @@ st.sidebar.markdown(brand_header, unsafe_allow_html=True)
 
 # Navigation structure with organized groups
 nav_groups = [
-    ("section_home", [
-        ("home", "00", 'module_home', 'subtitle_home'),
+    ("navigation.section_home", [
+        ("home", "00", 'modules.home', 'module_subtitles.home'),
     ]),
-    ("section_foundations", [
-        ("bloch", "01", 'module_bloch', 'subtitle_bloch'),
-        ("interference", "02", 'module_interference', 'subtitle_interference'),
+    ("navigation.section_foundations", [
+        ("bloch", "01", 'modules.bloch', 'module_subtitles.bloch'),
+        ("interference", "02", 'modules.interference', 'module_subtitles.interference'),
     ]),
-    ("section_correlations", [
-        ("entanglement", "03", 'module_entanglement', 'subtitle_entanglement'),
-        ("topological", "04", 'module_topological', 'subtitle_topological'),
+    ("navigation.section_correlations", [
+        ("entanglement", "03", 'modules.entanglement', 'module_subtitles.entanglement'),
+        ("topological", "04", 'modules.topological', 'module_subtitles.topological'),
     ]),
-    ("section_dynamics", [
-        ("noise", "05", 'module_noise', 'subtitle_noise'),
-        ("circuits", "06", 'module_circuits', 'subtitle_circuits'),
+    ("navigation.section_dynamics", [
+        ("noise", "05", 'modules.noise', 'module_subtitles.noise'),
+        ("circuits", "06", 'modules.circuits', 'module_subtitles.circuits'),
     ]),
-    ("section_variational", [
-        ("vqe", "07", 'module_vqe', 'subtitle_vqe'),
-        ("qaoa", "08", 'module_qaoa', 'subtitle_qaoa'),
+    ("navigation.section_variational", [
+        ("vqe", "07", 'modules.vqe', 'module_subtitles.vqe'),
+        ("qaoa", "08", 'modules.qaoa', 'module_subtitles.qaoa'),
     ]),
-    ("section_qml", [
-        ("qml", "09", 'module_qml', 'subtitle_qml'),
+    ("navigation.section_qml", [
+        ("qml", "09", 'modules.qml', 'module_subtitles.qml'),
     ]),
-    ("section_hardware", [
-        ("qec", "10", 'module_qec', 'subtitle_qec'),
-        ("hardware", "11", 'module_hardware', 'subtitle_hardware'),
+    ("navigation.section_hardware", [
+        ("qec", "10", 'modules.qec', 'module_subtitles.qec'),
+        ("hardware", "11", 'modules.hardware', 'module_subtitles.hardware'),
     ]),
-    ("section_complexity", [
-        ("complexity", "12", 'module_complexity', 'subtitle_complexity'),
+    ("navigation.section_complexity", [
+        ("complexity", "12", 'modules.complexity', 'module_subtitles.complexity'),
     ]),
-    ("section_export", [
-        ("export", "13", 'module_export', 'subtitle_export'),
+    ("navigation.section_export", [
+        ("export", "13", 'modules.export', 'module_subtitles.export'),
     ]),
 ]
 
@@ -2748,16 +2807,16 @@ st.markdown("<div class='module-content'>", unsafe_allow_html=True)
 
 if module_id == "home":
     # Professional Home / Overview Landing Page
-    st.markdown("""
+    st.markdown(f"""
     <div style='text-align: center; margin: 60px 0 40px 0;'>
         <h1 style='font-size: 42px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; color: #FFFFFF;'>
-            Quantum Research Workbench
+            {t('home_page.hero_title')}
         </h1>
         <div style='font-size: 12px; font-weight: 600; color: rgba(99, 102, 241, 0.8); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;'>
-            Version 4.0.2
+            {t('global.version')}
         </div>
         <p style='font-family: "Source Serif Pro", serif; font-size: 16px; color: rgba(230, 230, 230, 0.9); max-width: 720px; margin: 0 auto 32px auto; line-height: 1.7;'>
-            A high-fidelity computational environment for quantum state manipulation, variational optimization, and reproducible quantum experiments with publication-ready visualizations.
+            {t('home_page.hero_subtitle')}
         </p>
         <button onclick="document.querySelector('[key=nav_bloch]').click()" style='
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(123, 97, 255, 0.9));
@@ -2773,16 +2832,16 @@ if module_id == "home":
             transition: all 200ms ease;
             box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
         '>
-            Open Workbench →
+            {t('buttons.open')} →
         </button>
     </div>
     """, unsafe_allow_html=True)
     
     # What You Can Do Here
-    st.markdown("""
+    st.markdown(f"""
     <div style='margin: 60px 0 40px 0;'>
         <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
-            Research Capabilities
+            {t('home_page.capabilities_title')}
         </h2>
     </div>
     """, unsafe_allow_html=True)
@@ -2790,7 +2849,7 @@ if module_id == "home":
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
             <div style='margin-bottom: 18px;'>
                 <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
@@ -2799,30 +2858,30 @@ if module_id == "home":
                     <circle cx='12' cy='12' r='9'/>
                 </svg>
             </div>
-            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>State Manipulation</h3>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.cap_state_title')}</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
-                Unitary evolution, Bloch sphere dynamics, density matrix formalism, and projective measurements in complex Hilbert spaces.
+                {t('home_page.cap_state_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
             <div style='margin-bottom: 18px;'>
                 <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                     <path d='M22 12h-4l-3 9L9 3l-3 9H2'/>
                 </svg>
             </div>
-            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Noise Modeling</h3>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.cap_noise_title')}</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
-                Realistic decoherence channels, T₁/T₂ relaxation, amplitude damping, and depolarizing noise with adjustable parameters.
+                {t('home_page.cap_noise_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
             <div style='margin-bottom: 18px;'>
                 <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
@@ -2832,15 +2891,15 @@ if module_id == "home":
                     <path d='M18 9a9 9 0 0 1-9 9'/>
                 </svg>
             </div>
-            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Variational Algorithms</h3>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.cap_variational_title')}</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
-                VQE, QAOA, and hybrid quantum-classical optimization with gradient-based training and ansatz design tools.
+                {t('home_page.cap_variational_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     with col4:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(26, 26, 26, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 12px; padding: 24px; height: 100%;'>
             <div style='margin-bottom: 18px;'>
                 <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
@@ -2849,18 +2908,18 @@ if module_id == "home":
                     <line x1='12' y1='15' x2='12' y2='3'/>
                 </svg>
             </div>
-            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Reproducible Exports</h3>
+            <h3 style='font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.cap_export_title')}</h3>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.8);'>
-                JSON snapshots with SHA-256 verification, circuit diagrams, measurement statistics, and research metadata.
+                {t('home_page.cap_export_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     # Quick Start Guide
-    st.markdown("""
+    st.markdown(f"""
     <div style='margin: 80px 0 40px 0;'>
         <h2 style='text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 40px;'>
-            Quick Start Guide
+            {t('home_page.quick_start_title')}
         </h2>
     </div>
     """, unsafe_allow_html=True)
@@ -2868,7 +2927,7 @@ if module_id == "home":
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div style='text-align: center; padding: 24px;'>
             <div style='
                 width: 60px; 
@@ -2884,15 +2943,15 @@ if module_id == "home":
                 font-weight: 700;
                 color: rgba(99, 102, 241, 1);
             '>1</div>
-            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Select Module</h4>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.quick_step1_title')}</h4>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
-                Choose from 12 specialized modules covering quantum foundations, algorithms, and hardware interfaces.
+                {t('home_page.quick_step1_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div style='text-align: center; padding: 24px;'>
             <div style='
                 width: 60px; 
@@ -2908,15 +2967,15 @@ if module_id == "home":
                 font-weight: 700;
                 color: rgba(99, 102, 241, 1);
             '>2</div>
-            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Configure Parameters</h4>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.quick_step2_title')}</h4>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
-                Adjust quantum parameters, noise models, backend selection, and measurement basis configurations.
+                {t('home_page.quick_step2_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
+        st.markdown(f"""
         <div style='text-align: center; padding: 24px;'>
             <div style='
                 width: 60px; 
@@ -2932,18 +2991,18 @@ if module_id == "home":
                 font-weight: 700;
                 color: rgba(99, 102, 241, 1);
             '>3</div>
-            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>Run & Export</h4>
+            <h4 style='font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #E8E8E8;'>{t('home_page.quick_step3_title')}</h4>
             <p style='font-family: "Source Serif Pro", serif; font-size: 13px; line-height: 1.6; color: rgba(200, 200, 200, 0.7);'>
-                Execute experiments, analyze results, and export research snapshots as JSON or PDF reports.
+                {t('home_page.quick_step3_desc')}
             </p>
         </div>
         """, unsafe_allow_html=True)
     
     # Featured Modules - Compact Grid with Professional Styling
-    st.markdown("""
+    st.markdown(f"""
     <div style='margin: 60px 0 28px 0;'>
         <h2 style='text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 32px;'>
-            Featured Modules
+            {t('home_page.featured_title')}
         </h2>
     </div>
     """, unsafe_allow_html=True)
@@ -2951,14 +3010,14 @@ if module_id == "home":
     col1, col2, col3, col4, col5 = st.columns(5, gap="small")
     
     featured_modules = [
-        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", "Bloch Sphere", "Hilbert space"),
-        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", "Entanglement", "Bell states"),
-        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", "Noise Models", "Decoherence"),
-        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", "VQE", "Eigensolver"),
-        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", "Quantum ML", "Neural nets"),
+        ("bloch", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='1'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='9'/></svg>", 'modules.bloch', 'module_subtitles.bloch'),
+        ("entanglement", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>", 'modules.entanglement', 'module_subtitles.entanglement'),
+        ("noise", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>", 'modules.noise', 'module_subtitles.noise'),
+        ("vqe", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/></svg>", 'modules.vqe', 'module_subtitles.vqe'),
+        ("qml", "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(140, 150, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z'/><path d='M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z'/><path d='M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4'/></svg>", 'modules.qml', 'module_subtitles.qml'),
     ]
     
-    for col, (mod_id, icon, title, subtitle) in zip([col1, col2, col3, col4, col5], featured_modules):
+    for col, (mod_id, icon, title_key, subtitle_key) in zip([col1, col2, col3, col4, col5], featured_modules):
         with col:
             # Card content
             st.markdown(f"""
@@ -2987,7 +3046,7 @@ if module_id == "home":
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                '>{title}</h4>
+                '>{t(title_key)}</h4>
                 <p style='
                     font-family: Inter, sans-serif;
                     font-size: 10px;
@@ -3000,20 +3059,20 @@ if module_id == "home":
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                '>{subtitle}</p>
+                '>{t(subtitle_key)}</p>
             </div>
             """, unsafe_allow_html=True)
             
             # Compact professional button
-            if st.button("Launch", key=f"feat_{mod_id}", use_container_width=True):
+            if st.button(t('buttons.launch'), key=f"feat_{mod_id}", use_container_width=True):
                 st.session_state.selected_module_id = mod_id
                 st.rerun()
     
     # System Status Panel
-    st.markdown("""
+    st.markdown(f"""
     <div style='margin: 60px 0 32px 0;'>
         <h2 style='text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(180, 180, 180, 0.7); margin-bottom: 32px;'>
-            System Status
+            {t('system_status.title')}
         </h2>
     </div>
     """, unsafe_allow_html=True)
@@ -3021,25 +3080,25 @@ if module_id == "home":
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(0, 255, 148, 0.05); border: 1px solid rgba(0, 255, 148, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
-            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Status</div>
-            <div style='font-size: 18px; font-weight: 700; color: rgba(0, 255, 148, 1);'>● OPERATIONAL</div>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>{t('system_status.status_label')}</div>
+            <div style='font-size: 18px; font-weight: 700; color: rgba(0, 255, 148, 1);'>● {t('system_status.operational')}</div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
-            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Gate Fidelity</div>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>{t('system_status.gate_fidelity')}</div>
             <div style='font-size: 18px; font-weight: 700; color: rgba(99, 102, 241, 1);'>F > 99.9%</div>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
+        st.markdown(f"""
         <div style='background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10px; padding: 20px; text-align: center;'>
-            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>Coherence Time</div>
+            <div style='font-size: 11px; font-weight: 700; color: rgba(180, 180, 180, 0.7); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;'>{t('system_status.coherence_time')}</div>
             <div style='font-size: 18px; font-weight: 700; color: rgba(99, 102, 241, 1);'>T₂ = 103μs</div>
         </div>
         """, unsafe_allow_html=True)
