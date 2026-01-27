@@ -2285,36 +2285,435 @@ if 'selected_module_id' not in st.session_state:
 if 'language' not in st.session_state:
     st.session_state.language = 'en'
 
-# COMPREHENSIVE TRANSLATION SYSTEM - JSON-BASED i18n
-@st.cache_data
-def load_translations():
-    """Load translation JSON files with caching for performance"""
-    import os
-    try:
-        # Try multiple path resolution strategies
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        en_path = os.path.join(base_dir, 'locales', 'en.json')
-        ru_path = os.path.join(base_dir, 'locales', 'ru.json')
-        
-        # Debug: Check if files exist
-        if not os.path.exists(en_path):
-            st.warning(f"English translation file not found at: {en_path}")
-            return None
-        if not os.path.exists(ru_path):
-            st.warning(f"Russian translation file not found at: {ru_path}")
-            return None
-        
-        with open(en_path, 'r', encoding='utf-8') as f:
-            en = json.load(f)
-        with open(ru_path, 'r', encoding='utf-8') as f:
-            ru = json.load(f)
-        
-        return {'en': en, 'ru': ru}
-    except Exception as e:
-        st.error(f"Failed to load translations: {str(e)}")
-        return None
-
-TRANSLATIONS = load_translations()
+# COMPREHENSIVE TRANSLATION SYSTEM - Embedded i18n (Streamlit Cloud Compatible)
+TRANSLATIONS = {
+    'en': {
+        "global": {
+            "title": "QUANTUM RESEARCH WORKBENCH v4.0.2",
+            "platform_name": "Quantum Research Workbench",
+            "version": "v4.0.2",
+            "search_placeholder": "🔍 Search modules...",
+            "language_en": "🇬🇧 EN",
+            "language_ru": "🇷🇺 RU"
+        },
+        "navigation": {
+            "home": "Home",
+            "section_home": "HOME",
+            "section_foundations": "FOUNDATIONS",
+            "section_correlations": "QUANTUM CORRELATIONS",
+            "section_dynamics": "NOISE & DYNAMICS",
+            "section_variational": "VARIATIONAL ALGORITHMS",
+            "section_qml": "QUANTUM ML",
+            "section_hardware": "ERROR CORRECTION & HARDWARE",
+            "section_complexity": "COMPLEXITY THEORY",
+            "section_export": "DATA EXPORT"
+        },
+        "modules": {
+            "home": "Home",
+            "overview": "Theoretical Framework",
+            "bloch": "Hilbert Space Dynamics",
+            "interference": "Coherent Superposition",
+            "entanglement": "Bell-State Correlations",
+            "topological": "Topological Phases",
+            "noise": "Dissipative Decoherence",
+            "circuits": "Unitary Synthesis",
+            "vqe": "VQE Architectures",
+            "qaoa": "Optimization Manifolds",
+            "qml": "Quantum Neural Networks",
+            "qec": "Surface Code Protocols",
+            "hardware": "QPU Topology Maps",
+            "complexity": "Complexity Landscapes",
+            "export": "Research Reproducibility"
+        },
+        "module_subtitles": {
+            "home": "platform overview, quick start",
+            "overview": "postulates, operators, measurement",
+            "bloch": "unitary evolution, Hamiltonians",
+            "interference": "phase, interference, amplitudes",
+            "entanglement": "CHSH, nonlocality, EPR",
+            "topological": "anyonic braiding, fault tolerance",
+            "noise": "T1/T2, channels, density matrix",
+            "circuits": "gate decomposition, compilation",
+            "vqe": "ansatz design, energy landscapes",
+            "qaoa": "gradients, barren plateaus",
+            "qml": "embeddings, kernels, classifiers",
+            "qec": "stabilizers, logical qubits",
+            "hardware": "connectivity, calibration",
+            "complexity": "BQP, QMA, oracle separation",
+            "export": "export state vectors, circuits"
+        },
+        "status_badges": {
+            "active": "Core Module",
+            "variational": "Variational Algorithm",
+            "frontier": "Advanced Topic",
+            "combinatorial": "Combinatorial Optimization",
+            "hybrid": "Hybrid QML",
+            "fault_tolerant": "Fault-Tolerant QC",
+            "infrastructure": "Research Infrastructure"
+        },
+        "system_status": {
+            "title": "System Status",
+            "operational": "OPERATIONAL",
+            "coherence_time": "Coherence Time",
+            "gate_fidelity": "Gate Fidelity",
+            "temperature": "Temperature",
+            "optimized": "OPTIMIZED",
+            "status_label": "Status",
+            "t1_label": "Relaxation Time T₁",
+            "t2_label": "Coherence Time T₂",
+            "single_gate": "Single-Qubit Fidelity",
+            "two_gate": "Two-Qubit CNOT Fidelity",
+            "readout": "Readout Fidelity",
+            "vacuum": "Vacuum Pressure",
+            "cryo_temp": "Cryogenic Temperature"
+        },
+        "home_page": {
+            "hero_title": "Quantum Research Workbench",
+            "hero_subtitle": "High-Fidelity Quantum Computing Research Platform",
+            "hero_status": "SYSTEM STATUS: OPERATIONAL | QUBITS: STABLE | FIDELITY: >99.9%",
+            "capabilities_title": "Research Capabilities",
+            "cap_state_title": "State Manipulation",
+            "cap_state_desc": "Unitary evolution, Bloch sphere dynamics, density matrix formalism, and projective measurements in complex Hilbert spaces.",
+            "cap_noise_title": "Noise Modeling",
+            "cap_noise_desc": "Realistic decoherence channels, T₁/T₂ relaxation, amplitude damping, and depolarizing noise with adjustable parameters.",
+            "cap_variational_title": "Variational Algorithms",
+            "cap_variational_desc": "VQE, QAOA, and hybrid quantum-classical optimization with gradient-based training and ansatz design tools.",
+            "cap_export_title": "Reproducible Exports",
+            "cap_export_desc": "JSON snapshots with SHA-256 verification, circuit diagrams, measurement statistics, and research metadata.",
+            "quick_start_title": "Quick Start Guide",
+            "quick_step1_title": "Select Module",
+            "quick_step1_desc": "Choose from 13 quantum computing modules covering fundamentals to advanced topics.",
+            "quick_step2_title": "Configure Parameters",
+            "quick_step2_desc": "Adjust quantum parameters, noise models, backend selection, and measurement basis configurations.",
+            "quick_step3_title": "Run & Export",
+            "quick_step3_desc": "Execute experiments, analyze results, and export research snapshots as JSON or PDF reports.",
+            "featured_title": "Featured Modules",
+            "system_status_title": "System Status"
+        },
+        "buttons": {
+            "launch": "Launch",
+            "open": "Open",
+            "apply": "Apply",
+            "reset": "Reset",
+            "export": "Export",
+            "download": "Download",
+            "run": "Run",
+            "execute": "Execute",
+            "simulate": "Simulate",
+            "calculate": "Calculate",
+            "measure": "Measure",
+            "compose": "Compose"
+        },
+        "common": {
+            "yes": "Yes",
+            "no": "No",
+            "none": "None",
+            "loading": "Loading...",
+            "error": "Error",
+            "success": "Success",
+            "warning": "Warning"
+        },
+        "charts": {
+            "interference": {
+                "phasor_title": "Phasor Diagram",
+                "phasor_x_axis": "Real",
+                "phasor_y_axis": "Imaginary",
+                "pattern_title": "Interference Pattern",
+                "pattern_x_axis": "Phase Difference (degrees)",
+                "pattern_y_axis": "Total Probability |ψ|²",
+                "amplitude_title": "Amplitude Components",
+                "amplitude_y_axis": "AMPLITUDE",
+                "probability_title": "Probability Distribution",
+                "probability_y_axis": "|ψ|²"
+            },
+            "noise": {
+                "decay_title": "Decoherence Time Evolution",
+                "decay_x_axis": "Time (μs)",
+                "decay_y_axis": "Normalized Amplitude",
+                "t1_trace": "T₁ (Energy Relaxation)",
+                "t2_trace": "T₂ (Dephasing)",
+                "density_matrix_title": "Density Matrix Evolution"
+            },
+            "vqe": {
+                "convergence_title": "VQE Energy Convergence",
+                "convergence_x_axis": "Iteration",
+                "convergence_y_axis": "Energy (Hartree)",
+                "landscape_title": "Energy Landscape",
+                "parameters_title": "Parameter Evolution"
+            },
+            "qaoa": {
+                "convergence_title": "QAOA Convergence",
+                "convergence_x_axis": "Iteration",
+                "convergence_y_axis": "MaxCut Value",
+                "probability_title": "Solution Probability Distribution",
+                "probability_x_axis": "Bitstring",
+                "probability_y_axis": "Probability",
+                "graph_title": "Graph Structure"
+            },
+            "qml": {
+                "decision_boundary_title": "Quantum Decision Boundary",
+                "training_data": "Training Data",
+                "test_data": "Test Data",
+                "decision_surface": "Decision Surface",
+                "accuracy_title": "Classification Accuracy"
+            },
+            "circuits": {
+                "unitary_real_title": "Unitary Matrix (Real Part)",
+                "unitary_imag_title": "Unitary Matrix (Imaginary Part)",
+                "measurement_title": "Measurement Results",
+                "measurement_y_axis": "Counts",
+                "gate_decomposition": "Gate Decomposition"
+            },
+            "qec": {
+                "syndrome_title": "Syndrome Measurement",
+                "error_rate_title": "Logical Error Rate",
+                "stabilizer_title": "Stabilizer Violations",
+                "fidelity_title": "Code Fidelity"
+            },
+            "entanglement": {
+                "bell_measurement": "Bell State Measurement",
+                "correlation_title": "Quantum Correlations",
+                "chsh_title": "CHSH Inequality Test",
+                "density_matrix": "Two-Qubit Density Matrix"
+            },
+            "topological": {
+                "phase_diagram": "Topological Phase Diagram",
+                "braid_evolution": "Anyonic Braid Evolution",
+                "berry_phase": "Berry Phase Accumulation"
+            },
+            "hardware": {
+                "connectivity_title": "QPU Connectivity Map",
+                "calibration_title": "Calibration Metrics",
+                "fidelity_map": "Gate Fidelity Heatmap",
+                "crosstalk_title": "Crosstalk Analysis"
+            },
+            "common_traces": {
+                "alpha1": "α₁",
+                "alpha2": "α₂",
+                "total": "α₁ + α₂",
+                "real_part": "Real Part",
+                "imag_part": "Imaginary Part",
+                "measured": "Measured",
+                "theoretical": "Theoretical",
+                "ground_state": "Ground State",
+                "excited_state": "Excited State"
+            }
+        }
+    },
+    'ru': {
+        "global": {
+            "title": "КВАНТОВЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ЦЕНТР v4.0.2",
+            "platform_name": "Квантовый Исследовательский Центр",
+            "version": "v4.0.2",
+            "search_placeholder": "🔍 Поиск модулей...",
+            "language_en": "🇬🇧 EN",
+            "language_ru": "🇷🇺 RU"
+        },
+        "navigation": {
+            "home": "Главная",
+            "section_home": "ГЛАВНАЯ",
+            "section_foundations": "ОСНОВЫ",
+            "section_correlations": "КВАНТОВЫЕ КОРРЕЛЯЦИИ",
+            "section_dynamics": "ШУМЫ И ДИНАМИКА",
+            "section_variational": "ВАРИАЦИОННЫЕ АЛГОРИТМЫ",
+            "section_qml": "КВАНТОВОЕ МО",
+            "section_hardware": "КОРРЕКЦИЯ ОШИБОК И ОБОРУДОВАНИЕ",
+            "section_complexity": "ТЕОРИЯ СЛОЖНОСТИ",
+            "section_export": "ЭКСПОРТ ДАННЫХ"
+        },
+        "modules": {
+            "home": "Главная",
+            "overview": "Теоретическая Основа",
+            "bloch": "Динамика Пространства Гильберта",
+            "interference": "Когерентная Суперпозиция",
+            "entanglement": "Корреляции Белла",
+            "topological": "Топологические Фазы",
+            "noise": "Диссипативная Декогеренция",
+            "circuits": "Унитарный Синтез",
+            "vqe": "Архитектуры VQE",
+            "qaoa": "Многообразия Оптимизации",
+            "qml": "Квантовые Нейронные Сети",
+            "qec": "Протоколы Поверхностного Кода",
+            "hardware": "Топология КПУ",
+            "complexity": "Ландшафты Сложности",
+            "export": "Воспроизводимость Исследований"
+        },
+        "module_subtitles": {
+            "home": "обзор платформы, быстрый старт",
+            "overview": "постулаты, операторы, измерения",
+            "bloch": "унитарная эволюция, гамильтонианы",
+            "interference": "фаза, интерференция, амплитуды",
+            "entanglement": "CHSH, нелокальность, ЭПР",
+            "topological": "плетение анионов, отказоустойчивость",
+            "noise": "T1/T2, каналы, матрица плотности",
+            "circuits": "декомпозиция гейтов, компиляция",
+            "vqe": "дизайн ансаца, энергетические ландшафты",
+            "qaoa": "градиенты, пустые плато",
+            "qml": "вложения, ядра, классификаторы",
+            "qec": "стабилизаторы, логические кубиты",
+            "hardware": "связность, калибровка",
+            "complexity": "BQP, QMA, оракульное разделение",
+            "export": "экспорт векторов состояний, схем"
+        },
+        "status_badges": {
+            "active": "Основной Модуль",
+            "variational": "Вариационный Алгоритм",
+            "frontier": "Передовая Тема",
+            "combinatorial": "Комбинаторная Оптимизация",
+            "hybrid": "Гибридное КМО",
+            "fault_tolerant": "Отказоустойчивые КВ",
+            "infrastructure": "Исследовательская Инфраструктура"
+        },
+        "system_status": {
+            "title": "Статус Системы",
+            "operational": "РАБОТАЕТ",
+            "coherence_time": "Время Когерентности",
+            "gate_fidelity": "Точность Гейтов",
+            "temperature": "Температура",
+            "optimized": "ОПТИМИЗИРОВАНО",
+            "status_label": "Статус",
+            "t1_label": "Время Релаксации T₁",
+            "t2_label": "Время Когерентности T₂",
+            "single_gate": "Точность Однокубитных Гейтов",
+            "two_gate": "Точность Двухкубитных CNOT",
+            "readout": "Точность Считывания",
+            "vacuum": "Вакуумное Давление",
+            "cryo_temp": "Криогенная Температура"
+        },
+        "home_page": {
+            "hero_title": "Квантовый Исследовательский Центр",
+            "hero_subtitle": "Высокоточная Платформа для Квантовых Исследований",
+            "hero_status": "СТАТУС СИСТЕМЫ: РАБОТАЕТ | КУБИТЫ: СТАБИЛЬНЫ | ТОЧНОСТЬ: >99.9%",
+            "capabilities_title": "Исследовательские Возможности",
+            "cap_state_title": "Манипуляция Состояниями",
+            "cap_state_desc": "Унитарная эволюция, динамика сферы Блоха, формализм матрицы плотности и проективные измерения в комплексных пространствах Гильберта.",
+            "cap_noise_title": "Моделирование Шума",
+            "cap_noise_desc": "Реалистичные каналы декогеренции, релаксация T₁/T₂, затухание амплитуды и деполяризующий шум с настраиваемыми параметрами.",
+            "cap_variational_title": "Вариационные Алгоритмы",
+            "cap_variational_desc": "VQE, QAOA и гибридная квантово-классическая оптимизация с градиентным обучением и инструментами проектирования ансаца.",
+            "cap_export_title": "Воспроизводимый Экспорт",
+            "cap_export_desc": "JSON снимки с верификацией SHA-256, диаграммы схем, статистика измерений и метаданные исследований.",
+            "quick_start_title": "Руководство по Быстрому Старту",
+            "quick_step1_title": "Выбрать Модуль",
+            "quick_step1_desc": "Выберите из 13 модулей квантовых вычислений, охватывающих от основ до продвинутых тем.",
+            "quick_step2_title": "Настроить Параметры",
+            "quick_step2_desc": "Настройте квантовые параметры, модели шума, выбор бэкенда и конфигурации базиса измерений.",
+            "quick_step3_title": "Запустить и Экспортировать",
+            "quick_step3_desc": "Выполняйте эксперименты, анализируйте результаты и экспортируйте снимки исследований в формате JSON или PDF.",
+            "featured_title": "Избранные Модули",
+            "system_status_title": "Статус Системы"
+        },
+        "buttons": {
+            "launch": "Запустить",
+            "open": "Открыть",
+            "apply": "Применить",
+            "reset": "Сбросить",
+            "export": "Экспорт",
+            "download": "Скачать",
+            "run": "Выполнить",
+            "execute": "Запустить",
+            "simulate": "Симулировать",
+            "calculate": "Вычислить",
+            "measure": "Измерить",
+            "compose": "Составить"
+        },
+        "common": {
+            "yes": "Да",
+            "no": "Нет",
+            "none": "Нет",
+            "loading": "Загрузка...",
+            "error": "Ошибка",
+            "success": "Успешно",
+            "warning": "Внимание"
+        },
+        "charts": {
+            "interference": {
+                "phasor_title": "Векторная Диаграмма",
+                "phasor_x_axis": "Действительная Часть",
+                "phasor_y_axis": "Мнимая Часть",
+                "pattern_title": "Интерференционная Картина",
+                "pattern_x_axis": "Разность Фаз (градусы)",
+                "pattern_y_axis": "Полная Вероятность |ψ|²",
+                "amplitude_title": "Компоненты Амплитуды",
+                "amplitude_y_axis": "АМПЛИТУДА",
+                "probability_title": "Распределение Вероятности",
+                "probability_y_axis": "|ψ|²"
+            },
+            "noise": {
+                "decay_title": "Эволюция Декогеренции",
+                "decay_x_axis": "Время (мкс)",
+                "decay_y_axis": "Нормализованная Амплитуда",
+                "t1_trace": "T₁ (Энергетическая Релаксация)",
+                "t2_trace": "T₂ (Дефазирование)",
+                "density_matrix_title": "Эволюция Матрицы Плотности"
+            },
+            "vqe": {
+                "convergence_title": "Сходимость VQE Энергии",
+                "convergence_x_axis": "Итерация",
+                "convergence_y_axis": "Энергия (Хартри)",
+                "landscape_title": "Энергетический Ландшафт",
+                "parameters_title": "Эволюция Параметров"
+            },
+            "qaoa": {
+                "convergence_title": "Сходимость QAOA",
+                "convergence_x_axis": "Итерация",
+                "convergence_y_axis": "Значение MaxCut",
+                "probability_title": "Распределение Вероятности Решений",
+                "probability_x_axis": "Битовая Строка",
+                "probability_y_axis": "Вероятность",
+                "graph_title": "Структура Графа"
+            },
+            "qml": {
+                "decision_boundary_title": "Квантовая Граница Решений",
+                "training_data": "Обучающие Данные",
+                "test_data": "Тестовые Данные",
+                "decision_surface": "Поверхность Решений",
+                "accuracy_title": "Точность Классификации"
+            },
+            "circuits": {
+                "unitary_real_title": "Унитарная Матрица (Действительная Часть)",
+                "unitary_imag_title": "Унитарная Матрица (Мнимая Часть)",
+                "measurement_title": "Результаты Измерений",
+                "measurement_y_axis": "Счётчик",
+                "gate_decomposition": "Декомпозиция Гейта"
+            },
+            "qec": {
+                "syndrome_title": "Измерение Синдрома",
+                "error_rate_title": "Логическая Частота Ошибок",
+                "stabilizer_title": "Нарушения Стабилизатора",
+                "fidelity_title": "Точность Кода"
+            },
+            "entanglement": {
+                "bell_measurement": "Измерение Состояния Белла",
+                "correlation_title": "Квантовые Корреляции",
+                "chsh_title": "Тест Неравенства CHSH",
+                "density_matrix": "Двухкубитная Матрица Плотности"
+            },
+            "topological": {
+                "phase_diagram": "Диаграмма Топологических Фаз",
+                "braid_evolution": "Эволюция Плетения Анионов",
+                "berry_phase": "Накопление Фазы Берри"
+            },
+            "hardware": {
+                "connectivity_title": "Карта Связности КПУ",
+                "calibration_title": "Метрики Калибровки",
+                "fidelity_map": "Тепловая Карта Точности Гейтов",
+                "crosstalk_title": "Анализ Перекрёстных Помех"
+            },
+            "common_traces": {
+                "alpha1": "α₁",
+                "alpha2": "α₂",
+                "total": "α₁ + α₂",
+                "real_part": "Действительная Часть",
+                "imag_part": "Мнимая Часть",
+                "measured": "Измеренный",
+                "theoretical": "Теоретический",
+                "ground_state": "Основное Состояние",
+                "excited_state": "Возбуждённое Состояние"
+            }
+        }
+    }
+}
 
 # Legacy embedded translations for backward compatibility (to be removed after full migration)
 TRANSLATIONS_LEGACY = {
@@ -2682,13 +3081,6 @@ def t(key, fallback=None):
     Get translation for current language with fallback
     Supports dot notation: t('home_page.hero_title') or legacy flat keys: t('title')
     """
-    # Handle case where JSON loading failed
-    if TRANSLATIONS is None:
-        # Fallback to legacy embedded translations
-        lang = st.session_state.get('language', 'en')
-        legacy_dict = TRANSLATIONS_LEGACY.get(lang, TRANSLATIONS_LEGACY['en'])
-        return legacy_dict.get(key, fallback or key)
-    
     lang = st.session_state.get('language', 'en')
     lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
     
@@ -2718,22 +3110,22 @@ def t(key, fallback=None):
         return fallback
     
     # Try English as fallback
-    if TRANSLATIONS and 'en' in TRANSLATIONS:
-        en_dict = TRANSLATIONS['en']
-        if '.' in key:
-            keys = key.split('.')
-            value = en_dict
-            for k in keys:
-                if isinstance(value, dict):
-                    value = value.get(k)
-                else:
-                    break
-            if value:
-                return value
+    en_dict = TRANSLATIONS.get('en', {})
+    if '.' in key:
+        keys = key.split('.')
+        value = en_dict
+        for k in keys:
+            if isinstance(value, dict):
+                value = value.get(k)
+            else:
+                break
+        if value:
+            return value
     
     # Last resort: try legacy translations
-    if key in TRANSLATIONS_LEGACY.get('en', {}):
-        return TRANSLATIONS_LEGACY['en'][key]
+    legacy_dict = TRANSLATIONS_LEGACY.get('en', {})
+    if key in legacy_dict:
+        return legacy_dict[key]
     
     return key  # Return key itself if no translation found
 
