@@ -18,10 +18,10 @@ import json
 from datetime import datetime
 import hashlib
 
-# Page configuration
+# Page configuration with professional vector icon
 st.set_page_config(
     page_title="Quantum Research Workbench | v4.0.2",
-    page_icon="⚛️",
+    page_icon="favicon.svg",
     layout="wide",
     initial_sidebar_state="expanded"
 )
