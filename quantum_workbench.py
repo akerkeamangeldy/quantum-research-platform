@@ -2445,7 +2445,11 @@ TRANSLATIONS = {
             "chart_re_initial": "Re(ρ) - Initial",
             "chart_im_initial": "Im(ρ) - Initial",
             "chart_re_noise": "Re(ρ) - After Noise",
-            "chart_im_noise": "Im(ρ) - After Noise"
+            "chart_im_noise": "Im(ρ) - After Noise",
+            "phys_interp_title": "Physical Interpretation",
+            "phys_interp_t1": "Energy relaxation time. |1⟩ → |0⟩ decay rate.",
+            "phys_interp_t2": "Phase coherence time. T₂ ≤ 2T₁ (quantum limit).",
+            "phys_interp_fidelity": "Gate fidelity: F ≈ exp(-t_gate / T₂)"
         },
         "vqe": {
             "page_title": "VQE: Variational Quantum Eigensolver",
@@ -2833,7 +2837,11 @@ TRANSLATIONS = {
             "chart_re_initial": "Re(ρ) - Начальное",
             "chart_im_initial": "Im(ρ) - Начальное",
             "chart_re_noise": "Re(ρ) - После Шума",
-            "chart_im_noise": "Im(ρ) - После Шума"
+            "chart_im_noise": "Im(ρ) - После Шума",
+            "phys_interp_title": "Физическая Интерпретация",
+            "phys_interp_t1": "Время энергетической релаксации. Скорость распада |1⟩ → |0⟩.",
+            "phys_interp_t2": "Время фазовой когерентности. T₂ ≤ 2T₁ (квантовый предел).",
+            "phys_interp_fidelity": "Точность гейта (fidelity): F ≈ exp(-t_gate / T₂)"
         },
         "vqe": {
             "page_title": "VQE: Вариационный Квантовый Собственный Решатель",
@@ -4864,12 +4872,12 @@ elif module_id == "noise":
         
         st.plotly_chart(fig_decay, use_container_width=True, key="decay_curves")
         
-        st.markdown("""
+        st.markdown(f"""
         <div class='latex-display'>
-            <h4>Physical Interpretation</h4>
-            <p><strong>T₁:</strong> Energy relaxation time. |1⟩ → |0⟩ decay rate.</p>
-            <p><strong>T₂:</strong> Phase coherence time. T₂ ≤ 2T₁ (quantum limit).</p>
-            <p><strong>Gate fidelity:</strong> F ≈ exp(-t_gate / T₂)</p>
+            <h4>{t('noise.phys_interp_title')}</h4>
+            <p><strong>T₁:</strong> {t('noise.phys_interp_t1')}</p>
+            <p><strong>T₂:</strong> {t('noise.phys_interp_t2')}</p>
+            <p><strong>{t('noise.phys_interp_fidelity')}</strong></p>
         </div>
         """, unsafe_allow_html=True)
 
