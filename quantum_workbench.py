@@ -3244,9 +3244,14 @@ with col_lang2:
 
 st.sidebar.markdown("---")
 
-# Professional brand header
+# Professional brand header  
 brand_header = f"""
-        'module_overview': 'Theoretical Framework',
+<div class='sidebar-brand'>
+    <div class='sidebar-brand-title'>{t('global.title')}</div>
+    <div class='sidebar-brand-subtitle'>Quantum Research Platform</div>
+</div>
+"""
+st.sidebar.markdown(brand_header, unsafe_allow_html=True)
         'module_bloch': 'Hilbert Space Dynamics',
         'module_interference': 'Coherent Superposition',
         'module_entanglement': 'Bell-State Correlations',
