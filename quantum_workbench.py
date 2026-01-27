@@ -26,11 +26,37 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Obsidian Glassmorphism Aesthetics CSS + Lucide Icons
+# Obsidian Glassmorphism Aesthetics CSS + Lucide Icons + Global Typography
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700&family=Source+Serif+Pro:wght@300;400;600;700&display=swap');
+    /* PRODUCTION-READY FONT IMPORTS WITH CYRILLIC SUPPORT */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+Pro:wght@300;400;600;700&display=swap&subset=latin,latin-ext,cyrillic');
     @import url('https://unpkg.com/lucide-static@latest/font/lucide.css');
+    
+    /* GLOBAL TYPOGRAPHY - APPLY EVERYWHERE */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+    }
+    
+    /* Override Streamlit default fonts globally */
+    html, body, .stApp, [data-testid="stAppViewContainer"], 
+    [data-testid="stHeader"], [data-testid="stSidebar"], 
+    .main, .block-container, [data-testid="stVerticalBlock"],
+    h1, h2, h3, h4, h5, h6, p, span, div, label, input, 
+    textarea, select, button, a, li, td, th {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+    }
+    
+    /* Monospace for code elements */
+    code, pre, .code-panel, .telemetry-ticker, .metric-box h3, 
+    .status-value, [class*="mono"] {
+        font-family: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace !important;
+    }
+    
+    /* Serif for prose/readability */
+    .experiment-panel, .prose-text, [class*="serif"] {
+        font-family: 'Source Serif Pro', Georgia, 'Times New Roman', serif !important;
+    }
     
     :root {
         --bg-obsidian: #0A0A0A;
@@ -56,14 +82,15 @@ st.markdown("""
         background-attachment: fixed;
     }
     
+    /* Main content area - Inter by default (global override above handles this) */
     .main {
-        font-family: 'Source Serif Pro', serif;
         color: var(--text-prose);
         line-height: 1.7;
     }
     
+    /* Headings use JetBrains Mono for technical aesthetic */
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'JetBrains Mono', 'SF Mono', monospace !important;
         font-weight: 600;
         color: var(--text-mono);
         letter-spacing: -0.01em;
@@ -71,7 +98,7 @@ st.markdown("""
     }
     
     code, pre {
-        font-family: 'JetBrains Mono', monospace;
+        font-family: 'JetBrains Mono', 'SF Mono', monospace !important;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--glass-border);
         border-radius: 4px;
@@ -521,9 +548,34 @@ st.markdown("""
         letter-spacing: 0.02em;
     }
     
-    /* RESEARCH DASHBOARD NAVIGATION - DARK ACADEMIC AESTHETIC */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* GLOBAL TYPOGRAPHY - PRODUCTION-READY FONT LOADING */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600&display=swap');
     
+    /* Apply Inter globally to all elements */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+    
+    /* Monospace elements */
+    code, pre, .code-panel, .telemetry-ticker, .metric-box, .status-value {
+        font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    }
+    
+    /* Serif prose elements */
+    .experiment-panel, .prose-text {
+        font-family: 'Source Serif Pro', Georgia, serif !important;
+    }
+    
+    /* Streamlit core elements */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"], 
+    [data-testid="stSidebar"], .main, .block-container,
+    h1, h2, h3, h4, h5, h6, p, span, div, label, input, textarea, select, button {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+    
+    /* RESEARCH DASHBOARD NAVIGATION - DARK ACADEMIC AESTHETIC */
     .nav-section-header {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         font-size: 11px;
@@ -1094,15 +1146,16 @@ st.markdown("""
     }
     
     .nav-row-title {
-        font-family: 'Inter', -apple-system, sans-serif;
+        font-family: 'Inter', -apple-system, sans-serif !important;
         font-size: 13px;
         font-weight: 500;
         color: #E6E6E6;
         letter-spacing: -0.005em;
-        line-height: 1.4;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.35;
+        white-space: normal;
+        overflow: visible;
+        word-wrap: break-word;
+        word-break: normal;
         transition: all 200ms ease;
         flex: 1;
     }
