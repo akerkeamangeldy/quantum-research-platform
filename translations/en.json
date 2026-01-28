@@ -1,68 +1,70 @@
 {
-    "global": {
-        "title": "QUANTUM RESEARCH WORKBENCH v4.0.2",
-        "platform_name": "Quantum Research Workbench",
-        "version": "v4.0.2",
-        "search_placeholder": "🔍 Search modules...",
-        "language_en": "🇬🇧 EN",
-        "language_ru": "🇷🇺 RU"
-    },
-    "navigation": {
-        "home": "Home",
-        "section_home": "HOME",
-        "section_foundations": "FOUNDATIONS",
-        "section_correlations": "QUANTUM CORRELATIONS",
-        "section_dynamics": "NOISE & DYNAMICS",
-        "section_variational": "VARIATIONAL ALGORITHMS",
-        "section_qml": "QUANTUM ML",
-        "section_hardware": "ERROR CORRECTION & HARDWARE",
-        "section_complexity": "COMPLEXITY THEORY",
-        "section_export": "DATA EXPORT"
-    },
-    "modules": {
-        "home": "Home",
-        "bloch": "Hilbert Space Dynamics",
-        "interference": "Coherent Superposition",
-        "entanglement": "Bell-State Correlations",
-        "topological": "Topological Phases",
-        "noise": "Dissipative Decoherence",
-        "circuits": "Unitary Synthesis",
-        "vqe": "VQE Architectures",
-        "qaoa": "Optimization Manifolds",
-        "qml": "Quantum Neural Networks",
-        "qec": "Surface Code Protocols",
-        "hardware": "QPU Topology Maps",
-        "complexity": "Quantum Complexity Theory",
-        "export": "Data Export & Analysis"
-    },
-    "module_subtitles": {
-        "home": "Platform Overview",
-        "bloch": "Single Qubit Dynamics",
-        "interference": "Superposition Phenomena",
-        "entanglement": "Bell State Analysis",
-        "topological": "Exotic Quantum Phases",
-        "noise": "Decoherence Models",
-        "circuits": "Gate Synthesis",
-        "vqe": "Variational Eigensolvers",
-        "qaoa": "Combinatorial Optimization",
-        "qml": "Machine Learning Integration",
-        "qec": "Error Correction Protocols",
-        "hardware": "Physical Implementation",
-        "complexity": "Computational Complexity",
-        "export": "Research Data Management"
-    },
-    "home_page": {
-        "hero_title": "Quantum Research Workbench",
-        "hero_subtitle": "Advanced quantum computing simulation and research platform",
-        "capabilities_title": "Research Capabilities",
-        "featured_title": "Featured Modules"
-    },
-    "buttons": {
-        "open": "OPEN",
-        "launch": "Launch"
-    },
-    "bloch_module_title": "Bloch Sphere Dynamics",
-    "bloch_status_badge": "Active Module",
-    "bloch_math_title": "Mathematical Framework",
-    "bloch_math_intro": "The Bloch sphere provides a geometric representation of qubit states."
+  "global": {
+    "version": "v4.0.2-RESEARCH",
+    "language_selector": "Language"
+  },
+  "navigation": {
+    "title": "Quantum Research Workbench",
+    "home": "Home",
+    "modules": "Quantum Modules"
+  },
+  "home_page": {
+    "hero_title": "Quantum Research Platform",
+    "hero_subtitle": "Advanced quantum simulation workbench for researchers and students. Explore quantum mechanics through interactive visualizations and cutting-edge algorithms.",
+    "capabilities_title": "Research Capabilities",
+    "cap_state_title": "State Manipulation",
+    "cap_state_desc": "Visualize and manipulate quantum states on the Bloch sphere",
+    "cap_noise_title": "Noise Analysis", 
+    "cap_noise_desc": "Study decoherence effects and quantum error correction",
+    "cap_variational_title": "Variational Algorithms",
+    "cap_variational_desc": "Optimize quantum circuits with VQE and QAOA",
+    "cap_export_title": "Data Export",
+    "cap_export_desc": "Export results for research publication",
+    "featured_title": "Featured Modules",
+    "quick_start_title": "Quick Start Guide",
+    "quick_step1_title": "Choose Module",
+    "quick_step1_desc": "Select from our research-grade quantum modules",
+    "quick_step2_title": "Configure",
+    "quick_step2_desc": "Adjust parameters using interactive controls",
+    "quick_step3_title": "Analyze", 
+    "quick_step3_desc": "Visualize results and export data"
+  },
+  "modules": {
+    "home": "Home",
+    "overview": "Overview", 
+    "bloch": "Bloch Sphere",
+    "interference": "Quantum Interference",
+    "entanglement": "Bell State Correlations",
+    "topological": "Topological Phases",
+    "noise": "Quantum Noise Channels",
+    "circuits": "Quantum Circuits", 
+    "vqe": "Variational Quantum Eigensolver",
+    "qaoa": "Quantum Optimization",
+    "qml": "Quantum Machine Learning",
+    "qec": "Quantum Error Correction",
+    "hardware": "Quantum Hardware",
+    "complexity": "Complexity Theory",
+    "export": "Data Export"
+  },
+  "module_subtitles": {
+    "bloch": "Single qubit visualization",
+    "entanglement": "Quantum correlations",
+    "noise": "Decoherence analysis", 
+    "vqe": "Energy optimization",
+    "qml": "Quantum neural networks"
+  },
+  "buttons": {
+    "open": "Open",
+    "launch": "Launch",
+    "run": "Run",
+    "export": "Export",
+    "reset": "Reset"
+  },
+  "system_status": {
+    "title": "System Status",
+    "status_label": "Status",
+    "operational": "Operational",
+    "gate_fidelity": "Gate Fidelity", 
+    "coherence_time": "Coherence Time"
+  }
 }
