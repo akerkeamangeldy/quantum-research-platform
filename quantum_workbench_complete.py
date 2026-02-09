@@ -1,30 +1,21 @@
 ﻿import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-from matplotlib.patches import Ellipse, FancyBboxPatch, Circle, Wedge
 import plotly.graph_objects as go
 import plotly.express as px
-from plotly.subplots import make_subplots
 import json
 import os
-from datetime import datetime
-import base64
 
 # Page configuration
 st.set_page_config(
-    page_title="Quantum Research Workbench v4.0.2",
-    page_icon="⚛️",
+    page_title="Akerke Quantum Research Workbench",
+    page_icon="⚛",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
         'Get Help': 'https://github.com/akerkeamangeldy/quantum-research-platform',
         'Report a bug': 'https://github.com/akerkeamangeldy/quantum-research-platform/issues',
-        'About': """
-        # Quantum Research Workbench v4.0.2
-        Advanced quantum computing simulation and research platform.
-        Built with Streamlit and scientific Python libraries.
-        """
+        'About': "Akerke Quantum Research Workbench - Advanced QML Research Platform"
     }
 )
 
@@ -33,6 +24,355 @@ if 'language' not in st.session_state:
     st.session_state.language = 'en'
 if 'selected_module_id' not in st.session_state:
     st.session_state.selected_module_id = 'home'
+
+# Comprehensive Dark Mode Glassmorphism CSS
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global Dark Theme Variables */
+:root {
+    --bg-primary: #0E1117;
+    --bg-secondary: #1A1D23;
+    --glass-bg: rgba(26, 29, 35, 0.6);
+    --glass-border: rgba(241, 245, 249, 0.1);
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --accent-primary: #6366F1;
+    --accent-secondary: #8B5CF6;
+    --border-radius: 30px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Global Reset & Typography */
+* {
+    font-family: var(--font-family) !important;
+    letter-spacing: -0.05em !important;
+}
+
+/* App Background */
+.stApp {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Main Container */
+.main .block-container {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 2rem !important;
+    margin: 1rem !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    transition: var(--transition) !important;
+}
+
+/* Sidebar Glassmorphism */
+[data-testid="stSidebar"] > div:first-child {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0 !important;
+    padding: 1.5rem !important;
+}
+
+/* Brand Header */
+.brand-header {
+    text-align: center;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Navigation Sections */
+.nav-section {
+    margin: 1.5rem 0 1rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Module Icons SVG */
+.module-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.75rem;
+    opacity: 0.8;
+}
+
+/* Buttons */
+.stButton > button {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-primary) !important;
+    font-weight: 500 !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: var(--transition) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.stButton > button:hover {
+    background: var(--bg-secondary) !important;
+    border-color: var(--accent-primary) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
+    border: none !important;
+    color: white !important;
+}
+
+/* Research Modules Grid */
+.research-module {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin: 1rem 0;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.research-module:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.research-module::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.research-module:hover::before {
+    opacity: 1;
+}
+
+.module-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.module-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.module-status {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+}
+
+.status-active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22C55E;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-research {
+    background: rgba(139, 92, 246, 0.15);
+    color: #8B5CF6;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.status-experimental {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Module Rows */
+.module-row {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.module-row:hover {
+    background: var(--bg-secondary);
+    border-bottom-color: var(--accent-primary);
+    transform: translateX(4px);
+}
+
+/* Input Fields */
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stSelectbox > div > div > div {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-primary) !important;
+    transition: var(--transition) !important;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+
+/* Metrics */
+[data-testid="metric-container"] {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 1.5rem !important;
+    transition: var(--transition) !important;
+}
+
+[data-testid="metric-container"]:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* Info Messages */
+.stInfo, .stSuccess, .stWarning, .stError {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 0.5rem !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 20px !important;
+    margin: 0.25rem !important;
+    color: var(--text-secondary) !important;
+    transition: var(--transition) !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
+    color: white !important;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--glass-border);
+}
+
+.footer-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--text-muted), transparent);
+    margin: 0 auto 1rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main .block-container {
+        padding: 1rem !important;
+        margin: 0.5rem !important;
+    }
+    
+    .research-module {
+        padding: 1.5rem;
+    }
+}
+
+/* Focus States */
+*:focus {
+    outline: 2px solid var(--accent-primary) !important;
+    outline-offset: 2px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # Load translations from JSON files
 def load_translations():

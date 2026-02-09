@@ -449,84 +449,81 @@ st.markdown("""
     box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
 }
 
-/* Custom Research Card Class */
-.research-card {
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-xl);
-    padding: var(--spacing-xl) var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-    box-shadow: 
-        20px 20px 60px var(--shadow-dark),
-        -20px -20px 60px var(--shadow-light),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
-    transition: var(--transition-smooth);
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* Soft UI Container Class */
+.soft-container {
+    background: rgba(248, 250, 252, 0.6);
+    border-radius: 30px;
+    padding: 2.5rem 2rem;
+    margin: 2rem 0;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 32px rgba(148, 163, 184, 0.12);
 }
 
-.research-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+.soft-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(148, 163, 184, 0.18);
+    background: rgba(248, 250, 252, 0.8);
 }
 
-.research-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 
-        25px 25px 75px var(--shadow-dark),
-        -25px -25px 75px var(--shadow-light),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-}
-
-.research-card h3 {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.soft-container h3 {
+    color: #1e293b;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
-    margin-bottom: var(--spacing-md);
-    font-size: 1.5rem;
+    font-size: 1.375rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
 }
 
-.research-card p {
-    color: #475569;
+.soft-container h4 {
+    color: #334155;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.soft-container p {
+    color: #64748b;
+    font-family: 'Inter', sans-serif;
     line-height: 1.7;
     font-weight: 400;
-    margin-bottom: var(--spacing-sm);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
 }
 
-/* Status Badges with Glassmorphism */
-.research-status {
+/* Soft Status Pills */
+.soft-status {
     display: inline-block;
-    padding: var(--spacing-xs) var(--spacing-lg);
-    border-radius: 50px;
-    font-size: 0.875rem;
-    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    backdrop-filter: blur(20px);
-    transition: var(--transition-smooth);
-    margin: var(--spacing-md) 0;
+    margin: 1.5rem 0;
+    transition: all 0.3s ease;
 }
 
 .status-active {
-    background: rgba(34, 197, 94, 0.15);
-    color: #059669;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+    background: rgba(16, 185, 129, 0.12);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .status-frontier {
-    background: rgba(168, 85, 247, 0.15);
-    color: #7c3aed;
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);
+    background: rgba(139, 92, 246, 0.12);
+    color: #6d28d9;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.status-emerging {
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+    border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
 /* Plotly Charts */
@@ -651,19 +648,19 @@ if st.session_state.selected_module_id == 'home':
     
     # Hero Section
     st.markdown("""
-    <div class='research-card'>
-        <h3>🚀 Welcome to Quantum Research Workbench</h3>
+    <div class='soft-container'>
+        <h3>Welcome to Quantum Research Workbench</h3>
         <p>Advanced quantum computing simulation and research platform designed for researchers, 
         students, and quantum computing enthusiasts. Explore fundamental quantum phenomena, 
         run cutting-edge algorithms, and visualize quantum systems with interactive tools.</p>
         
-        <p><strong>🔬 Research-Grade Simulations</strong><br>
+        <p><strong>Research-Grade Simulations</strong><br>
         Accurate quantum mechanical simulations with publication-ready visualizations.</p>
         
-        <p><strong>📚 Educational Content</strong><br>
+        <p><strong>Educational Content</strong><br>
         Learn quantum computing concepts through hands-on experimentation.</p>
         
-        <p><strong>⚡ Real-Time Interaction</strong><br>
+        <p><strong>Real-Time Interaction</strong><br>
         Manipulate quantum systems and see results instantly.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -673,8 +670,8 @@ if st.session_state.selected_module_id == 'home':
     
     with col1:
         st.markdown("""
-        <div class='research-card'>
-            <h4>🌀 Quantum States</h4>
+        <div class='soft-container'>
+            <h4>Quantum States</h4>
             <p>Explore single-qubit dynamics on the Bloch sphere. Visualize superposition, 
             entanglement, and quantum measurements.</p>
         </div>
@@ -682,8 +679,8 @@ if st.session_state.selected_module_id == 'home':
     
     with col2:
         st.markdown("""
-        <div class='research-card'>
-            <h4>🔗 Entanglement</h4>
+        <div class='soft-container'>
+            <h4>Entanglement</h4>
             <p>Study Bell states and quantum correlations. Test Bell inequalities and 
             explore non-local quantum phenomena.</p>
         </div>
@@ -691,8 +688,8 @@ if st.session_state.selected_module_id == 'home':
     
     with col3:
         st.markdown("""
-        <div class='research-card'>
-            <h4>🧮 Algorithms</h4>
+        <div class='soft-container'>
+            <h4>Algorithms</h4>
             <p>Implement variational quantum algorithms like VQE and QAOA for optimization 
             and quantum chemistry problems.</p>
         </div>
@@ -702,211 +699,195 @@ if st.session_state.selected_module_id == 'home':
 
 elif st.session_state.selected_module_id == 'bloch':
     st.title(t('modules.bloch', 'Bloch Sphere'))
-    st.markdown('<span class="research-status status-active">Single Qubit Dynamics</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Single Qubit Dynamics</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Single Qubit State Visualization</h3>
         <p>The Bloch sphere provides a geometric representation of pure single-qubit quantum states. 
         Any pure state can be represented as a point on the unit sphere surface, while mixed states 
         lie within the sphere interior.</p>
+        <p><em>Interactive Bloch sphere simulation - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Bloch sphere simulation would go here
-    st.info("Interactive Bloch sphere simulation - Module under development")
 
 elif st.session_state.selected_module_id == 'interference':
     st.title(t('modules.interference', 'Quantum Interference'))
-    st.markdown('<span class="research-status status-active">Wave-Particle Duality</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Wave-Particle Duality</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Mach-Zehnder Interferometer</h3>
         <p>Explore quantum interference phenomena through the iconic Mach-Zehnder setup. 
         Observe how quantum superposition leads to interference patterns and understand 
         the wave-particle duality of quantum objects.</p>
+        <p><em>Quantum interference simulation - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Quantum interference simulation - Module under development")
 
 elif st.session_state.selected_module_id == 'entanglement':
     st.title(t('modules.entanglement', 'Quantum Entanglement'))
-    st.markdown('<span class="research-status status-active">Non-Local Correlations</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Non-Local Correlations</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Bell States & CHSH Inequality</h3>
         <p>Investigate quantum entanglement through Bell state analysis and violation of 
         classical inequalities. Explore the foundational concepts that enable quantum 
         computing and quantum communication protocols.</p>
+        <p><em>Entanglement analysis tools - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Entanglement analysis tools - Module under development")
 
 elif st.session_state.selected_module_id == 'topological':
     st.title(t('modules.topological', 'Topological Quantum Computing'))
-    st.markdown('<span class="research-status status-frontier">Frontier Research</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-frontier">Frontier Research</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Anyons & Braiding</h3>
         <p>Explore topological quantum computing concepts including anyonic braiding, 
         topological protection, and fault-tolerant quantum computation through 
         geometric operations.</p>
+        <p><em>Topological quantum simulation - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Topological quantum simulation - Module under development")
 
 elif st.session_state.selected_module_id == 'noise':
     st.title(t('modules.noise', 'Quantum Decoherence'))
-    st.markdown('<span class="research-status status-active">Environmental Effects</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Environmental Effects</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Noise Channels & Decoherence</h3>
         <p>Study how quantum systems interact with their environment leading to 
         decoherence and loss of quantum properties. Explore different noise models 
         and their effects on quantum computation.</p>
+        <p><em>Noise simulation tools - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Noise simulation tools - Module under development")
 
 elif st.session_state.selected_module_id == 'circuits':
     st.title(t('modules.circuits', 'Quantum Circuits'))
-    st.markdown('<span class="research-status status-active">Gate Operations</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Gate Operations</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Quantum Circuit Design</h3>
         <p>Build and analyze quantum circuits using fundamental quantum gates. 
         Understand circuit depth, gate decomposition, and quantum algorithm 
         implementation through visual circuit construction.</p>
+        <p><em>Circuit builder interface - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Circuit builder interface - Module under development")
 
 elif st.session_state.selected_module_id == 'vqe':
     st.title(t('modules.vqe', 'Variational Quantum Eigensolver'))
-    st.markdown('<span class="research-status status-active">Hybrid Algorithms</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Hybrid Algorithms</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Ground State Optimization</h3>
         <p>Implement the Variational Quantum Eigensolver (VQE) algorithm for finding 
         ground state energies of molecular systems. Explore quantum chemistry 
         applications and hybrid quantum-classical optimization.</p>
+        <p><em>VQE optimization interface - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("VQE optimization interface - Module under development")
 
 elif st.session_state.selected_module_id == 'qaoa':
     st.title(t('modules.qaoa', 'Quantum Approximate Optimization'))
-    st.markdown('<span class="research-status status-active">Combinatorial Problems</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Combinatorial Problems</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>QAOA Algorithm</h3>
         <p>Solve combinatorial optimization problems using the Quantum Approximate 
         Optimization Algorithm (QAOA). Tackle MaxCut, graph coloring, and other 
         NP-hard problems with quantum advantage.</p>
+        <p><em>QAOA problem solver - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("QAOA problem solver - Module under development")
 
 elif st.session_state.selected_module_id == 'qml':
     st.title(t('modules.qml', 'Quantum Machine Learning'))
-    st.markdown('<span class="research-status status-frontier">Emerging Field</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-emerging">Emerging Field</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Quantum Neural Networks</h3>
         <p>Explore the intersection of quantum computing and machine learning. 
         Implement quantum neural networks, variational classifiers, and quantum 
         feature maps for enhanced pattern recognition.</p>
+        <p><em>Quantum ML tools - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Quantum ML tools - Module under development")
 
 elif st.session_state.selected_module_id == 'qec':
     st.title(t('modules.qec', 'Quantum Error Correction'))
-    st.markdown('<span class="research-status status-active">Fault Tolerance</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Fault Tolerance</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Error Correction Codes</h3>
         <p>Study quantum error correction protocols including surface codes, 
         stabilizer codes, and logical qubit encoding. Essential for building 
         fault-tolerant quantum computers.</p>
+        <p><em>Error correction simulator - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Error correction simulator - Module under development")
 
 elif st.session_state.selected_module_id == 'hardware':
     st.title(t('modules.hardware', 'Quantum Hardware'))
-    st.markdown('<span class="research-status status-active">Physical Implementation</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Physical Implementation</span>', unsafe_allow_html=True)
+    
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Hardware Architectures</h3>
         <p>Explore different quantum computing hardware platforms including 
         superconducting qubits, trapped ions, photonic systems, and their 
         connectivity graphs and performance characteristics.</p>
+        <p><em>Hardware topology analyzer - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Hardware topology analyzer - Module under development")
 
 elif st.session_state.selected_module_id == 'complexity':
     st.title(t('modules.complexity', 'Quantum Complexity Theory'))
-    st.markdown('<span class="research-status status-frontier">Theoretical Foundations</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-frontier">Theoretical Foundations</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Computational Complexity</h3>
         <p>Investigate quantum complexity classes, quantum speedups, and the 
         theoretical foundations of quantum computing advantage. Compare classical 
         and quantum algorithm complexities.</p>
+        <p><em>Complexity analysis tools - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Complexity analysis tools - Module under development")
 
 elif st.session_state.selected_module_id == 'export':
     st.title(t('modules.export', 'Research Data Export'))
-    st.markdown('<span class="research-status status-active">Data Management</span>', unsafe_allow_html=True)
+    st.markdown('<span class="soft-status status-active">Data Management</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class='research-card'>
+    <div class='soft-container'>
         <h3>Publication-Ready Export</h3>
         <p>Export your simulation results, visualizations, and analysis data 
         in formats suitable for research publications, presentations, and 
         further analysis in external tools.</p>
+        <p><em>Export functionality - Module under development</em></p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.info("Export functionality - Module under development")
 
 else:
     st.error(f"Module '{st.session_state.selected_module_id}' not found.")
 
-# Footer
-st.markdown("---")
+# Minimalist Footer
 st.markdown("""
-<div style='text-align: center; color: #64748b; padding: 20px;'>
-    <p><strong>Quantum × AI Research Workbench</strong> | Production Research Platform</p>
-    <p>Academic-Grade Quantum Computing Experiments • Reproducible Results • Publication-Ready Visualizations</p>
-    <p style='font-size: 12px; margin-top: 12px;'>
-        Built with Streamlit • Qiskit • NumPy • SciPy • Plotly
-    </p>
+<div style='text-align: center; color: #94a3b8; padding: 2rem; margin-top: 3rem;'>
+    <div style='width: 60px; height: 1px; background: linear-gradient(90deg, transparent, #cbd5e1, transparent); margin: 0 auto 1.5rem;'></div>
+    <p style='font-family: "Inter", sans-serif; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;'>Quantum Research Workbench</p>
+    <p style='font-family: "Inter", sans-serif; font-size: 0.75rem; color: #cbd5e1; font-weight: 400;'>Advanced quantum computing simulation platform</p>
 </div>
 """, unsafe_allow_html=True)
