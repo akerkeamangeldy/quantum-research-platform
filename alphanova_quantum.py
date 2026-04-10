@@ -30,85 +30,128 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# AlphaNova Quantum Premium CSS
+# AlphaNova Quantum Premium CSS - Deep Space Research Interface
 st.markdown("""
 <style>
-    /* ALPHANOVA FONT IMPORTS */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    /* ALPHANOVA PREMIUM FONT IMPORTS */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
     
-    /* GLOBAL ALPHANOVA TYPOGRAPHY */
+    /* ROOT VARIABLES - QUANTUM RESEARCH PALETTE */
+    :root {
+        --deep-navy-primary: #061226;
+        --deep-navy-secondary: #0A1630;
+        --deep-navy-tertiary: #0D1B3D;
+        --quantum-blue-light: #123A6B;
+        --quantum-blue-medium: #1E5AA8;
+        --quantum-blue-bright: #3B82F6;
+        --cyan-bright: #22D3EE;
+        --cyan-medium: #38BDF8;
+        --indigo-glow: #6366F1;
+        --text-primary: #EAF2FF;
+        --text-secondary: rgba(234, 242, 255, 0.72);
+        --border-subtle: rgba(120, 170, 255, 0.18);
+        --hover-glow: rgba(56, 189, 248, 0.35);
+        --card-bg: rgba(10, 22, 48, 0.72);
+    }
+    
+    /* GLOBAL QUANTUM TYPOGRAPHY */
     * {
         box-sizing: border-box;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
     
-    h1, h2, h3, h4 {
-        font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-        font-weight: 600;
-        line-height: 1.2;
-        letter-spacing: -0.025em;
-    }
-    
-    code, pre, .stCode {
-        font-family: 'JetBrains Mono', 'Monaco', monospace !important;
-    }
-    
-    /* ALPHANOVA DARK THEME */
-    .main {
-        background: linear-gradient(135deg, #0A0A0A 0%, #111827 50%, #1F2937 100%) !important;
-        color: #E2E8F0;
-    }
-    
-    /* ALPHANOVA HEADER */
-    .alphanova-header {
-        text-align: center;
-        margin-bottom: 3rem;
-        padding: 3rem 0;
-        position: relative;
-    }
-    
-    .alphanova-main-title {
+    /* TYPOGRAPHY HIERARCHY - RESEARCH GRADE */
+    h1 {
         font-family: 'Space Grotesk', sans-serif !important;
-        font-size: 3.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #06B6D4, #3B82F6, #8B5CF6);
+        font-size: 3.5rem;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, var(--cyan-bright), var(--quantum-blue-bright), var(--indigo-glow));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 30px rgba(34, 211, 238, 0.3);
+    }
+    
+    h2 {
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 700;
+        font-size: 2rem;
+        color: var(--text-primary);
+        line-height: 1.2;
         letter-spacing: -0.02em;
+        margin-bottom: 1.25rem;
     }
     
-    .alphanova-subtitle {
-        font-size: 1.2rem;
-        color: #94A3B8;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 500;
+    h3 {
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 600;
+        font-size: 1.4rem;
+        color: var(--cyan-bright);
+        line-height: 1.3;
+        margin-bottom: 1rem;
     }
     
-    .alphanova-tagline {
-        font-size: 1rem;
-        color: #64748B;
-        margin-top: 0.5rem;
-        font-style: italic;
+    h4 {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
     }
     
-    /* ALPHANOVA MODULE CARDS */
+    p {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+    
+    code, pre, .stCode {
+        font-family: 'JetBrains Mono', monospace !important;
+        background: rgba(6, 18, 38, 0.8);
+        color: var(--cyan-bright);
+        border-radius: 6px;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* DEEP SPACE BACKGROUND SYSTEM */
+    .stApp {
+        background: radial-gradient(circle at 20% 80%, rgba(13, 27, 61, 0.8) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(18, 58, 107, 0.6) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                    linear-gradient(135deg, var(--deep-navy-primary) 0%, var(--deep-navy-secondary) 35%, var(--deep-navy-tertiary) 100%);
+        min-height: 100vh;
+        background-attachment: fixed;
+    }
+    
+    .main {
+        background: transparent !important;
+    }
+    
+    /* PREMIUM GLASSMORPHISM CARDS */
     .alphanova-card {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
-        border: 1px solid rgba(6, 182, 212, 0.2);
-        border-radius: 16px;
-        padding: 2.5rem;
-        transition: all 0.3s ease;
+        background: linear-gradient(145deg, 
+            rgba(10, 22, 48, 0.85) 0%,
+            rgba(13, 27, 61, 0.75) 100%);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-subtle);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(15px);
-        cursor: pointer;
+        box-shadow: 0 8px 32px rgba(6, 18, 38, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
     .alphanova-card::before {
@@ -117,76 +160,301 @@ st.markdown("""
         top: 0;
         left: 0;
         right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #06B6D4, #3B82F6, #8B5CF6);
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            var(--cyan-bright) 20%, 
+            var(--quantum-blue-bright) 50%, 
+            var(--indigo-glow) 80%, 
+            transparent 100%);
+        opacity: 0.8;
     }
     
     .alphanova-card:hover {
-        border-color: rgba(6, 182, 212, 0.4);
-        box-shadow: 0 20px 40px rgba(6, 182, 212, 0.1);
-        transform: translateY(-4px);
+        background: linear-gradient(145deg, 
+            rgba(10, 22, 48, 0.95) 0%,
+            rgba(13, 27, 61, 0.85) 100%);
+        border-color: var(--hover-glow);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 48px rgba(34, 211, 238, 0.2),
+                    0 0 0 1px rgba(56, 189, 248, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
     
     .alphanova-card h3 {
-        color: #06B6D4;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        color: var(--cyan-bright);
+        font-size: 1.375rem;
         font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
     }
     
     .alphanova-card p {
-        color: #E2E8F0;
+        color: var(--text-secondary);
         line-height: 1.7;
-        font-size: 1rem;
+        font-size: 0.95rem;
         margin-bottom: 1rem;
     }
     
-    /* ALPHANOVA STATUS BADGES */
+    /* HERO SECTION - LUMINOUS DEPTH */
+    .alphanova-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        padding: 4rem 2rem;
+        position: relative;
+        background: radial-gradient(ellipse at center, 
+            rgba(99, 102, 241, 0.1) 0%,
+            rgba(34, 211, 238, 0.05) 40%,
+            transparent 70%);
+        border-radius: 24px;
+        border: 1px solid rgba(120, 170, 255, 0.1);
+    }
+    
+    .alphanova-main-title {
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-size: 4rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, 
+            var(--cyan-bright) 0%,
+            var(--quantum-blue-bright) 35%,
+            var(--indigo-glow) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        letter-spacing: -0.04em;
+        text-shadow: 0 0 40px rgba(34, 211, 238, 0.4);
+        position: relative;
+    }
+    
+    .alphanova-subtitle {
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        font-family: 'Space Grotesk', sans-serif !important;
+    }
+    
+    .alphanova-tagline {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        font-style: italic;
+        font-weight: 300;
+        opacity: 0.9;
+    }
+    
+    /* QUANTUM RESEARCH STATUS BADGES */
     .alphanova-status {
         display: inline-block;
-        padding: 6px 12px;
-        border-radius: 6px;
+        padding: 8px 16px;
+        border-radius: 12px;
         font-size: 0.75rem;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.03em;
         margin-bottom: 1rem;
+        font-family: 'Space Grotesk', sans-serif !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid;
     }
     
     .status-active {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
-        color: #10B981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(34, 211, 238, 0.15);
+        color: var(--cyan-bright);
+        border-color: rgba(34, 211, 238, 0.3);
+        box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
     }
     
     .status-research {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2));
-        color: #3B82F6;
-        border: 1px solid rgba(59, 130, 246, 0.3);
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--quantum-blue-bright);
+        border-color: rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
     }
     
     .status-emerging {
-        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
-        color: #8B5CF6;
-        border: 1px solid rgba(139, 92, 246, 0.3);
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--indigo-glow);
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
     }
     
-    /* REMOVE STREAMLIT UI */
+    /* PREMIUM SIDEBAR - QUANTUM LAB CONTROL PANEL */
+    .css-1d391kg {
+        background: linear-gradient(180deg,
+            var(--deep-navy-primary) 0%,
+            var(--deep-navy-secondary) 50%,
+            var(--deep-navy-tertiary) 100%) !important;
+        border-right: 1px solid var(--border-subtle) !important;
+        box-shadow: inset -1px 0 0 rgba(56, 189, 248, 0.1),
+                    4px 0 24px rgba(6, 18, 38, 0.5);
+    }
+    
+    /* SIDEBAR CONTENT STYLING */
+    .css-1d391kg .element-container {
+        background: transparent !important;
+    }
+    
+    /* QUANTUM BUTTONS - RESEARCH GRADE */
+    .stButton > button {
+        background: linear-gradient(135deg,
+            rgba(10, 22, 48, 0.8) 0%,
+            rgba(13, 27, 61, 0.6) 100%) !important;
+        border: 1px solid var(--border-subtle) !important;
+        border-radius: 14px !important;
+        color: var(--text-primary) !important;
+        font-weight: 500 !important;
+        font-family: 'Inter', sans-serif !important;
+        padding: 0.75rem 1.25rem !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        backdrop-filter: blur(10px);
+        text-align: left !important;
+        width: 100% !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg,
+            rgba(34, 211, 238, 0.1) 0%,
+            rgba(13, 27, 61, 0.8) 100%) !important;
+        border-color: var(--hover-glow) !important;
+        color: var(--text-primary) !important;
+        box-shadow: 0 4px 20px rgba(34, 211, 238, 0.25),
+                    0 0 0 1px rgba(56, 189, 248, 0.3) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    .stButton > button:focus {
+        border-color: var(--cyan-bright) !important;
+        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2) !important;
+    }
+    
+    /* SIDEBAR MARKDOWN STYLING */
+    .css-1d391kg .stMarkdown {
+        color: var(--text-primary) !important;
+    }
+    
+    .css-1d391kg h3 {
+        color: var(--cyan-bright) !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 0.875rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        margin: 1.5rem 0 1rem 0 !important;
+        padding-bottom: 0.5rem !important;
+        border-bottom: 1px solid var(--border-subtle) !important;
+    }
+    
+    /* METRICS ENHANCEMENT */
+    .css-1r6slb0 {
+        background: linear-gradient(145deg,
+            rgba(10, 22, 48, 0.7) 0%,
+            rgba(13, 27, 61, 0.5) 100%) !important;
+        border: 1px solid var(--border-subtle) !important;
+        border-radius: 16px !important;
+        backdrop-filter: blur(15px) !important;
+        padding: 1.5rem !important;
+    }
+    
+    /* STREAMLIT METRIC STYLING */
+    [data-testid="metric-container"] {
+        background: linear-gradient(145deg,
+            rgba(10, 22, 48, 0.8) 0%,
+            rgba(13, 27, 61, 0.6) 100%);
+        border: 1px solid var(--border-subtle);
+        border-radius: 16px;
+        padding: 1.25rem;
+        backdrop-filter: blur(15px);
+        transition: all 0.25s ease;
+    }
+    
+    [data-testid="metric-container"]:hover {
+        border-color: var(--hover-glow);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+    
+    [data-testid="metric-container"] > div {
+        color: var(--cyan-bright) !important;
+    }
+    
+    [data-testid="metric-container"] label {
+        color: var(--text-secondary) !important;
+        font-family: 'Space Grotesk', sans-serif !important;
+        font-size: 0.8rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+    }
+    
+    /* SLIDER ENHANCEMENT */
+    .stSlider > div > div > div > div {
+        background: var(--quantum-blue-bright) !important;
+    }
+    
+    /* SELECT BOX STYLING */
+    .stSelectbox > div > div {
+        background: rgba(10, 22, 48, 0.8) !important;
+        border: 1px solid var(--border-subtle) !important;
+        border-radius: 12px !important;
+        color: var(--text-primary) !important;
+    }
+    
+    /* REMOVE DEFAULT STREAMLIT UI */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header { visibility: hidden; }
+    .stDeployButton { visibility: hidden; }
     
-    /* STREAMLIT CONTAINER OVERRIDE */
+    /* MAIN CONTAINER ADJUSTMENTS */
     .main .block-container {
-        padding: 1rem !important;
+        padding: 2rem !important;
         max-width: none !important;
     }
     
-    /* RESPONSIVE DESIGN */
+    /* SECTION SPACING - LABORATORY PRECISION */
+    .element-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* PLOTLY CHART INTEGRATION */
+    .js-plotly-plot {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-subtle);
+        background: rgba(6, 18, 38, 0.3);
+    }
+    
+    /* RESPONSIVE DESIGN - MOBILE LAB INTERFACE */
     @media (max-width: 768px) {
         .alphanova-main-title {
             font-size: 2.5rem;
         }
+        
+        .alphanova-header {
+            padding: 2rem 1rem;
+        }
+        
+        .alphanova-card {
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+    }
+    
+    /* QUANTUM GLOW ANIMATIONS */
+    @keyframes quantum-pulse {
+        0%, 100% { 
+            opacity: 1; 
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+        }
+        50% { 
+            opacity: 0.8; 
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
+        }
+    }
+    
+    .quantum-glow {
+        animation: quantum-pulse 3s ease-in-out infinite;
     }
 </style>
 """, unsafe_allow_html=True)
