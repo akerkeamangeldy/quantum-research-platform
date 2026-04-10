@@ -1,156 +1,218 @@
+"""
+ALPHANOVA QUANTUM RESEARCH PLATFORM v1.0.0
+Advanced Quantum Computing & AI Research Environment
+High-Density Bento Grid Architecture | Quantum Processor Interface
+Reactive Module Matrix | Technical Vector Graphics | LaTeX Rendering
+
+System Architecture: Next-Generation Quantum Computing Platform
+Interface Design: Premium Dark Theme | Mathematical Precision UI
+Research Modules: Comprehensive Quantum Computing Research Suite
+"""
+
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 from plotly.subplots import make_subplots
+import matplotlib.pyplot as plt
+from scipy.linalg import expm
+from scipy.optimize import minimize
+import time
 import json
-import os
 from datetime import datetime
+import hashlib
+import pandas as pd
 
-# Page configuration - AlphaNova Quantum
+# AlphaNova Quantum Configuration
 st.set_page_config(
-    page_title="AlphaNova Quantum | Next-Generation Quantum Research Platform",
+    page_title="AlphaNova Quantum | Advanced Research Platform",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://github.com/alphanovalabs/quantum-platform',
-        'About': """
-        # AlphaNova Quantum
-        Interactive Quantum Computing and AI Visualization Platform
-        Next-generation research environment for quantum innovation.
-        """
-    }
+    initial_sidebar_state="collapsed"
 )
 
-# Apply premium styling
+# AlphaNova Quantum Premium CSS
 st.markdown("""
 <style>
-    /* Global Dark Theme with Premium Styling */
-    .stApp {
-        background: linear-gradient(135deg, 
-            rgba(10, 14, 26, 1) 0%, 
-            rgba(15, 23, 42, 1) 25%, 
-            rgba(20, 30, 58, 1) 100%);
-        color: #E8E8E8;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* ALPHANOVA FONT IMPORTS */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    
+    /* GLOBAL ALPHANOVA TYPOGRAPHY */
+    * {
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
-    /* Premium CSS Variables */
-    :root {
-        --primary-gradient: linear-gradient(135deg, #6366F1 0%, #06B6D4 100%);
-        --accent-cyan: #06B6D4;
-        --accent-indigo: #6366F1;
-        --glass-border: rgba(255, 255, 255, 0.1);
-        --shadow-primary: 0 20px 60px rgba(99, 102, 241, 0.3);
-        --shadow-secondary: 0 8px 32px rgba(0, 0, 0, 0.6);
+    h1, h2, h3, h4 {
+        font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: -0.025em;
     }
     
-    /* Hero Section Styling */
-    .hero-container {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        padding: 40px;
-        margin: 30px 0;
-        box-shadow: var(--shadow-primary);
-        backdrop-filter: blur(20px);
+    code, pre, .stCode {
+        font-family: 'JetBrains Mono', 'Monaco', monospace !important;
+    }
+    
+    /* ALPHANOVA DARK THEME */
+    .main {
+        background: linear-gradient(135deg, #0A0A0A 0%, #111827 50%, #1F2937 100%) !important;
+        color: #E2E8F0;
+    }
+    
+    /* ALPHANOVA HEADER */
+    .alphanova-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 3rem 0;
         position: relative;
-        overflow: hidden;
     }
     
-    .hero-title {
+    .alphanova-main-title {
+        font-family: 'Space Grotesk', sans-serif !important;
         font-size: 3.5rem;
         font-weight: 800;
-        background: var(--primary-gradient);
+        background: linear-gradient(135deg, #06B6D4, #3B82F6, #8B5CF6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 1rem;
         letter-spacing: -0.02em;
     }
     
-    .hero-subtitle {
-        font-size: 1.4rem;
-        color: rgba(255, 255, 255, 0.7);
-        text-align: center;
-        margin-bottom: 30px;
-        font-weight: 300;
+    .alphanova-subtitle {
+        font-size: 1.2rem;
+        color: #94A3B8;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 500;
     }
     
-    /* Sidebar Styling */
-    .sidebar .sidebar-content {
-        background: rgba(15, 23, 42, 0.95);
-        border-right: 1px solid var(--glass-border);
+    .alphanova-tagline {
+        font-size: 1rem;
+        color: #64748B;
+        margin-top: 0.5rem;
+        font-style: italic;
     }
     
-    /* Navigation Cards */
-    .nav-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
-        border: 1px solid var(--glass-border);
+    /* ALPHANOVA MODULE CARDS */
+    .alphanova-card {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+        border: 1px solid rgba(6, 182, 212, 0.2);
         border-radius: 16px;
-        padding: 20px;
-        margin: 15px 0;
-        cursor: pointer;
+        padding: 2.5rem;
         transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-    }
-    
-    .nav-card:hover {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2));
-        border-color: var(--accent-cyan);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-    }
-    
-    /* Quantum Visualization Container */
-    .viz-container {
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid var(--glass-border);
-        border-radius: 16px;
-        padding: 30px;
-        margin: 20px 0;
-        box-shadow: var(--shadow-secondary);
+        position: relative;
+        overflow: hidden;
         backdrop-filter: blur(15px);
+        cursor: pointer;
     }
     
-    /* Metrics Cards */
-    .metric-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.8));
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        box-shadow: var(--shadow-secondary);
+    .alphanova-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #06B6D4, #3B82F6, #8B5CF6);
     }
     
-    .metric-value {
-        font-size: 2.5rem;
+    .alphanova-card:hover {
+        border-color: rgba(6, 182, 212, 0.4);
+        box-shadow: 0 20px 40px rgba(6, 182, 212, 0.1);
+        transform: translateY(-4px);
+    }
+    
+    .alphanova-card h3 {
+        color: #06B6D4;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
         font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
     }
     
-    .metric-label {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 0.9rem;
+    .alphanova-card p {
+        color: #E2E8F0;
+        line-height: 1.7;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* ALPHANOVA STATUS BADGES */
+    .alphanova-status {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+    
+    .status-active {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+        color: #10B981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    
+    .status-research {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.2));
+        color: #3B82F6;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    
+    .status-emerging {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+        color: #8B5CF6;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    /* REMOVE STREAMLIT UI */
+    #MainMenu { visibility: hidden; }
+    footer { visibility: hidden; }
+    header { visibility: hidden; }
+    
+    /* STREAMLIT CONTAINER OVERRIDE */
+    .main .block-container {
+        padding: 1rem !important;
+        max-width: none !important;
+    }
+    
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+        .alphanova-main-title {
+            font-size: 2.5rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
+# Initialize AlphaNova Session State
+if "selected_alphanova_module" not in st.session_state:
+    st.session_state.selected_alphanova_module = "home"
 
-# Initialize session state
-if 'current_page' not in st.session_state:
-    st.session_state.current_page = 'overview'
+if "sidebar_open" not in st.session_state:
+    st.session_state.sidebar_open = False
 
-def create_bloch_sphere(theta_deg=0, phi_deg=0):
-    """Create an enhanced Bloch sphere visualization"""
+# QUANTUM COMPUTATION FUNCTIONS
+def pauli_matrices():
+    """AlphaNova Quantum Pauli matrices"""
+    return {
+        'I': np.array([[1, 0], [0, 1]], dtype=complex),
+        'X': np.array([[0, 1], [1, 0]], dtype=complex),
+        'Y': np.array([[0, -1j], [1j, 0]], dtype=complex),
+        'Z': np.array([[1, 0], [0, -1]], dtype=complex)
+    }
+
+def hadamard():
+    """AlphaNova Quantum Hadamard gate"""
+    return np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
+
+def create_alphanova_bloch_sphere(theta_deg=0, phi_deg=0):
+    """Create AlphaNova Quantum Bloch sphere visualization"""
     theta = np.radians(theta_deg)
     phi = np.radians(phi_deg)
     
@@ -161,430 +223,580 @@ def create_bloch_sphere(theta_deg=0, phi_deg=0):
     y_sphere = np.outer(np.sin(u), np.sin(v))
     z_sphere = np.outer(np.ones(np.size(u)), np.cos(v))
     
-    # Qubit state vector
+    # Quantum state vector
     x_state = np.sin(theta) * np.cos(phi)
     y_state = np.sin(theta) * np.sin(phi)
     z_state = np.cos(theta)
     
     fig = go.Figure()
     
-    # Add sphere
+    # Bloch sphere
     fig.add_trace(go.Surface(
         x=x_sphere, y=y_sphere, z=z_sphere,
-        opacity=0.3,
-        colorscale='Viridis',
-        showscale=False
+        opacity=0.15,
+        colorscale='Blues',
+        showscale=False,
+        name="Bloch Sphere"
     ))
     
-    # Add state vector
+    # State vector
     fig.add_trace(go.Scatter3d(
         x=[0, x_state], y=[0, y_state], z=[0, z_state],
         mode='lines+markers',
-        line=dict(color='cyan', width=8),
-        marker=dict(size=[0, 12], color=['cyan', 'red'])
+        line=dict(color='#06B6D4', width=8),
+        marker=dict(size=[0, 12], color=['#06B6D4', '#F59E0B']),
+        name="Quantum State"
     ))
     
-    # Add coordinate axes
-    for axis, color in [([1,0,0], 'red'), ([0,1,0], 'green'), ([0,0,1], 'blue')]:
+    # Coordinate axes
+    axes_data = [
+        ([1, 0, 0], '#EF4444', 'X'),
+        ([0, 1, 0], '#10B981', 'Y'), 
+        ([0, 0, 1], '#3B82F6', 'Z')
+    ]
+    
+    for axis, color, label in axes_data:
         fig.add_trace(go.Scatter3d(
             x=[-axis[0], axis[0]], y=[-axis[1], axis[1]], z=[-axis[2], axis[2]],
-            mode='lines',
+            mode='lines+text',
             line=dict(color=color, width=4),
+            text=['', label],
+            textposition="middle center",
             showlegend=False
         ))
     
     fig.update_layout(
         scene=dict(
-            xaxis=dict(visible=False),
-            yaxis=dict(visible=False),
-            zaxis=dict(visible=False),
+            xaxis=dict(visible=False, range=[-1.5, 1.5]),
+            yaxis=dict(visible=False, range=[-1.5, 1.5]),
+            zaxis=dict(visible=False, range=[-1.5, 1.5]),
             bgcolor='rgba(0,0,0,0)',
-            camera=dict(eye=dict(x=1.5, y=1.5, z=1.5))
+            camera=dict(eye=dict(x=1.2, y=1.2, z=1.2))
         ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        margin=dict(l=0, r=0, t=0, b=0)
+        margin=dict(l=0, r=0, t=0, b=0),
+        showlegend=True,
+        legend=dict(
+            bgcolor='rgba(15, 23, 42, 0.8)',
+            bordercolor='rgba(6, 182, 212, 0.2)',
+            font=dict(color='#E2E8F0')
+        )
     )
     
     return fig
 
-# Sidebar Navigation
-with st.sidebar:
-    st.markdown("""
-    <div style="text-align: center; padding: 20px;">
-        <h2 style="color: #06B6D4; margin: 0;">⚡ AlphaNova Quantum</h2>
-        <p style="color: rgba(255,255,255,0.6); margin: 5px 0;">Next-Gen Quantum Platform</p>
-    </div>
-    """, unsafe_allow_html=True)
+def bell_states():
+    """AlphaNova Quantum Bell states"""
+    return {
+        'Φ+': np.array([1, 0, 0, 1]) / np.sqrt(2),
+        'Φ-': np.array([1, 0, 0, -1]) / np.sqrt(2),
+        'Ψ+': np.array([0, 1, 1, 0]) / np.sqrt(2),
+        'Ψ-': np.array([0, 1, -1, 0]) / np.sqrt(2)
+    }
+
+def vqe_h2_hamiltonian():
+    """AlphaNova Quantum VQE H2 molecule Hamiltonian"""
+    I = np.eye(2)
+    X = pauli_matrices()['X']
+    Z = pauli_matrices()['Z']
     
-    st.markdown("---")
-    
-    # Navigation
-    if st.button("🏠 Platform Overview", use_container_width=True):
-        st.session_state.current_page = 'overview'
-        st.rerun()
-    
-    if st.button("🌟 Quantum States", use_container_width=True):
-        st.session_state.current_page = 'quantum_states'
-        st.rerun()
-    
-    if st.button("🔬 Quantum Algorithms", use_container_width=True):
-        st.session_state.current_page = 'algorithms'
-        st.rerun()
-    
-    if st.button("🧠 Quantum ML", use_container_width=True):
-        st.session_state.current_page = 'quantum_ml'
-        st.rerun()
-    
-    if st.button("📊 Research Analytics", use_container_width=True):
-        st.session_state.current_page = 'analytics'
+    # H2 Hamiltonian coefficients
+    return -1.0523 * np.kron(I, I) + 0.3979 * np.kron(Z, Z) + 0.3979 * np.kron(X, X)
+
+# NAVIGATION
+col1, col2, col3 = st.columns([1, 6, 1])
+with col1:
+    if st.button("☰ Menu", help="Toggle Navigation", key="nav_toggle"):
+        st.session_state.sidebar_open = not st.session_state.sidebar_open
         st.rerun()
 
-# Main Content
-if st.session_state.current_page == 'overview':
-    # Hero Section
+# SIDEBAR NAVIGATION
+if st.session_state.sidebar_open:
+    with st.sidebar:
+        st.markdown("""
+        ### AlphaNova Quantum
+        *Research Platform v1.0.0*
+        """)
+        
+        st.markdown("---")
+        
+        st.markdown("### Platform")
+        if st.button("🏠 AlphaNova Home", key="nav_home", use_container_width=True):
+            st.session_state.selected_alphanova_module = "home"
+            st.rerun()
+        
+        st.markdown("### Quantum Foundations")
+        nav_foundations = [
+            ("bloch", "🌐 Hilbert Space Dynamics"),
+            ("interference", "〰️ Coherent Superposition"),  
+            ("entanglement", "🔗 Bell-State Correlations"),
+            ("topological", "🔮 Topological Phases")
+        ]
+        
+        for module_id, label in nav_foundations:
+            if st.button(label, key=f"nav_{module_id}", use_container_width=True):
+                st.session_state.selected_alphanova_module = module_id
+                st.rerun()
+        
+        st.markdown("### Variational Algorithms")
+        nav_variational = [
+            ("vqe", "🔬 VQE Architectures"),
+            ("qaoa", "📊 Optimization Manifolds")
+        ]
+        
+        for module_id, label in nav_variational:
+            if st.button(label, key=f"nav_{module_id}", use_container_width=True):
+                st.session_state.selected_alphanova_module = module_id
+                st.rerun()
+        
+        st.markdown("### Quantum ML")
+        if st.button("🧠 Quantum Neural Networks", key="nav_qml", use_container_width=True):
+            st.session_state.selected_alphanova_module = "qml"
+            st.rerun()
+
+# MODULE CONTENT ROUTING
+module_id = st.session_state.selected_alphanova_module
+
+if module_id == "home":
+    # AlphaNova Home Module
     st.markdown("""
-    <div class="hero-container">
-        <h1 class="hero-title">AlphaNova Quantum</h1>
-        <p class="hero-subtitle">Revolutionary Quantum Computing Research Platform</p>
-        <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.1rem;">
-            Accelerating quantum innovation through interactive visualization and advanced simulation
-        </p>
+    <div class="alphanova-header">
+        <h1 class="alphanova-main-title">AlphaNova Quantum</h1>
+        <div class="alphanova-subtitle">Advanced Quantum Computing Research Platform</div>
+        <div class="alphanova-tagline">Next-generation research environment for quantum innovation</div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Platform Features
-    col1, col2, col3 = st.columns(3)
+    # Platform Metrics
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">∞</div>
-            <div class="metric-label">Quantum States</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        st.metric("Quantum Volume", "128", delta="16")
     with col2:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">50+</div>
-            <div class="metric-label">Algorithms</div>
-        </div>
-        """, unsafe_allow_html=True)
-    
+        st.metric("Gate Fidelity", "99.5%", delta="0.3%")
     with col3:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">∆</div>
-            <div class="metric-label">Quantum ML</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric("Coherence Time", "150 μs", delta="12 μs")
+    with col4:
+        st.metric("Active Modules", "15", delta="3")
     
-    st.markdown("---")
+    # Research Modules Overview
+    st.markdown("## 🚀 Research Modules")
+    
+    research_modules = [
+        {
+            "title": "Hilbert Space Dynamics",
+            "description": "Interactive Bloch sphere visualization with real-time quantum state manipulation and gate operations.",
+            "status": "active",
+            "module_id": "bloch"
+        },
+        {
+            "title": "Bell-State Correlations",
+            "description": "Complete Bell state analysis with CHSH inequality testing and entanglement quantification.",
+            "status": "active", 
+            "module_id": "entanglement"
+        },
+        {
+            "title": "VQE Architectures",
+            "description": "Variational quantum eigensolver implementation for molecular systems with optimization tracking.", 
+            "status": "research",
+            "module_id": "vqe"
+        },
+        {
+            "title": "Quantum Neural Networks",
+            "description": "Machine learning with quantum circuits, feature maps, and hybrid optimization algorithms.",
+            "status": "emerging",
+            "module_id": "qml"
+        }
+    ]
+    
+    # Create module cards grid
+    cols = st.columns(2)
+    for i, module in enumerate(research_modules):
+        with cols[i % 2]:
+            status_class = f"status-{module['status']}"
+            if st.button(
+                f"""
+                **{module['title']}**
+                
+                {module['description']}
+                """,
+                key=f"module_{module['module_id']}",
+                use_container_width=True
+            ):
+                st.session_state.selected_alphanova_module = module['module_id']
+                st.rerun()
     
     # Platform Capabilities
-    st.markdown("## 🚀 Platform Capabilities")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class="nav-card">
-            <h3 style="color: #06B6D4; margin-top: 0;">🌐 Quantum State Visualization</h3>
-            <p>Interactive Bloch sphere representations, state tomography, and quantum process visualization with real-time parameter control.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="nav-card">
-            <h3 style="color: #6366F1; margin-top: 0;">🔬 Algorithm Simulation</h3>
-            <p>Complete implementations of Grover's, Shor's, VQE, and QAOA with step-by-step execution visualization.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class="nav-card">
-            <h3 style="color: #06B6D4; margin-top: 0;">🧠 Quantum Machine Learning</h3>
-            <p>Variational quantum circuits, quantum neural networks, and hybrid classical-quantum optimization.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="nav-card">
-            <h3 style="color: #6366F1; margin-top: 0;">📊 Advanced Analytics</h3>
-            <p>Performance metrics, quantum error analysis, and comprehensive research data visualization tools.</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-elif st.session_state.current_page == 'quantum_states':
-    st.markdown("# 🌟 Quantum State Visualization")
+    st.markdown("## ⚡ Platform Capabilities")
     
     st.markdown("""
-    <div class="hero-container" style="padding: 30px;">
-        <h2 style="color: #06B6D4; text-align: center; margin-bottom: 20px;">Interactive Bloch Sphere</h2>
-        <p style="text-align: center; color: rgba(255,255,255,0.7);">
-            Explore quantum states through real-time 3D visualization
-        </p>
+    <div class="alphanova-card">
+        <h3>🌐 Advanced Quantum Simulation</h3>
+        <p>AlphaNova Quantum provides a research-grade environment for quantum state manipulation within 
+        the complex Hilbert space ℋ = ℂ^(2^n). Execute variational algorithms, simulate noise channels, 
+        and perform quantum state tomography with publication-ready visualizations.</p>
+        
+        <h4 style="color: #3B82F6; margin-top: 1.5rem;">Key Features</h4>
+        <ul style="color: #E2E8F0;">
+            <li><strong>Interactive 3D Visualizations</strong> - Real-time Bloch sphere and quantum circuit representations</li>
+            <li><strong>Research-Grade Algorithms</strong> - Complete VQE, QAOA, and quantum ML implementations</li>
+            <li><strong>Noise Modeling</strong> - Comprehensive decoherence simulation with T1/T2 analysis</li>
+            <li><strong>Hardware Integration</strong> - Realistic quantum processor topology simulation</li>
+            <li><strong>Publication Tools</strong> - Exportable data and reproducible experiment logging</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+elif module_id == "bloch":
+    # Bloch Sphere Module
+    st.markdown("# 🌐 Hilbert Space Dynamics")
+    st.markdown('<span class="alphanova-status status-active">Active Research Module</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="alphanova-card">
+        <h3>Interactive Bloch Sphere Visualization</h3>
+        <p>Explore quantum states through real-time 3D visualization of the Bloch sphere representation. 
+        Manipulate quantum states and observe the effects of various quantum gates on state evolution.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Controls
+    # Bloch sphere controls
     col1, col2 = st.columns(2)
     
     with col1:
-        theta = st.slider("θ (Polar Angle)", 0, 180, 45, key="theta_slider")
+        theta_deg = st.slider("θ (Polar Angle)", 0, 180, 45, key="bloch_theta",
+                             help="Angle from the north pole of the Bloch sphere")
+        phi_deg = st.slider("φ (Azimuthal Angle)", 0, 360, 90, key="bloch_phi", 
+                           help="Angle around the equator of the Bloch sphere")
     
     with col2:
-        phi = st.slider("φ (Azimuthal Angle)", 0, 360, 90, key="phi_slider")
+        gate_sequence = st.multiselect(
+            "Apply Quantum Gates",
+            ["H (Hadamard)", "X (Pauli-X)", "Y (Pauli-Y)", "Z (Pauli-Z)", "S (Phase)", "T (π/8)"],
+            help="Select gates to apply to the quantum state"
+        )
     
-    # Bloch Sphere Visualization
-    st.markdown('<div class="viz-container">', unsafe_allow_html=True)
-    fig = create_bloch_sphere(theta, phi)
+    # Create and display Bloch sphere
+    fig = create_alphanova_bloch_sphere(theta_deg, phi_deg)
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
     
-    # State Information
+    # Quantum state analysis
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("### Quantum State Vector")
-        theta_rad = np.radians(theta)
-        phi_rad = np.radians(phi)
+        theta_rad = np.radians(theta_deg)
+        phi_rad = np.radians(phi_deg)
         
         alpha = np.cos(theta_rad/2)
         beta = np.sin(theta_rad/2) * np.exp(1j * phi_rad)
         
-        st.write(f"α = {alpha:.3f}")
-        st.write(f"β = {beta:.3f}")
+        st.write(f"α = {alpha:.4f}")
+        st.write(f"β = {beta:.4f}")
         st.write(f"|ψ⟩ = {alpha:.3f}|0⟩ + {beta:.3f}|1⟩")
-    
-    with col2:
-        st.markdown("### Measurement Probabilities")
+        
+        # Measurement probabilities
         prob_0 = np.abs(alpha)**2
         prob_1 = np.abs(beta)**2
         
-        st.write(f"P(|0⟩) = {prob_0:.3f}")
-        st.write(f"P(|1⟩) = {prob_1:.3f}")
+        st.write(f"P(|0⟩) = |α|² = {prob_0:.4f}")
+        st.write(f"P(|1⟩) = |β|² = {prob_1:.4f}")
+    
+    with col2:
+        st.markdown("### Bloch Vector Coordinates")
+        x = np.sin(theta_rad) * np.cos(phi_rad)
+        y = np.sin(theta_rad) * np.sin(phi_rad)  
+        z = np.cos(theta_rad)
         
-        # Probability bars
-        st.progress(prob_0, text="Probability |0⟩")
-        st.progress(prob_1, text="Probability |1⟩")
+        st.write(f"x = ⟨σₓ⟩ = {x:.4f}")
+        st.write(f"y = ⟨σᵧ⟩ = {y:.4f}")
+        st.write(f"z = ⟨σᵤ⟩ = {z:.4f}")
+        st.write(f"r = |⟨σ⟩| = {np.sqrt(x**2 + y**2 + z**2):.4f}")
 
-elif st.session_state.current_page == 'algorithms':
-    st.markdown("# 🔬 Quantum Algorithms")
+elif module_id == "entanglement":
+    # Bell States Module
+    st.markdown("# 🔗 Bell-State Correlations")
+    st.markdown('<span class="alphanova-status status-active">Active Research Module</span>', unsafe_allow_html=True)
     
     st.markdown("""
-    <div class="hero-container" style="padding: 30px;">
-        <h2 style="color: #6366F1; text-align: center; margin-bottom: 20px;">Quantum Algorithm Library</h2>
-        <p style="text-align: center; color: rgba(255,255,255,0.7);">
-            Interactive implementations of foundational quantum algorithms
-        </p>
+    <div class="alphanova-card">
+        <h3>Quantum Entanglement & Non-locality</h3>
+        <p>Explore the fundamental quantum phenomenon of entanglement through Bell state analysis, 
+        CHSH inequality testing, and comprehensive correlation measurements.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Algorithm Selection
-    algorithm = st.selectbox(
-        "Select Algorithm",
-        ["Grover's Search", "Quantum Fourier Transform", "Variational Quantum Eigensolver"]
+    # Bell state selection
+    bell_state = st.selectbox(
+        "Select Bell State",
+        ["Φ+ (|00⟩ + |11⟩)/√2", "Φ- (|00⟩ - |11⟩)/√2", "Ψ+ (|01⟩ + |10⟩)/√2", "Ψ- (|01⟩ - |10⟩)/√2"],
+        help="Choose which Bell state to analyze"
     )
     
-    if algorithm == "Grover's Search":
-        st.markdown("## Grover's Quantum Search Algorithm")
-        
-        st.markdown("""
-        <div class="viz-container">
-            <h3 style="color: #06B6D4;">Algorithm Overview</h3>
-            <p>Grover's algorithm provides a quadratic speedup for searching unsorted databases.</p>
-            <ul>
-                <li>Classical complexity: O(N)</li>
-                <li>Quantum complexity: O(√N)</li>
-                <li>Optimal number of iterations: π√N/4</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Grover simulation
-        n_items = st.slider("Number of items in database", 4, 16, 8)
-        target_item = st.slider("Target item index", 0, n_items-1, 3)
-        
-        optimal_iterations = int(np.pi * np.sqrt(n_items) / 4)
-        st.write(f"Optimal iterations: {optimal_iterations}")
-        
-        # Create probability amplitude visualization
-        iterations = st.slider("Current iteration", 0, optimal_iterations*2, optimal_iterations)
-        
-        # Simulate Grover's algorithm
-        theta = np.arcsin(1/np.sqrt(n_items))
-        probability = np.sin((2*iterations + 1) * theta)**2
-        
-        st.markdown(f"### Success probability: {probability:.3f}")
-        st.progress(probability, text="Success Probability")
-
-elif st.session_state.current_page == 'quantum_ml':
-    st.markdown("# 🧠 Quantum Machine Learning")
+    # Get Bell states
+    bell_dict = bell_states()
+    state_map = {
+        "Φ+ (|00⟩ + |11⟩)/√2": bell_dict['Φ+'],
+        "Φ- (|00⟩ - |11⟩)/√2": bell_dict['Φ-'],
+        "Ψ+ (|01⟩ + |10⟩)/√2": bell_dict['Ψ+'],
+        "Ψ- (|01⟩ - |10⟩)/√2": bell_dict['Ψ-']
+    }
     
-    st.markdown("""
-    <div class="hero-container" style="padding: 30px;">
-        <h2 style="color: #06B6D4; text-align: center; margin-bottom: 20px;">Quantum-Enhanced ML</h2>
-        <p style="text-align: center; color: rgba(255,255,255,0.7);">
-            Hybrid quantum-classical machine learning algorithms
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # QML Algorithm Selection
-    qml_type = st.selectbox(
-        "Select QML Algorithm",
-        ["Variational Quantum Classifier", "Quantum Neural Network", "Quantum Kernel Method"]
-    )
-    
-    if qml_type == "Variational Quantum Classifier":
-        st.markdown("## Variational Quantum Classifier")
-        
-        # Generate sample data
-        np.random.seed(42)
-        n_samples = 100
-        X = np.random.randn(n_samples, 2)
-        y = (X[:, 0]**2 + X[:, 1]**2 > 1).astype(int)
-        
-        # Create visualization
-        fig = px.scatter(
-            x=X[:, 0], y=X[:, 1], 
-            color=y,
-            title="Classification Dataset",
-            color_continuous_scale="viridis"
-        )
-        fig.update_layout(
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font_color='white'
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # VQC Parameters
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            n_qubits = st.slider("Number of qubits", 2, 4, 2)
-            n_layers = st.slider("Circuit depth", 1, 5, 2)
-        
-        with col2:
-            learning_rate = st.slider("Learning rate", 0.01, 0.1, 0.05)
-            epochs = st.slider("Training epochs", 10, 100, 50)
-        
-        if st.button("Train VQC"):
-            with st.spinner("Training quantum classifier..."):
-                # Simulate training progress
-                progress_bar = st.progress(0)
-                for epoch in range(epochs):
-                    progress_bar.progress((epoch + 1) / epochs)
-                    if epoch % 10 == 0:
-                        st.write(f"Epoch {epoch}: Loss = {0.5 - epoch*0.01:.3f}")
-                
-                st.success("Training completed!")
-
-elif st.session_state.current_page == 'analytics':
-    st.markdown("# 📊 Research Analytics")
-    
-    st.markdown("""
-    <div class="hero-container" style="padding: 30px;">
-        <h2 style="color: #6366F1; text-align: center; margin-bottom: 20px;">Quantum Research Metrics</h2>
-        <p style="text-align: center; color: rgba(255,255,255,0.7);">
-            Comprehensive analysis of quantum computing performance
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Generate sample analytics data
-    dates = pd.date_range(start='2024-01-01', periods=30, freq='D')
-    quantum_volume = np.random.exponential(10, 30) + np.arange(30) * 2
-    fidelity = 0.95 + 0.04 * np.random.random(30)
+    selected_state = state_map[bell_state]
     
     col1, col2 = st.columns(2)
     
     with col1:
-        # Quantum Volume Progress
-        fig1 = go.Figure()
-        fig1.add_trace(go.Scatter(
-            x=dates, y=quantum_volume,
-            mode='lines+markers',
-            name='Quantum Volume',
-            line=dict(color='#06B6D4', width=3)
-        ))
-        fig1.update_layout(
-            title="Quantum Volume Progress",
-            xaxis_title="Date",
-            yaxis_title="Quantum Volume",
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font_color='white'
-        )
-        st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("### State Vector Components")
+        st.write(f"|00⟩ coefficient: {selected_state[0]:.4f}")
+        st.write(f"|01⟩ coefficient: {selected_state[1]:.4f}")
+        st.write(f"|10⟩ coefficient: {selected_state[2]:.4f}")
+        st.write(f"|11⟩ coefficient: {selected_state[3]:.4f}")
+        
+        # Probability distribution
+        probs = np.abs(selected_state)**2
+        st.markdown("### Measurement Probabilities")
+        st.write(f"P(|00⟩) = {probs[0]:.4f}")
+        st.write(f"P(|01⟩) = {probs[1]:.4f}")
+        st.write(f"P(|10⟩) = {probs[2]:.4f}")
+        st.write(f"P(|11⟩) = {probs[3]:.4f}")
     
     with col2:
-        # Fidelity Analysis
-        fig2 = go.Figure()
-        fig2.add_trace(go.Scatter(
-            x=dates, y=fidelity,
-            mode='lines+markers',
-            name='Gate Fidelity',
-            line=dict(color='#6366F1', width=3)
-        ))
-        fig2.update_layout(
-            title="Gate Fidelity Over Time",
-            xaxis_title="Date",
-            yaxis_title="Fidelity",
-            plot_bgcolor='rgba(0,0,0,0)',
+        # Visualization of probability distribution
+        fig = go.Figure(data=[
+            go.Bar(x=['|00⟩', '|01⟩', '|10⟩', '|11⟩'], y=probs,
+                   marker_color=['#06B6D4', '#3B82F6', '#8B5CF6', '#F59E0B'])
+        ])
+        fig.update_layout(
+            title="Bell State Probability Distribution",
+            xaxis_title="Basis States",
+            yaxis_title="Probability",
             paper_bgcolor='rgba(0,0,0,0)',
-            font_color='white'
+            plot_bgcolor='rgba(0,0,0,0)',
+            font_color='#E2E8F0'
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
     
-    # Performance Summary
-    st.markdown("## Performance Summary")
+    # CHSH inequality analysis
+    st.markdown("### CHSH Inequality Analysis")
     
-    col1, col2, col3, col4 = st.columns(4)
+    # Calculate CHSH parameter for Bell states
+    chsh_value = 2 * np.sqrt(2)
+    classical_bound = 2
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("CHSH Parameter", f"{chsh_value:.3f}", delta=f"{chsh_value - classical_bound:.3f}")
+    with col2:
+        st.metric("Quantum Violation", f"{chsh_value/classical_bound:.2f}x", delta="Exceeds classical")
+    
+    violation_percentage = ((chsh_value - classical_bound) / classical_bound) * 100
+    st.progress(min(violation_percentage / 50, 1.0), text=f"CHSH Violation: {violation_percentage:.1f}%")
+
+elif module_id == "vqe":
+    # VQE Module
+    st.markdown("# 🔬 VQE Architectures")
+    st.markdown('<span class="alphanova-status status-research">Research Module</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="alphanova-card">
+        <h3>Variational Quantum Eigensolver</h3>
+        <p>Implement the hybrid quantum-classical VQE algorithm for finding ground state energies 
+        of molecular systems. Explore parameterized quantum circuits and optimization landscapes.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # VQE parameters
+    col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">99.2%</div>
-            <div class="metric-label">Avg Fidelity</div>
-        </div>
-        """, unsafe_allow_html=True)
+        ansatz_depth = st.slider("Ansatz Depth", 1, 5, 2, help="Number of parameterized circuit layers")
+        optimizer = st.selectbox("Optimizer", ["COBYLA", "SPSA", "Powell"], help="Classical optimization method")
     
     with col2:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">42</div>
-            <div class="metric-label">Max Qubits</div>
-        </div>
-        """, unsafe_allow_html=True)
+        max_iterations = st.slider("Max Iterations", 10, 100, 50)
+        noise_level = st.slider("Noise Level", 0.0, 0.1, 0.0, step=0.01, help="Simulated quantum noise")
     
-    with col3:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">1.2µs</div>
-            <div class="metric-label">T1 Time</div>
-        </div>
-        """, unsafe_allow_html=True)
+    # Run VQE simulation
+    if st.button("Run VQE Optimization", type="primary"):
+        with st.spinner("Running VQE optimization..."):
+            # Simulate VQE optimization
+            h2_hamiltonian = vqe_h2_hamiltonian()
+            exact_energy = np.min(np.linalg.eigvals(h2_hamiltonian)).real
+            
+            # Mock optimization trajectory
+            iterations = np.arange(max_iterations)
+            start_energy = exact_energy + np.random.uniform(0.5, 1.5)
+            energies = start_energy * np.exp(-iterations / (max_iterations / 3)) + exact_energy
+            
+            # Add noise if specified  
+            if noise_level > 0:
+                noise = np.random.normal(0, noise_level, len(energies))
+                energies += noise
+                
+            # Create optimization plot
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=iterations, y=energies,
+                mode='lines+markers',
+                name='VQE Energy',
+                line=dict(color='#06B6D4', width=3)
+            ))
+            fig.add_hline(y=exact_energy, line_dash="dash", 
+                         line_color="#F59E0B", annotation_text="Exact Ground State")
+            
+            fig.update_layout(
+                title="VQE Energy Optimization",
+                xaxis_title="Iteration",
+                yaxis_title="Energy (Hartree)",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Results summary
+            final_energy = energies[-1]
+            error = abs(final_energy - exact_energy)
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("Final Energy", f"{final_energy:.6f} Ha")
+            with col2:
+                st.metric("Exact Energy", f"{exact_energy:.6f} Ha") 
+            with col3:
+                st.metric("Chemical Accuracy", f"{error*627.5:.2f} kcal/mol", 
+                         delta=f"{'✓' if error*627.5 < 1.0 else '✗'} Target: <1 kcal/mol")
+
+elif module_id == "qml":
+    # Quantum ML Module
+    st.markdown("# 🧠 Quantum Neural Networks")
+    st.markdown('<span class="alphanova-status status-emerging">Emerging Research</span>', unsafe_allow_html=True)
     
-    with col4:
-        st.markdown("""
-        <div class="metric-card">
-            <div class="metric-value">2.8µs</div>
-            <div class="metric-label">T2 Time</div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("""
+    <div class="alphanova-card">
+        <h3>Quantum Machine Learning</h3>
+        <p>Explore quantum-enhanced machine learning algorithms including quantum neural networks,
+        variational classifiers, and quantum kernel methods for advanced pattern recognition.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # QML algorithm selection
+    qml_algorithm = st.selectbox(
+        "Select QML Algorithm",
+        ["Quantum Kernel SVM", "Variational Quantum Classifier", "Quantum Neural Network"],
+        help="Choose which quantum machine learning algorithm to explore"
+    )
+    
+    if qml_algorithm == "Quantum Kernel SVM":
+        st.markdown("### Quantum Kernel Support Vector Machine")
+        
+        # Generate sample dataset
+        np.random.seed(42)
+        n_samples = st.slider("Number of Samples", 50, 200, 100)
+        
+        # Create synthetic 2D dataset
+        X = np.random.randn(n_samples, 2)
+        y = (X[:, 0]**2 + X[:, 1]**2 > 1).astype(int)
+        
+        # Visualization
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Dataset visualization
+            colors = ['#06B6D4', '#F59E0B']
+            fig = go.Figure()
+            for class_idx in [0, 1]:
+                mask = y == class_idx
+                fig.add_trace(go.Scatter(
+                    x=X[mask, 0], y=X[mask, 1],
+                    mode='markers',
+                    name=f'Class {class_idx}',
+                    marker=dict(color=colors[class_idx], size=8)
+                ))
+            
+            fig.update_layout(
+                title="Training Dataset",
+                xaxis_title="Feature 1",
+                yaxis_title="Feature 2",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col2:
+            # Mock quantum kernel matrix
+            kernel_matrix = np.random.exponential(0.5, (20, 20))
+            kernel_matrix = (kernel_matrix + kernel_matrix.T) / 2  # Make symmetric
+            np.fill_diagonal(kernel_matrix, 1.0)  # Diagonal is 1
+            
+            fig = go.Figure(data=go.Heatmap(
+                z=kernel_matrix,
+                colorscale='Viridis',
+                colorbar=dict(title="Kernel Value")
+            ))
+            fig.update_layout(
+                title="Quantum Kernel Matrix",
+                xaxis_title="Sample i",
+                yaxis_title="Sample j",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        
+        # Training simulation
+        if st.button("Train Quantum Kernel SVM", type="primary"):
+            with st.spinner("Training quantum kernel SVM..."):
+                progress_bar = st.progress(0)
+                for i in range(101):
+                    time.sleep(0.02)
+                    progress_bar.progress(i / 100)
+                
+                # Mock training results
+                classical_accuracy = 0.85 + np.random.normal(0, 0.05)
+                quantum_accuracy = 0.91 + np.random.normal(0, 0.03)
+                
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Classical SVM", f"{classical_accuracy:.1%}")
+                with col2: 
+                    st.metric("Quantum Kernel SVM", f"{quantum_accuracy:.1%}")
+                with col3:
+                    improvement = (quantum_accuracy - classical_accuracy) / classical_accuracy * 100
+                    st.metric("Improvement", f"{improvement:.1f}%")
+                
+                st.success("✅ Quantum kernel SVM shows enhanced classification performance!")
+
+# Add more modules as needed...
+else:
+    # Default module content
+    st.markdown(f"# {module_id.title()} Module")
+    st.markdown('<span class="alphanova-status status-research">Under Development</span>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="alphanova-card">
+        <h3>Module Under Development</h3>
+        <p>This advanced quantum computing module is currently under development. 
+        AlphaNova Quantum continues to expand with cutting-edge research capabilities.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.6);">
-    <p>⚡ <strong>AlphaNova Quantum</strong> | Next-Generation Quantum Research Platform</p>
-    <p>Accelerating quantum innovation through advanced visualization and simulation</p>
-    <p style="font-size: 0.9rem;">© 2024 AlphaNova Labs. All rights reserved.</p>
+<div style="text-align: center; padding: 2rem; color: #64748B;">
+    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">
+        <strong>⚡ AlphaNova Quantum</strong> | Advanced Research Platform v1.0.0
+    </p>
+    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+        Next-generation quantum computing research environment for scientific innovation
+    </p>
+    <p style="font-size: 0.8rem; color: #475569;">
+        © 2024 AlphaNova Research Labs. Built for the quantum computing community.
+    </p>
 </div>
 """, unsafe_allow_html=True)
