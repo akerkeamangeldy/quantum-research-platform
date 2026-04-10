@@ -458,12 +458,21 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+# ALPHANOVA QUANTUM RESEARCH PLATFORM - COMPREHENSIVE SCIENTIFIC INTERFACE
 # Initialize AlphaNova Session State
-if "selected_alphanova_module" not in st.session_state:
-    st.session_state.selected_alphanova_module = "home"
+if "selected_section" not in st.session_state:
+    st.session_state.selected_section = "home"
 
-if "sidebar_open" not in st.session_state:
-    st.session_state.sidebar_open = False
+if "selected_subsection" not in st.session_state:
+    st.session_state.selected_subsection = None
+
+# Platform configuration
+st.set_page_config(
+    page_title="AlphaNova Quantum Research Platform",
+    page_icon="⚛️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # QUANTUM COMPUTATION FUNCTIONS
 def pauli_matrices():
@@ -572,61 +581,71 @@ def vqe_h2_hamiltonian():
     # H2 Hamiltonian coefficients
     return -1.0523 * np.kron(I, I) + 0.3979 * np.kron(Z, Z) + 0.3979 * np.kron(X, X)
 
-# NAVIGATION
-col1, col2, col3 = st.columns([1, 6, 1])
-with col1:
-    if st.button("☰ Menu", help="Toggle Navigation", key="nav_toggle"):
-        st.session_state.sidebar_open = not st.session_state.sidebar_open
+# COMPREHENSIVE SIDEBAR NAVIGATION - QUANTUM RESEARCH PLATFORM
+with st.sidebar:
+    # Platform Header
+    st.markdown("""
+    <div style="text-align: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1.5rem;">
+        <h2 style="color: var(--cyan-bright); font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem;">⚛️ AlphaNova</h2>
+        <p style="color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Quantum Research Platform</p>
+        <p style="color: var(--indigo-glow); font-size: 0.7rem; margin: 0.25rem 0 0 0;">Version 2.0.0</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Primary Navigation
+    st.markdown("### 🏠 PLATFORM")
+    if st.button("🏠 Home Dashboard", key="nav_home", width='stretch'):
+        st.session_state.selected_section = "home"
         st.rerun()
-
-# SIDEBAR NAVIGATION
-if st.session_state.sidebar_open:
-    with st.sidebar:
-        st.markdown("""
-        ### AlphaNova Quantum
-        *Research Platform v1.0.0*
-        """)
-        
-        st.markdown("---")
-        
-        st.markdown("### Platform")
-        if st.button("🏠 AlphaNova Home", key="nav_home", use_container_width=True):
-            st.session_state.selected_alphanova_module = "home"
+    
+    st.markdown("### ⚛️ FOUNDATIONS")
+    foundation_sections = [
+        ("quantum_foundations", "📚 Quantum Foundations"),
+        ("quantum_state_viz", "🌐 State Visualization"),
+        ("quantum_gates", "🔧 Gates & Circuits")
+    ]
+    for section_id, label in foundation_sections:
+        if st.button(label, key=f"nav_{section_id}", width='stretch'):
+            st.session_state.selected_section = section_id
             st.rerun()
-        
-        st.markdown("### Quantum Foundations")
-        nav_foundations = [
-            ("bloch", "🌐 Hilbert Space Dynamics"),
-            ("interference", "〰️ Coherent Superposition"),  
-            ("entanglement", "🔗 Bell-State Correlations"),
-            ("topological", "🔮 Topological Phases")
-        ]
-        
-        for module_id, label in nav_foundations:
-            if st.button(label, key=f"nav_{module_id}", use_container_width=True):
-                st.session_state.selected_alphanova_module = module_id
-                st.rerun()
-        
-        st.markdown("### Variational Algorithms")
-        nav_variational = [
-            ("vqe", "🔬 VQE Architectures"),
-            ("qaoa", "📊 Optimization Manifolds")
-        ]
-        
-        for module_id, label in nav_variational:
-            if st.button(label, key=f"nav_{module_id}", use_container_width=True):
-                st.session_state.selected_alphanova_module = module_id
-                st.rerun()
-        
-        st.markdown("### Quantum ML")
-        if st.button("🧠 Quantum Neural Networks", key="nav_qml", use_container_width=True):
-            st.session_state.selected_alphanova_module = "qml"
+    
+    st.markdown("### 🧮 ALGORITHMS")
+    algorithm_sections = [
+        ("quantum_algorithms", "⚡ Quantum Algorithms"),
+        ("quantum_ml", "🧠 Quantum ML")
+    ]
+    for section_id, label in algorithm_sections:
+        if st.button(label, key=f"nav_{section_id}", width='stretch'):
+            st.session_state.selected_section = section_id
             st.rerun()
+    
+    st.markdown("### 🔬 SYSTEMS")
+    systems_sections = [
+        ("hardware_arch", "🔩 Hardware Architecture"),
+        ("error_correction", "🛡️ Error Correction"),
+        ("complexity_theory", "📊 Complexity Theory")
+    ]
+    for section_id, label in systems_sections:
+        if st.button(label, key=f"nav_{section_id}", width='stretch'):
+            st.session_state.selected_section = section_id
+            st.rerun()
+    
+    # Platform Status
+    st.markdown("---")
+    st.markdown("### SYSTEM STATUS")
+    status_metrics = [
+        ("🟢 Quantum Simulator", "Online"),
+        ("🟡 Hardware Backend", "Limited"), 
+        ("🟢 ML Algorithms", "Active"),
+        ("🟢 Visualization Engine", "Optimal")
+    ]
+    for metric, status in status_metrics:
+        st.markdown(f"<small style='color: var(--text-secondary);'>{metric}: **{status}**</small>", unsafe_allow_html=True)
 
-# MODULE CONTENT ROUTING
-module_id = st.session_state.selected_alphanova_module
+# MAIN CONTENT ROUTING
+section_id = st.session_state.selected_section
 
-if module_id == "home":
+if section_id == "home":
     # AlphaNova Home Module
     st.markdown("""
     <div class="alphanova-header">
@@ -690,7 +709,7 @@ if module_id == "home":
                 {module['description']}
                 """,
                 key=f"module_{module['module_id']}",
-                use_container_width=True
+                width='stretch'
             ):
                 st.session_state.selected_alphanova_module = module['module_id']
                 st.rerun()
@@ -716,73 +735,1178 @@ if module_id == "home":
     </div>
     """, unsafe_allow_html=True)
 
-elif module_id == "bloch":
-    # Bloch Sphere Module
-    st.markdown("# 🌐 Hilbert Space Dynamics")
-    st.markdown('<span class="alphanova-status status-active">Active Research Module</span>', unsafe_allow_html=True)
+elif section_id == "quantum_foundations":
+    st.markdown("# 📚 Quantum Foundations")
+    st.markdown('<span class="alphanova-status status-active">Core Theory Module</span>', unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="alphanova-card">
-        <h3>Interactive Bloch Sphere Visualization</h3>
-        <p>Explore quantum states through real-time 3D visualization of the Bloch sphere representation. 
-        Manipulate quantum states and observe the effects of various quantum gates on state evolution.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    # Subsection navigation
+    foundations_tabs = st.tabs(["Qubits & Superposition", "Measurement Theory", "Entanglement", "Mathematical Framework"])
     
-    # Bloch sphere controls
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        theta_deg = st.slider("θ (Polar Angle)", 0, 180, 45, key="bloch_theta",
-                             help="Angle from the north pole of the Bloch sphere")
-        phi_deg = st.slider("φ (Azimuthal Angle)", 0, 360, 90, key="bloch_phi", 
-                           help="Angle around the equator of the Bloch sphere")
-    
-    with col2:
-        gate_sequence = st.multiselect(
-            "Apply Quantum Gates",
-            ["H (Hadamard)", "X (Pauli-X)", "Y (Pauli-Y)", "Z (Pauli-Z)", "S (Phase)", "T (π/8)"],
-            help="Select gates to apply to the quantum state"
-        )
-    
-    # Create and display Bloch sphere
-    fig = create_alphanova_bloch_sphere(theta_deg, phi_deg)
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Quantum state analysis
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### Quantum State Vector")
-        theta_rad = np.radians(theta_deg)
-        phi_rad = np.radians(phi_deg)
+    with foundations_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Qubits and Superposition Principle</h3>
+            <p>The fundamental unit of quantum information, existing in coherent superposition of basis states.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        alpha = np.cos(theta_rad/2)
-        beta = np.sin(theta_rad/2) * np.exp(1j * phi_rad)
-        
-        st.write(f"α = {alpha:.4f}")
-        st.write(f"β = {beta:.4f}")
-        st.write(f"|ψ⟩ = {alpha:.3f}|0⟩ + {beta:.3f}|1⟩")
-        
-        # Measurement probabilities
-        prob_0 = np.abs(alpha)**2
-        prob_1 = np.abs(beta)**2
-        
-        st.write(f"P(|0⟩) = |α|² = {prob_0:.4f}")
-        st.write(f"P(|1⟩) = |β|² = {prob_1:.4f}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            ### Classical vs Quantum Bits
+            
+            **Classical Bit:**
+            - Definite state: 0 or 1
+            - Binary information storage
+            - Deterministic measurement
+            
+            **Quantum Bit (Qubit):**
+            - Superposition: α|0⟩ + β|1⟩ 
+            - Complex probability amplitudes
+            - Probabilistic measurement outcomes
+            - |α|² + |β|² = 1 (normalization)
+            """)
+            
+        with col2:
+            st.latex(r"""
+            |\psi\rangle = \alpha|0\rangle + \beta|1\rangle
+            """)
+            st.latex(r"""
+            \alpha, \beta \in \mathbb{C}, \quad |\alpha|^2 + |\beta|^2 = 1
+            """)
+            
+            # Interactive amplitude control
+            alpha_real = st.slider("α (real part)", -1.0, 1.0, 0.707, step=0.01)
+            alpha_imag = st.slider("α (imaginary part)", -1.0, 1.0, 0.0, step=0.01)
+            
+            alpha = alpha_real + 1j * alpha_imag
+            beta = np.sqrt(1 - abs(alpha)**2) if abs(alpha)**2 <= 1 else 0
+            
+            st.write(f"α = {alpha:.3f}")
+            st.write(f"β = {beta:.3f}")
+            st.write(f"P(|0⟩) = {abs(alpha)**2:.3f}")
+            st.write(f"P(|1⟩) = {abs(beta)**2:.3f}")
     
-    with col2:
-        st.markdown("### Bloch Vector Coordinates")
-        x = np.sin(theta_rad) * np.cos(phi_rad)
-        y = np.sin(theta_rad) * np.sin(phi_rad)  
-        z = np.cos(theta_rad)
+    with foundations_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Measurement Theory</h3>
+            <p>The Born rule and the collapse of the quantum state upon measurement.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.write(f"x = ⟨σₓ⟩ = {x:.4f}")
-        st.write(f"y = ⟨σᵧ⟩ = {y:.4f}")
-        st.write(f"z = ⟨σᵤ⟩ = {z:.4f}")
-        st.write(f"r = |⟨σ⟩| = {np.sqrt(x**2 + y**2 + z**2):.4f}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            ### Born Rule
+            
+            For a quantum state |ψ⟩ = α|0⟩ + β|1⟩:
+            
+            - **Probability of measuring |0⟩:** P(0) = |α|²
+            - **Probability of measuring |1⟩:** P(1) = |β|²
+            - **State collapse:** After measuring |0⟩, state becomes |0⟩
+            
+            ### Measurement Operators
+            
+            Computational basis measurement:
+            - M₀ = |0⟩⟨0| (projects onto |0⟩)
+            - M₁ = |1⟩⟨1| (projects onto |1⟩)
+            - M₀ + M₁ = I (completeness)
+            """)
+            
+        with col2:
+            # Measurement simulation
+            st.markdown("### Measurement Simulation")
+            
+            theta = st.slider("State angle θ", 0, 180, 45, key="measure_theta")
+            theta_rad = np.radians(theta)
+            
+            alpha_sim = np.cos(theta_rad/2)
+            beta_sim = np.sin(theta_rad/2)
+            
+            prob_0 = abs(alpha_sim)**2
+            prob_1 = abs(beta_sim)**2
+            
+            if st.button("Perform Measurement", key="measurement_btn"):
+                outcome = np.random.choice([0, 1], p=[prob_0, prob_1])
+                st.success(f"Measurement result: |{outcome}⟩")
+                if outcome == 0:
+                    st.info("State collapsed to |0⟩")
+                else:
+                    st.info("State collapsed to |1⟩")
+            
+            # Probability visualization
+            fig = go.Figure(data=[
+                go.Bar(x=['|0⟩', '|1⟩'], y=[prob_0, prob_1], 
+                       marker_color=['#22D3EE', '#6366F1'])
+            ])
+            fig.update_layout(
+                title="Measurement Probabilities",
+                yaxis_title="P(outcome)",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with foundations_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Entanglement</h3>
+            <p>Non-local correlations between quantum systems that cannot be described classically.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            ### Bell States - Maximally Entangled
+            
+            The four Bell states form a complete orthonormal basis for two-qubit systems:
+            
+            1. **|Φ⁺⟩ = (|00⟩ + |11⟩)/√2**
+            2. **|Φ⁻⟩ = (|00⟩ - |11⟩)/√2** 
+            3. **|Ψ⁺⟩ = (|01⟩ + |10⟩)/√2**
+            4. **|Ψ⁻⟩ = (|01⟩ - |10⟩)/√2**
+            
+            ### Entanglement Properties
+            
+            - **Non-separability:** Cannot write as |ψ⟩ ⊗ |φ⟩
+            - **Non-locality:** Measurement correlations exceed classical bounds
+            - **Monogamy:** Entanglement cannot be freely shared
+            """)
+            
+        with col2:
+            bell_state = st.selectbox(
+                "Select Bell State", 
+                ["Φ+ (|00⟩ + |11⟩)/√2", "Φ- (|00⟩ - |11⟩)/√2", 
+                 "Ψ+ (|01⟩ + |10⟩)/√2", "Ψ- (|01⟩ - |10⟩)/√2"]
+            )
+            
+            bell_states_dict = bell_states()
+            state_map = {
+                "Φ+ (|00⟩ + |11⟩)/√2": bell_states_dict['Φ+'],
+                "Φ- (|00⟩ - |11⟩)/√2": bell_states_dict['Φ-'], 
+                "Ψ+ (|01⟩ + |10⟩)/√2": bell_states_dict['Ψ+'],
+                "Ψ- (|01⟩ - |10⟩)/√2": bell_states_dict['Ψ-']
+            }
+            
+            selected_bell = state_map[bell_state]
+            probs = np.abs(selected_bell)**2
+            
+            # Probability distribution
+            fig = go.Figure(data=[
+                go.Bar(x=['|00⟩', '|01⟩', '|10⟩', '|11⟩'], y=probs,
+                       marker_color=['#22D3EE', '#3B82F6', '#8B5CF6', '#F59E0B'])
+            ])
+            fig.update_layout(
+                title=f"Bell State: {bell_state.split(' ')[0]}",
+                yaxis_title="Probability",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with foundations_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Mathematical Framework - Hilbert Space</h3>
+            <p>The complete mathematical foundation of quantum mechanics in complex vector spaces.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            ### Bra-Ket Notation (Dirac Notation)
+            
+            **Ket:** |ψ⟩ represents a quantum state vector
+            **Bra:** ⟨φ| represents the complex conjugate transpose
+            **Bracket:** ⟨φ|ψ⟩ represents the inner product
+            
+            ### Hilbert Space Properties
+            
+            - **Completeness:** Cauchy sequences converge
+            - **Inner Product:** ⟨ψ|φ⟩ ∈ ℂ
+            - **Norm:** ||ψ|| = √⟨ψ|ψ⟩
+            - **Orthonormal Basis:** {|i⟩} where ⟨i|j⟩ = δᵢⱼ
+            """)
+            
+        with col2:
+            st.markdown("### Key Mathematical Relations")
+            
+            st.latex(r"""
+            \langle\psi|\phi\rangle = \langle\phi|\psi\rangle^*
+            """)
+            st.latex(r"""
+            ||\psi||^2 = \langle\psi|\psi\rangle = 1
+            """)
+            st.latex(r"""
+            |\psi\rangle = \sum_i c_i |i\rangle
+            """)
+            st.latex(r"""
+            \hat{A}|\psi\rangle = \sum_i a_i c_i |i\rangle
+            """)
+            
+            st.markdown("""
+            ### Quantum Operators
+            
+            - **Hermitian:** Â† = Â (observables)
+            - **Unitary:** Û†Û = I (time evolution)
+            - **Projection:** P² = P (measurement)
+            - **Eigenvalue Equation:** Â|a⟩ = a|a⟩
+            """)
 
-elif module_id == "entanglement":
+elif section_id == "quantum_state_viz":
+    st.markdown("# 🌐 Quantum State Visualization")
+    st.markdown('<span class="alphanova-status status-active">Interactive Visualization Module</span>', unsafe_allow_html=True)
+    
+    viz_tabs = st.tabs(["Bloch Sphere", "State Vector Analysis", "Phase Relationships", "State Transformations"])
+    
+    with viz_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Interactive Bloch Sphere Visualization</h3>
+            <p>Explore quantum states through real-time 3D visualization of the Bloch sphere representation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Bloch sphere controls
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            theta_deg = st.slider("θ (Polar Angle)", 0, 180, 45, key="bloch_theta",
+                                 help="Angle from the north pole")
+            phi_deg = st.slider("φ (Azimuthal Angle)", 0, 360, 90, key="bloch_phi", 
+                               help="Angle around the equator")
+        
+        with col2:
+            gate_sequence = st.multiselect(
+                "Apply Quantum Gates",
+                ["H (Hadamard)", "X (Pauli-X)", "Y (Pauli-Y)", "Z (Pauli-Z)", "S (Phase)", "T (π/8)"],
+                help="Select gates to apply"
+            )
+        
+        # Create and display Bloch sphere
+        fig = create_alphanova_bloch_sphere(theta_deg, phi_deg)
+        st.plotly_chart(fig, width='stretch')
+        
+        # Quantum state analysis
+        col1, col2 = st.columns(2) 
+        
+        with col1:
+            st.markdown("### Quantum State Vector")
+            theta_rad = np.radians(theta_deg)
+            phi_rad = np.radians(phi_deg)
+            
+            alpha = np.cos(theta_rad/2)
+            beta = np.sin(theta_rad/2) * np.exp(1j * phi_rad)
+            
+            st.write(f"α = {alpha:.4f}")
+            st.write(f"β = {beta:.4f}") 
+            st.write(f"|ψ⟩ = {alpha:.3f}|0⟩ + {beta:.3f}|1⟩")
+            
+            prob_0 = np.abs(alpha)**2
+            prob_1 = np.abs(beta)**2
+            
+            st.write(f"P(|0⟩) = |α|² = {prob_0:.4f}")
+            st.write(f"P(|1⟩) = |β|² = {prob_1:.4f}")
+        
+        with col2:
+            st.markdown("### Bloch Vector Coordinates")
+            x = np.sin(theta_rad) * np.cos(phi_rad)
+            y = np.sin(theta_rad) * np.sin(phi_rad)
+            z = np.cos(theta_rad)
+            
+            st.write(f"x = ⟨σₓ⟩ = {x:.4f}")
+            st.write(f"y = ⟨σᵧ⟩ = {y:.4f}")
+            st.write(f"z = ⟨σᵤ⟩ = {z:.4f}")
+            st.write(f"r = |⟨σ⟩| = {np.sqrt(x**2 + y**2 + z**2):.4f}")
+    
+    with viz_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>State Vector Analysis in ℂ²</h3>
+            <p>Comprehensive analysis of quantum state vectors in the two-dimensional complex Hilbert space.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### Amplitude Control")
+            alpha_mag = st.slider("α magnitude", 0.0, 1.0, 0.707, key="alpha_mag")
+            alpha_phase = st.slider("α phase (°)", 0, 360, 0, key="alpha_phase")
+            
+            alpha_complex = alpha_mag * np.exp(1j * np.radians(alpha_phase))
+            beta_mag = np.sqrt(1 - alpha_mag**2) if alpha_mag**2 <= 1 else 0
+            beta_phase = st.slider("β phase (°)", 0, 360, 90, key="beta_phase")
+            beta_complex = beta_mag * np.exp(1j * np.radians(beta_phase))
+            
+            # Create LaTeX string for state vector
+            latex_str = rf"|\\psi\\rangle = {alpha_complex:.3f}|0\\rangle + {beta_complex:.3f}|1\\rangle"
+            st.latex(latex_str)
+            
+        with col2:
+            # Complex plane visualization
+            fig = go.Figure()
+            
+            # Add alpha amplitude
+            fig.add_trace(go.Scatter(
+                x=[0, alpha_complex.real], y=[0, alpha_complex.imag],
+                mode='lines+markers',
+                name='α amplitude',
+                line=dict(color='#22D3EE', width=4),
+                marker=dict(size=10)
+            ))
+            
+            # Add beta amplitude
+            fig.add_trace(go.Scatter(
+                x=[0, beta_complex.real], y=[0, beta_complex.imag],
+                mode='lines+markers', 
+                name='β amplitude',
+                line=dict(color='#6366F1', width=4),
+                marker=dict(size=10)
+            ))
+            
+            # Unit circle
+            theta_circle = np.linspace(0, 2*np.pi, 100)
+            fig.add_trace(go.Scatter(
+                x=np.cos(theta_circle), y=np.sin(theta_circle),
+                mode='lines',
+                name='Unit Circle',
+                line=dict(color='#64748B', width=1, dash='dash'),
+                showlegend=False
+            ))
+            
+            fig.update_layout(
+                title="Complex Amplitude Visualization",
+                xaxis_title="Real",
+                yaxis_title="Imaginary",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0',
+                xaxis=dict(range=[-1.2, 1.2]),
+                yaxis=dict(range=[-1.2, 1.2])
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with viz_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Phase Relationships</h3>
+            <p>Explore the critical role of relative phases in quantum superposition states.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            relative_phase = st.slider("Relative Phase δ (°)", 0, 360, 90, key="rel_phase")
+            delta_rad = np.radians(relative_phase)
+            
+            # Equal superposition with relative phase
+            alpha_phase = 1/np.sqrt(2)
+            beta_phase = (1/np.sqrt(2)) * np.exp(1j * delta_rad)
+            
+            st.markdown(f"""
+            ### Equal Superposition with Phase δ = {relative_phase}°
+            
+            |ψ⟩ = (1/√2)|0⟩ + (1/√2)e^(iδ)|1⟩
+            
+            **Physical Interpretation:**
+            - Global phases are unobservable
+            - Relative phases affect interference
+            - Measurement probabilities: |1/√2|² = 50% each
+            """)
+            
+        with col2:
+            # Phase wheel visualization
+            fig = go.Figure()
+            
+            # Unit circle
+            theta_wheel = np.linspace(0, 2*np.pi, 100)
+            fig.add_trace(go.Scatter(
+                x=np.cos(theta_wheel), y=np.sin(theta_wheel),
+                mode='lines',
+                name='Unit Circle',
+                line=dict(color='#64748B', width=2)
+            ))
+            
+            # Phase vector
+            fig.add_trace(go.Scatter(
+                x=[0, np.cos(delta_rad)], y=[0, np.sin(delta_rad)],
+                mode='lines+markers',
+                name=f'Phase δ = {relative_phase}°',
+                line=dict(color='#F59E0B', width=4),
+                marker=dict(size=12)
+            ))
+            
+            fig.update_layout(
+                title="Relative Phase Visualization",
+                xaxis_title="Real",
+                yaxis_title="Imaginary",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0',
+                xaxis=dict(range=[-1.5, 1.5]),
+                yaxis=dict(range=[-1.5, 1.5])
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with viz_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum State Transformations</h3>
+            <p>Observe how unitary operations transform quantum states on the Bloch sphere.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("### Apply Sequential Gate Operations")
+        
+        # Initial state setup
+        col1, col2 = st.columns(2)
+        with col1:
+            initial_theta = st.slider("Initial θ", 0, 180, 45, key="init_theta")
+            initial_phi = st.slider("Initial φ", 0, 360, 0, key="init_phi")
+        
+        with col2:
+            transformation_gates = st.multiselect(
+                "Gate Sequence (applied left to right)",
+                ["I", "X", "Y", "Z", "H", "S", "T"],
+                default=["H"],
+                help="Select gates to apply in sequence"
+            )
+        
+        if transformation_gates:
+            # Calculate final state after gate sequence
+            theta_final = initial_theta
+            phi_final = initial_phi
+            
+            # Simple gate transformations on Bloch sphere (approximation)
+            for gate in transformation_gates:
+                if gate == "X":
+                    theta_final = 180 - theta_final
+                elif gate == "Y":
+                    theta_final = 180 - theta_final
+                    phi_final = phi_final + 180
+                elif gate == "Z":
+                    phi_final = phi_final + 180
+                elif gate == "H":
+                    # Hadamard rotation - approximate
+                    if theta_final == 0:
+                        theta_final = 90
+                        phi_final = 0
+                    elif theta_final == 180:
+                        theta_final = 90
+                        phi_final = 180
+                elif gate == "S":
+                    phi_final = phi_final + 90
+                elif gate == "T":
+                    phi_final = phi_final + 45
+            
+            # Normalize angles
+            theta_final = theta_final % 180
+            phi_final = phi_final % 360
+            
+            # Display before and after Bloch spheres
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("#### Initial State")
+                fig_initial = create_alphanova_bloch_sphere(initial_theta, initial_phi)
+                st.plotly_chart(fig_initial, width='stretch')
+            
+            with col2:
+                st.markdown(f"#### After Gates: {' → '.join(transformation_gates)}")
+                fig_final = create_alphanova_bloch_sphere(theta_final, phi_final)
+                st.plotly_chart(fig_final, width='stretch')
+
+elif section_id == "quantum_gates":
+    st.markdown("# 🔧 Quantum Gates & Circuits")
+    st.markdown('<span class="alphanova-status status-active">Core Computation Module</span>', unsafe_allow_html=True)
+    
+    gates_tabs = st.tabs(["Single-Qubit Gates", "Two-Qubit Gates", "Gate Matrices", "Circuit Builder"])
+    
+    with gates_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Single-Qubit Gate Operations</h3>
+            <p>Fundamental single-qubit gates that form the building blocks of quantum computation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        gate_type = st.selectbox(
+            "Select Gate Type",
+            ["Pauli-X (NOT)", "Pauli-Y", "Pauli-Z", "Hadamard (H)", "Phase (S)", "T Gate (π/8)"]
+        )
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if gate_type == "Pauli-X (NOT)":
+                st.markdown("""
+                ### Pauli-X Gate (Quantum NOT)
+                
+                **Matrix Representation:**
+                """) 
+                st.latex(r"X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}")
+                
+                st.markdown("""
+                **Action on Basis States:**
+                - X|0⟩ = |1⟩
+                - X|1⟩ = |0⟩
+                
+                **Bloch Sphere:** 180° rotation around X-axis
+                
+                **Properties:**
+                - Hermitian: X† = X
+                - Unitary: X†X = I  
+                - Involutory: X² = I
+                """)
+                
+            elif gate_type == "Hadamard (H)":
+                st.markdown("""
+                ### Hadamard Gate
+                
+                **Matrix Representation:**
+                """)
+                st.latex(r"H = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}")
+                
+                st.markdown("""
+                **Action on Basis States:**
+                - H|0⟩ = (|0⟩ + |1⟩)/√2
+                - H|1⟩ = (|0⟩ - |1⟩)/√2
+                
+                **Creates Superposition:**
+                Transforms computational basis to superposition basis
+                
+                **Properties:**
+                - Self-inverse: H² = I
+                - Essential for quantum algorithms
+                """)
+            
+            # Add other gate descriptions similarly...
+        
+        with col2:
+            # Interactive gate application
+            st.markdown("### Apply Gate to Custom State")
+            
+            input_alpha = st.slider("α coefficient", 0.0, 1.0, 1.0, key="gate_alpha")
+            input_beta = np.sqrt(1 - input_alpha**2) if input_alpha**2 <= 1 else 0
+            
+            # Define gate matrices
+            gates = {
+                "Pauli-X (NOT)": pauli_matrices()['X'],
+                "Pauli-Y": pauli_matrices()['Y'], 
+                "Pauli-Z": pauli_matrices()['Z'],
+                "Hadamard (H)": hadamard(),
+                "Phase (S)": np.array([[1, 0], [0, 1j]]),
+                "T Gate (π/8)": np.array([[1, 0], [0, np.exp(1j*np.pi/4)]])
+            }
+            
+            input_state = np.array([input_alpha, input_beta])
+            selected_gate = gates[gate_type]
+            output_state = selected_gate @ input_state
+            
+            st.write(f"**Input:** {input_alpha:.3f}|0⟩ + {input_beta:.3f}|1⟩")
+            st.write(f"**Output:** {output_state[0]:.3f}|0⟩ + {output_state[1]:.3f}|1⟩")
+            
+            # Probability comparison
+            input_probs = np.abs(input_state)**2
+            output_probs = np.abs(output_state)**2
+            
+            fig = go.Figure(data=[
+                go.Bar(name='Input', x=['|0⟩', '|1⟩'], y=input_probs, marker_color='#22D3EE'),
+                go.Bar(name='Output', x=['|0⟩', '|1⟩'], y=output_probs, marker_color='#6366F1')
+            ])
+            fig.update_layout(
+                title="State Probability Comparison",
+                yaxis_title="Probability",
+                barmode='group',
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with gates_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Two-Qubit Gates & Entanglement</h3>
+            <p>Multi-qubit operations that create and manipulate entangled quantum states.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        two_qubit_gate = st.selectbox(
+            "Select Two-Qubit Gate",
+            ["CNOT (Controlled-X)", "CZ (Controlled-Z)", "SWAP", "Controlled-H"]
+        )
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if two_qubit_gate == "CNOT (Controlled-X)":
+                st.markdown("""
+                ### CNOT (Controlled-X) Gate
+                
+                **Matrix Representation:**
+                """)
+                st.latex(r"""CNOT = \begin{pmatrix}
+                1 & 0 & 0 & 0 \\
+                0 & 1 & 0 & 0 \\
+                0 & 0 & 0 & 1 \\
+                0 & 0 & 1 & 0
+                \end{pmatrix}""")
+                
+                st.markdown("""
+                **Truth Table:**
+                - |00⟩ → |00⟩
+                - |01⟩ → |01⟩  
+                - |10⟩ → |11⟩
+                - |11⟩ → |10⟩
+                
+                **Properties:**
+                - Flips target qubit if control is |1⟩
+                - Creates Bell states from specific inputs
+                - Universal for quantum computation (with single-qubit gates)
+                """)
+        
+        with col2:
+            # Bell state creation demo
+            st.markdown("### Create Bell State")
+            
+            if st.button("Apply H ⊕ I then CNOT to |00⟩"):
+                st.markdown("""
+                **Step 1:** Apply H ⊕ I to |00⟩
+                
+                |00⟩ → (H|0⟩) ⊗ |0⟩ = (|0⟩ + |1⟩)/√2 ⊗ |0⟩
+                = (|00⟩ + |10⟩)/√2
+                
+                **Step 2:** Apply CNOT
+                
+                (|00⟩ + |10⟩)/√2 → (|00⟩ + |11⟩)/√2
+                
+                **Result:** Bell state |Φ⁺⟩ = (|00⟩ + |11⟩)/√2
+                """)
+                
+                # Visualize Bell state probabilities
+                bell_probs = [0.5, 0, 0, 0.5]  # |00⟩ and |11⟩ only
+                
+                fig = go.Figure(data=[
+                    go.Bar(x=['|00⟩', '|01⟩', '|10⟩', '|11⟩'], y=bell_probs,
+                           marker_color=['#22D3EE', '#64748B', '#64748B', '#22D3EE'])
+                ])
+                fig.update_layout(
+                    title="Bell State |Φ⁺⟩ Probabilities",
+                    yaxis_title="Probability",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#E2E8F0'
+                )
+                st.plotly_chart(fig, width='stretch')
+    
+    with gates_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Gate Matrix Representations</h3>
+            <p>Complete mathematical descriptions of quantum gates in matrix form.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Display all gate matrices
+        pauli_gates = pauli_matrices()
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### Pauli Gates")
+            
+            for gate_name, matrix in pauli_gates.items():
+                st.markdown(f"**{gate_name} Gate:**")
+                
+                # Display matrix in a formatted way
+                matrix_str = rf"""
+                \begin{{pmatrix}}
+                {matrix[0,0]} & {matrix[0,1]} \\\\
+                {matrix[1,0]} & {matrix[1,1]}
+                \end{{pmatrix}}
+                """
+                st.latex(matrix_str)
+                
+                # Eigenvalues and properties
+                eigenvals = np.linalg.eigvals(matrix)
+                st.write(f"Eigenvalues: {eigenvals}")
+                st.write(f"Trace: {np.trace(matrix)}")
+                st.write(f"Determinant: {np.linalg.det(matrix):.1f}")
+                st.markdown("---")
+        
+        with col2:
+            st.markdown("### Rotation Gates")
+            
+            # Parameterized rotation gates
+            angle = st.slider("Rotation Angle θ (radians)", 0.0, 2*np.pi, np.pi/4)
+            
+            # RX, RY, RZ gates
+            rx_gate = np.array([[np.cos(angle/2), -1j*np.sin(angle/2)],
+                               [-1j*np.sin(angle/2), np.cos(angle/2)]])
+            
+            ry_gate = np.array([[np.cos(angle/2), -np.sin(angle/2)],
+                               [np.sin(angle/2), np.cos(angle/2)]])
+            
+            rz_gate = np.array([[np.exp(-1j*angle/2), 0],
+                               [0, np.exp(1j*angle/2)]])
+            
+            st.markdown(f"**RX(θ) with θ = {angle:.3f}:**")
+            st.write(rx_gate)
+            
+            st.markdown(f"**RY(θ) with θ = {angle:.3f}:**")
+            st.write(ry_gate)
+            
+            st.markdown(f"**RZ(θ) with θ = {angle:.3f}:**")
+            st.write(rz_gate) 
+    
+    with gates_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Circuit Builder</h3>
+            <p>Design and simulate custom quantum circuits with multiple qubits and gates.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Simple circuit builder
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            n_qubits = st.selectbox("Number of Qubits", [1, 2, 3], index=1)
+            
+            st.markdown("### Add Gates to Circuit")
+            circuit_gates = st.multiselect(
+                "Gate Sequence",
+                ["H", "X", "Y", "Z", "CNOT", "S", "T"],
+                default=["H"],
+                help="Gates applied in order from left to right"
+            )
+            
+        with col2:
+            st.markdown("### Circuit Diagram")
+            
+            # Simple text-based circuit representation
+            if n_qubits == 1:
+                circuit_repr = "q0: ─"
+                for gate in circuit_gates:
+                    if gate in ['H', 'X', 'Y', 'Z', 'S', 'T']:
+                        circuit_repr += f"─[{gate}]─"
+                st.code(circuit_repr, language="text")
+                
+            elif n_qubits == 2:
+                circuit_repr_0 = "q0: ─"
+                circuit_repr_1 = "q1: ─"
+                
+                for gate in circuit_gates:
+                    if gate == 'CNOT':
+                        circuit_repr_0 += "─•─"  # control
+                        circuit_repr_1 += "─⊕─"  # target
+                    elif gate in ['H', 'X', 'Y', 'Z', 'S', 'T']:
+                        circuit_repr_0 += f"─[{gate}]─"
+                        circuit_repr_1 += "─────"
+                
+                st.code(circuit_repr_0 + "\n" + circuit_repr_1, language="text")
+        
+        # Simulate circuit if possible
+        if st.button("Simulate Circuit", type="primary"):
+            if n_qubits == 1 and len(circuit_gates) > 0:
+                # Single qubit simulation
+                state = np.array([1.0, 0.0], dtype=complex)  # |0⟩
+                
+                for gate in circuit_gates:
+                    if gate == 'H':
+                        state = hadamard() @ state
+                    elif gate == 'X':
+                        state = pauli_matrices()['X'] @ state
+                    elif gate == 'Y':
+                        state = pauli_matrices()['Y'] @ state
+                    elif gate == 'Z':
+                        state = pauli_matrices()['Z'] @ state
+                
+                probs = np.abs(state)**2
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write(f"Final state: {state[0]:.3f}|0⟩ + {state[1]:.3f}|1⟩")
+                    st.write(f"P(|0⟩) = {probs[0]:.4f}")
+                    st.write(f"P(|1⟩) = {probs[1]:.4f}")
+                
+                with col2:
+                    fig = go.Figure(data=[
+                        go.Bar(x=['|0⟩', '|1⟩'], y=probs, marker_color=['#22D3EE', '#6366F1'])
+                    ])
+                    fig.update_layout(
+                        title="Output Probabilities",
+                        yaxis_title="Probability",
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        font_color='#E2E8F0'
+                    )
+                    st.plotly_chart(fig, width='stretch')
+
+elif section_id == "quantum_algorithms":
+    st.markdown("# ⚡ Quantum Algorithms")
+    st.markdown('<span class="alphanova-status status-research">Advanced Research Module</span>', unsafe_allow_html=True)
+    
+    algorithm_tabs = st.tabs(["Deutsch Algorithm", "Deutsch-Jozsa", "Grover's Algorithm", "Quantum Fourier Transform"])
+    
+    with algorithm_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Deutsch Algorithm - First Quantum Speedup</h3>
+            <p>The historically first quantum algorithm demonstrating exponential speedup over classical computation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Problem Statement
+            
+            Given a black-box function f: {0,1} → {0,1}, determine if f is:
+            - **Constant:** f(0) = f(1) (both 0 or both 1)
+            - **Balanced:** f(0) ≠ f(1) (one 0, one 1)
+            
+            ### Classical Approach
+            
+            - Must evaluate f(0) and f(1)
+            - Requires **2 function evaluations**
+            - No way to avoid checking both inputs
+            
+            ### Quantum Approach
+            
+            - Uses quantum superposition and interference
+            - Requires only **1 function evaluation**
+            - 50% speedup, infinite in relative terms
+            """)
+        
+        with col2:
+            st.markdown("### Deutsch Circuit")
+            
+            # Circuit representation
+            st.code("""
+q0: |0⟩─[H]─[Uf]─[H]─M
+                  │    │
+q1: |1⟩─[H]─[Uf]────
+            """, language="text")
+            
+            st.markdown("""
+            **Steps:**
+            1. Initialize |01⟩
+            2. Apply H ⊗ H → (|0⟩+|1⟩)(|0⟩-|1⟩)/2
+            3. Apply oracle Uf
+            4. Apply H ⊗ I to first qubit
+            5. Measure first qubit
+            
+            **Result:**
+            - Measure |0⟩: f is constant
+            - Measure |1⟩: f is balanced
+            """)
+        
+        # Interactive simulation
+        st.markdown("### Simulate Deutsch Algorithm")
+        
+        function_type = st.selectbox(
+            "Choose Function Type",
+            ["Constant (f=0)", "Constant (f=1)", "Balanced (f=id)", "Balanced (f=NOT)"]
+        )
+        
+        if st.button("Run Deutsch Algorithm", key="deutsch_run"):
+            # Simulate the algorithm
+            if "Constant" in function_type:
+                result_prob_0 = 1.0
+                result_prob_1 = 0.0
+                interpretation = "Function is CONSTANT"
+            else:
+                result_prob_0 = 0.0
+                result_prob_1 = 1.0
+                interpretation = "Function is BALANCED"
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.metric("P(measure |0⟩)", f"{result_prob_0:.1%}")
+                st.metric("P(measure |1⟩)", f"{result_prob_1:.1%}")
+                st.success(f"✅ {interpretation}")
+            
+            with col2:
+                fig = go.Figure(data=[
+                    go.Bar(x=['|0⟩', '|1⟩'], y=[result_prob_0, result_prob_1],
+                           marker_color=['#22D3EE', '#EF4444'])
+                ])
+                fig.update_layout(
+                    title="Measurement Outcome",
+                    yaxis_title="Probability",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#E2E8F0'
+                )
+                st.plotly_chart(fig, width='stretch')
+    
+    with algorithm_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Deutsch-Jozsa Algorithm</h3>
+            <p>Generalization of Deutsch algorithm to n-bit functions with exponential speedup.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Extended Problem
+            
+            For function f: {0,1}^n → {0,1}, determine if:
+            - **Constant:** f(x) = c for all x (c = 0 or 1)
+            - **Balanced:** f(x) = 0 for exactly half the inputs
+            
+            ### Classical Complexity
+            
+            - Worst case: 2^(n-1) + 1 evaluations
+            - For n=10: up to 513 evaluations needed
+            - Exponential in problem size
+            
+            ### Quantum Complexity  
+            
+            - **Exactly 1 evaluation** regardless of n
+            - Exponential speedup: O(2^n) → O(1)
+            - Among the largest quantum advantages known
+            """)
+        
+        with col2:
+            n_bits = st.slider("Number of Input Bits (n)", 2, 6, 3, key="dj_bits")
+            
+            st.markdown(f"### Circuit for n={n_bits}")
+            
+            # Show scaling
+            classical_worst = 2**(n_bits-1) + 1
+            quantum_evals = 1
+            speedup = classical_worst / quantum_evals
+            
+            st.metric("Classical Worst Case", f"{classical_worst} evaluations")
+            st.metric("Quantum Required", "1 evaluation")
+            st.metric("Speedup Factor", f"{speedup:.0f}x")
+            
+            # Visualization of exponential growth
+            bits_range = np.arange(1, 11)
+            classical_evals = 2**(bits_range-1) + 1
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=bits_range, y=classical_evals,
+                mode='lines+markers',
+                name='Classical (worst case)',
+                line=dict(color='#EF4444', width=3)
+            ))
+            fig.add_trace(go.Scatter(
+                x=bits_range, y=np.ones_like(bits_range),
+                mode='lines+markers', 
+                name='Quantum',
+                line=dict(color='#22D3EE', width=3)
+            ))
+            
+            fig.update_layout(
+                title="Deutsch-Jozsa Complexity Scaling",
+                xaxis_title="Input bits (n)",
+                yaxis_title="Function evaluations",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with algorithm_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Grover's Search Algorithm</h3>
+            <p>Quadratic speedup for unstructured search problems - optimal quantum search algorithm.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Unstructured Search Problem
+            
+            Search unsorted database of N=2^n items for marked item.
+            
+            **Classical Search:**
+            - Random sampling: O(N) = O(2^n)
+            - Must check ~N/2 items on average
+            
+            **Grover's Algorithm:**
+            - Quantum search: O(√N) = O(2^(n/2))
+            - Quadratic speedup - provably optimal
+            - Uses amplitude amplification technique
+            
+            ### Key Components
+            
+            1. **Oracle:** Marks target item
+            2. **Diffusion:** Amplifies marked amplitude
+            3. **Iteration:** Repeat ~π√N/4 times
+            """)
+        
+        with col2:
+            database_size = st.selectbox(
+                "Database Size (N)",
+                [4, 8, 16, 32, 64, 128],
+                index=2
+            )
+            
+            n_qubits_grover = int(np.log2(database_size))
+            optimal_iterations = int(np.pi * np.sqrt(database_size) / 4)
+            classical_average = database_size // 2
+            
+            st.metric("Database Items (N)", database_size)
+            st.metric("Qubits Required", n_qubits_grover)
+            st.metric("Grover Iterations", optimal_iterations)
+            st.metric("Classical Average", f"{classical_average} queries")
+            
+            speedup_grover = classical_average / optimal_iterations if optimal_iterations > 0 else classical_average
+            st.metric("Quantum Speedup", f"{speedup_grover:.1f}x")
+            
+        # Grover simulation
+        st.markdown("### Grover Algorithm Simulation")
+        
+        target_item = st.slider("Target Item Index", 0, database_size-1, 0, key="grover_target")
+        
+        if st.button("Simulate Grover Search", key="grover_run"):
+            # Simulate amplitude evolution
+            iterations = np.arange(0, min(optimal_iterations + 3, 10))
+            
+            # Approximate probability evolution (simplified)
+            success_probs = []
+            for i in iterations:
+                if i <= optimal_iterations:
+                    # Approximate sinusoidal growth
+                    prob = np.sin((2*i + 1) * np.arcsin(1/np.sqrt(database_size)))**2
+                else:
+                    # Probability decreases after optimal point
+                    prob = np.sin((2*optimal_iterations + 1) * np.arcsin(1/np.sqrt(database_size)))**2
+                    prob *= np.exp(-(i - optimal_iterations) * 0.3)
+                
+                success_probs.append(prob)
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=iterations, y=success_probs,
+                mode='lines+markers',
+                name='Success Probability',
+                line=dict(color='#22D3EE', width=4),
+                marker=dict(size=8)
+            ))
+            
+            # Mark optimal point
+            fig.add_vline(x=optimal_iterations, line_dash="dash", 
+                         line_color="#F59E0B", annotation_text="Optimal")
+            
+            fig.update_layout(
+                title=f"Grover's Algorithm: Finding Item {target_item} in Database of {database_size}",
+                xaxis_title="Iteration",
+                yaxis_title="Probability of Success",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with algorithm_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Fourier Transform (QFT)</h3>
+            <p>Quantum analog of classical FFT, essential for period finding and Shor's algorithm.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Mathematical Definition
+            
+            QFT maps computational basis to Fourier basis:
+            
+            |x⟩ → (1/√N) Σₖ e^(2πikx/N) |k⟩
+            
+            where N = 2^n for n qubits.
+            
+            ### Key Properties
+            
+            - **Unitary transformation**
+            - **Efficient implementation:** O(n²) gates
+            - **Classical FFT comparison:** O(N log N)
+            - **Exponential speedup** for certain problems
+            
+            ### Applications
+            
+            - **Period Finding:** Core of Shor's algorithm
+            - **Phase Estimation:** Quantum eigenvalue estimation  
+            - **Hidden Subgroup Problems**
+            """)
+        
+        with col2:
+            qft_qubits = st.slider("QFT Qubits (n)", 2, 5, 3, key="qft_qubits")
+            qft_size = 2**qft_qubits
+            
+            st.markdown(f"### QFT Circuit for n={qft_qubits}")
+            
+            # QFT circuit complexity
+            qft_gates = qft_qubits**2  # Approximation
+            classical_ops = qft_size * np.log2(qft_size) if qft_size > 1 else 1
+            
+            st.metric("Hilbert Space Size", f"2^{qft_qubits} = {qft_size}")
+            st.metric("QFT Gates Required", f"~{qft_gates}")
+            st.metric("Classical FFT Ops", f"~{classical_ops:.0f}")
+            
+            if qft_size > 8:
+                qft_speedup = classical_ops / qft_gates
+                st.metric("Potential Speedup", f"{qft_speedup:.1f}x")
+        
+        # QFT visualization example
+        st.markdown("### QFT Example: Fourier Transform of |001⟩")
+        
+        if st.button("Compute QFT|001⟩", key="qft_example"):
+            # Simple 3-qubit QFT example
+            n = 3
+            N = 2**n
+            input_state = 1  # |001⟩ corresponds to x=1
+            
+            # Compute QFT amplitudes
+            amplitudes = []
+            labels = []
+            
+            for k in range(N):
+                # QFT amplitude: (1/√N) * e^(2πikx/N)
+                amplitude = (1/np.sqrt(N)) * np.exp(2j * np.pi * k * input_state / N)
+                amplitudes.append(np.abs(amplitude)**2)  # Probability
+                labels.append(f"|{k:03b}⟩")
+            
+            fig = go.Figure(data=[
+                go.Bar(x=labels, y=amplitudes, marker_color='#6366F1')
+            ])
+            
+            fig.update_layout(
+                title="QFT Output Probabilities for Input |001⟩",
+                xaxis_title="Output Basis States",
+                yaxis_title="Probability",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            st.info("💡 The QFT produces equal amplitude superposition with phase relationships encoding the input information.")
     # Bell States Module
     st.markdown("# 🔗 Bell-State Correlations")
     st.markdown('<span class="alphanova-status status-active">Active Research Module</span>', unsafe_allow_html=True)
@@ -844,7 +1968,7 @@ elif module_id == "entanglement":
             plot_bgcolor='rgba(0,0,0,0)',
             font_color='#E2E8F0'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     
     # CHSH inequality analysis
     st.markdown("### CHSH Inequality Analysis")
@@ -923,7 +2047,7 @@ elif module_id == "vqe":
                 font_color='#E2E8F0'
             )
             
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Results summary
             final_energy = energies[-1]
@@ -993,7 +2117,7 @@ elif module_id == "qml":
                 plot_bgcolor='rgba(0,0,0,0)',
                 font_color='#E2E8F0'
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         with col2:
             # Mock quantum kernel matrix
@@ -1014,7 +2138,7 @@ elif module_id == "qml":
                 plot_bgcolor='rgba(0,0,0,0)',
                 font_color='#E2E8F0'
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         
         # Training simulation
         if st.button("Train Quantum Kernel SVM", type="primary"):
@@ -1039,17 +2163,273 @@ elif module_id == "qml":
                 
                 st.success("✅ Quantum kernel SVM shows enhanced classification performance!")
 
-# Add more modules as needed...
+elif section_id == "quantum_ml":
+    st.markdown("# 🧠 Quantum Machine Learning")
+    st.markdown('<span class="alphanova-status status-emerging">Emerging Research</span>', unsafe_allow_html=True)
+    
+    ml_tabs = st.tabs(["QML Fundamentals", "Variational Circuits", "Quantum Kernels", "Hybrid Models"])
+    
+    with ml_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Machine Learning Foundations</h3>
+            <p>Exploring the intersection of quantum computing and machine learning for enhanced pattern recognition and optimization.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Key Concepts
+            
+            **Quantum Feature Maps:**
+            - Encode classical data into quantum states
+            - Potentially exponential feature space
+            - Non-linear transformations through quantum evolution
+            
+            **Variational Quantum Circuits:**
+            - Parameterized quantum circuits (PQCs)
+            - Classical optimization of quantum parameters
+            - Hybrid quantum-classical approach
+            
+            **Quantum Advantage Sources:**
+            - **Exponential Hilbert space:** 2^n dimensions
+            - **Quantum interference:** Constructive/destructive amplitudes
+            - **Entanglement:** Non-local correlations in data
+            """)
+            
+        with col2:
+            # QML landscape visualization
+            st.markdown("### QML Algorithm Classes")
+            
+            qml_types = ["Quantum Kernels", "Variational QML", "Quantum GANs", "Quantum RL"]
+            advantages = [85, 70, 60, 45]  # Relative advantage scores
+            
+            fig = go.Figure(data=[
+                go.Bar(x=qml_types, y=advantages, 
+                       marker_color=['#22D3EE', '#3B82F6', '#8B5CF6', '#F59E0B'])
+            ])
+            fig.update_layout(
+                title="QML Potential Advantage by Algorithm Type",
+                yaxis_title="Potential Advantage (%)",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+
+elif section_id == "hardware_arch":
+    st.markdown("# 🔩 Hardware Architecture")
+    st.markdown('<span class="alphanova-status status-research">Physical Systems Module</span>', unsafe_allow_html=True)
+    
+    hardware_tabs = st.tabs(["Qubit Technologies", "Superconducting Systems", "Trapped Ions", "NISQ Limitations"])
+    
+    with hardware_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Physical Qubit Implementation Technologies</h3>
+            <p>Overview of different physical systems used to realize quantum bits and quantum computation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Major Qubit Technologies
+            
+            **Superconducting Qubits:**
+            - Josephson junctions in superconducting circuits
+            - Fast gates (~10-100 ns)
+            - Electrical control and readout
+            - Leading commercial approach (IBM, Google)
+            
+            **Trapped Ion Qubits:**
+            - Atomic ions confined by electromagnetic fields
+            - Long coherence times (~100 μs - 1 ms)
+            - Laser-based control
+            - High-fidelity two-qubit gates
+            
+            **Photonic Qubits:**
+            - Polarization or path encoding of photons
+            - Room temperature operation
+            - Network connectivity advantages
+            - Challenging for universal computation
+            """)
+
+elif section_id == "error_correction":
+    st.markdown("# 🛡️ Quantum Error Correction")
+    st.markdown('<span class="alphanova-status status-research">Critical Systems Module</span>', unsafe_allow_html=True)
+    
+    error_tabs = st.tabs(["Error Types", "Repetition Codes", "Stabilizer Theory", "Fault Tolerance"])
+    
+    with error_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Error Types and Decoherence</h3>
+            <p>Understanding the fundamental sources of errors in quantum computation and their impacts on quantum information.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Types of Quantum Errors
+            
+            **Bit-flip (X) Errors:**
+            - Classical analogy: 0 ↔ 1 flips
+            - Pauli-X rotation on Bloch sphere
+            - Caused by relaxation processes
+            
+            **Phase-flip (Z) Errors:**
+            - No classical analogy
+            - Relative phase changes: α|0⟩ + β|1⟩ → α|0⟩ - β|1⟩
+            - Caused by dephasing interactions
+            
+            **Y Errors:**
+            - Combination of bit-flip and phase-flip
+            - Y = iXZ rotation
+            - Less common but still problematic
+            
+            **Continuous Errors:**
+            - Small rotation errors around any axis
+            - Discretizable into Pauli errors
+            - More realistic than perfect discrete flips
+            """)
+            
+        with col2:
+            # Error rate visualization
+            st.markdown("### Error Rate Analysis")
+            
+            error_rate = st.slider("Physical Error Rate", 0.001, 0.1, 0.01, step=0.001, format="%.3f", key="error_rate")
+            
+            # Calculate error probabilities
+            prob_x = error_rate / 3
+            prob_y = error_rate / 3  
+            prob_z = error_rate / 3
+            prob_i = 1 - error_rate  # No error
+            
+            fig = go.Figure(data=[
+                go.Bar(x=['No Error (I)', 'Bit-flip (X)', 'Y Error', 'Phase-flip (Z)'], 
+                       y=[prob_i, prob_x, prob_y, prob_z],
+                       marker_color=['#10B981', '#EF4444', '#8B5CF6', '#F59E0B'])
+            ])
+            
+            fig.update_layout(
+                title=f"Error Distribution (p = {error_rate:.3f})",
+                yaxis_title="Probability",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Error thresholds
+            if error_rate < 0.001:
+                st.success("🎯 Excellent error rate for fault tolerance")
+            elif error_rate < 0.01:
+                st.info("✅ Good error rate, approaching fault-tolerant threshold")
+            else:
+                st.warning("⚠️ High error rate, challenging for error correction")
+
+elif section_id == "complexity_theory":
+    st.markdown("# 📊 Complexity Theory") 
+    st.markdown('<span class="alphanova-status status-research">Theoretical Foundations</span>', unsafe_allow_html=True)
+    
+    complexity_tabs = st.tabs(["Classical vs Quantum", "BQP Complexity Class", "Quantum Speedups", "Limitations"])
+    
+    with complexity_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Classical vs Quantum Computational Complexity</h3>
+            <p>Fundamental differences between classical and quantum computational complexity classes and their implications.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Classical Complexity Classes
+            
+            **P (Polynomial Time):**
+            - Problems solvable efficiently on classical computers
+            - Polynomial time: O(n^k) for some k
+            - Example: Sorting, matrix multiplication
+            
+            **NP (Nondeterministic Polynomial):**
+            - Problems verifiable in polynomial time
+            - May require exponential time to solve
+            - Example: Boolean satisfiability, traveling salesman
+            
+            **PSPACE:**
+            - Problems solvable using polynomial space
+            - P ⊆ NP ⊆ PSPACE
+            - Includes many game-theoretic problems
+            """)
+            
+        with col2:
+            st.markdown("""
+            ### Quantum Complexity Classes
+            
+            **BQP (Bounded-error Quantum Polynomial):**
+            - Problems solvable efficiently on quantum computers
+            - Polynomial time with bounded error probability
+            - Believed: P ⊆ BQP, BQP ⊄ NP
+            
+            **QMA (Quantum Merlin-Arthur):**
+            - Quantum analog of NP
+            - Quantum verification of classical proofs
+            - Local Hamiltonian problem is QMA-complete
+            
+            **PostBQP:**
+            - BQP with classical post-processing
+            - Conjectured to equal PP (probabilistic polynomial)
+            - Upper bound for quantum computational power
+            """)
+        
+        # Complexity landscape visualization
+        st.markdown("### Computational Complexity Landscape")
+        
+        complexity_classes = ["P", "BQP", "NP", "MA", "QMA", "PSPACE", "EXP"]
+        relative_power = [1, 1.5, 2, 2.2, 2.5, 4, 8]  # Relative computational power (logarithmic scale)
+        
+        fig = go.Figure(data=[
+            go.Bar(x=complexity_classes, y=relative_power,
+                   marker_color=['#22D3EE', '#10B981', '#EF4444', '#F59E0B', '#8B5CF6', '#3B82F6', '#64748B'])
+        ])
+        
+        fig.update_layout(
+            title="Relative Computational Power of Complexity Classes",
+            xaxis_title="Complexity Class",
+            yaxis_title="Relative Power (log scale)",
+            yaxis_type="log",
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font_color='#E2E8F0'
+        )
+        st.plotly_chart(fig, width='stretch')
+
+# Default section for undefined sections
 else:
-    # Default module content
-    st.markdown(f"# {module_id.title()} Module")
+    st.markdown(f"# {section_id.replace('_', ' ').title()}")
     st.markdown('<span class="alphanova-status status-research">Under Development</span>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="alphanova-card">
-        <h3>Module Under Development</h3>
-        <p>This advanced quantum computing module is currently under development. 
-        AlphaNova Quantum continues to expand with cutting-edge research capabilities.</p>
+        <h3>Advanced Module Under Development</h3>
+        <p>This comprehensive quantum computing module is currently under active development. 
+        AlphaNova Quantum continues to expand with cutting-edge research capabilities and scientific depth.</p>
+        
+        <h4 style="color: #3B82F6; margin-top: 1.5rem;">Coming Soon:</h4>
+        <ul style="color: #E2E8F0;">
+            <li><strong>Enhanced Theoretical Content</strong> - Deeper mathematical foundations</li>
+            <li><strong>Interactive Simulations</strong> - Advanced quantum phenomenon modeling</li>
+            <li><strong>Research Tools</strong> - Professional-grade analysis capabilities</li>
+            <li><strong>Educational Resources</strong> - Comprehensive learning materials</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
