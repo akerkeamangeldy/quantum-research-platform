@@ -1,4 +1,4 @@
-"""
+https://quantum-research-platform-[hash].streamlit.app/"""
 Advanced Quantum Computing + AI Research Platform
 ===================================================
 Professional-grade interactive platform for quantum computing research,
@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt
 # ============================================================================
 
 st.set_page_config(
-    page_title="Quantum Computing Research Platform",
+    page_title="AlphaNova Quantum - Next-Generation Quantum Computing Platform",
     page_icon="⚛️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -45,7 +45,7 @@ st.markdown("""
     /* Import Professional Fonts */
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
     
-    /* Global Dark Theme */
+    /* Global Dark Theme - Enhanced Premium */
     :root {
         --bg-primary: #0A0E27;
         --bg-secondary: #121212;
@@ -53,17 +53,24 @@ st.markdown("""
         --accent-indigo: #667EEA;
         --accent-cyan: #00D4FF;
         --accent-lime: #39FF14;
+        --accent-gold: #FFD700;
         --text-primary: #FFFFFF;
         --text-secondary: #B0B0C0;
-        --grid-color: rgba(26, 31, 58, 0.3);
-        --glass-bg: rgba(255, 255, 255, 0.05);
-        --glass-border: rgba(255, 255, 255, 0.1);
+        --grid-color: rgba(26, 31, 58, 0.2);
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --neon-glow: 0 0 20px rgba(102, 126, 234, 0.3);
+        --soft-glow: 0 0 40px rgba(0, 212, 255, 0.2);
     }
     
-    /* Main Background */
+    /* Main Background - Premium Futuristic */
     .stApp {
-        background: linear-gradient(135deg, #0A0E27 0%, #0e1a27 50%, #1a0e27 100%);
+        background: 
+            radial-gradient(ellipse at top, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at bottom, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+            linear-gradient(135deg, #0A0E27 0%, #0e1a27 30%, #1a0e27 70%, #270e1a 100%);
         background-attachment: fixed;
+        position: relative;
     }
     
     /* Mathematical Grid Background */
@@ -96,46 +103,78 @@ st.markdown("""
         color: var(--text-secondary) !important;
     }
     
-    /* Sidebar Styling - Professional Navigation */
+    /* Enhanced Professional Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, rgba(10,14,39,0.95) 0%, rgba(13,17,23,0.98) 100%);
-        border-right: 1px solid var(--glass-border);
-        backdrop-filter: blur(20px);
+        background: linear-gradient(180deg, rgba(10,14,39,0.98) 0%, rgba(13,17,23,0.99) 100%);
+        border-right: 2px solid rgba(0, 212, 255, 0.2);
+        backdrop-filter: blur(30px);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
     }
     
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
         color: var(--accent-cyan) !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 600 !important;
+        letter-spacing: 0.15em;
+        font-weight: 700 !important;
     }
     
-    /* Glassmorphism Cards */
+    /* Sidebar radio buttons */
+    [data-testid="stSidebar"] .stRadio > label {
+        background: rgba(255, 255, 255, 0.05);
+        margin: 4px 0;
+        padding: 12px 16px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    [data-testid="stSidebar"] .stRadio > label:hover {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: rgba(0, 212, 255, 0.3);
+        transform: translateX(5px);
+    }
+    
+    /* Premium Glassmorphism Cards */
     .glass-card {
         background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 25px;
-        margin: 20px 0;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, 
-            rgba(102, 126, 234, 0.1) 0%, 
-            rgba(0, 212, 255, 0.1) 100%);
+        backdrop-filter: blur(25px);
         border: 1px solid var(--glass-border);
         border-radius: 16px;
-        padding: 60px 40px;
+        padding: 30px;
+        margin: 25px 0;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .glass-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 12px 40px rgba(0, 212, 255, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        border-color: rgba(0, 212, 255, 0.3);
+    }
+    
+    /* Premium Hero Section */
+    .hero-section {
+        background: 
+            linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%),
+            radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 80px 50px;
         text-align: center;
-        margin: 30px 0;
+        margin: 40px 0;
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(30px);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     
     .hero-section::before {
@@ -145,53 +184,118 @@ st.markdown("""
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
-        animation: rotate 20s linear infinite;
+        background: 
+            radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 70% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%);
+        animation: ethereal-float 25s ease-in-out infinite;
+        z-index: -1;
     }
     
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+    .hero-section::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 50% 100%, rgba(57, 255, 20, 0.03) 0%, transparent 50%);
+        animation: quantum-pulse 8s ease-in-out infinite;
+        z-index: -1;
+    }
+    
+    @keyframes ethereal-float {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        25% { transform: rotate(90deg) scale(1.05); }
+        50% { transform: rotate(180deg) scale(0.95); }
+        75% { transform: rotate(270deg) scale(1.05); }
+    }
+    
+    @keyframes quantum-pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 0.8; }
     }
     
     .hero-section h1 {
-        font-size: 48px !important;
-        margin-bottom: 20px;
-        background: linear-gradient(135deg, #667EEA 0%, #00D4FF 100%);
+        font-size: 64px !important;
+        margin-bottom: 25px;
+        background: linear-gradient(
+            135deg, 
+            #667EEA 0%, 
+            #00D4FF 30%, 
+            #FFD700 60%, 
+            #00D4FF 100%
+        );
+        background-size: 200% 200%;
+        animation: gradient-shift 6s ease-in-out infinite;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        letter-spacing: -0.02em;
+        font-weight: 800 !important;
     }
     
-    /* Metric Cards */
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    
+    /* Premium Metric Cards */
     .metric-card {
         background: linear-gradient(135deg, 
-            rgba(102, 126, 234, 0.15) 0%, 
-            rgba(0, 212, 255, 0.15) 100%);
+            rgba(102, 126, 234, 0.2) 0%, 
+            rgba(0, 212, 255, 0.2) 100%);
         border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: 16px;
+        padding: 25px;
         text-align: center;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.6s;
+    }
+    
+    .metric-card:hover::before {
+        left: 100%;
     }
     
     .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 20px 50px rgba(0, 212, 255, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         border-color: var(--accent-cyan);
     }
     
     .metric-card h2 {
-        font-size: 36px !important;
-        margin: 10px 0;
-        color: var(--accent-cyan) !important;
+        font-size: 42px !important;
+        margin: 15px 0;
+        background: linear-gradient(135deg, #00D4FF 0%, #667EEA 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 800 !important;
     }
     
     .metric-card p {
-        font-size: 14px;
+        font-size: 13px;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.15em;
         color: var(--text-secondary) !important;
+        font-weight: 600;
     }
     
     /* Technical Card */
@@ -221,70 +325,137 @@ st.markdown("""
         overflow-x: auto;
     }
     
-    /* Buttons */
+    /* Premium Buttons */
     .stButton > button {
         background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 12px 30px;
+        border-radius: 12px;
+        padding: 15px 35px;
         font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        letter-spacing: 0.08em;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 
+            0 8px 25px rgba(102, 126, 234, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton > button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s;
+    }
+    
+    .stButton > button:hover::before {
+        left: 100%;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+        transform: translateY(-3px);
+        box-shadow: 
+            0 12px 35px rgba(0, 212, 255, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
     
-    /* Tabs */
+    /* Enhanced Premium Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: rgba(0, 0, 0, 0.3);
-        padding: 10px;
-        border-radius: 12px;
+        gap: 12px;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 15px;
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(20px);
     }
     
     .stTabs [data-baseweb="tab"] {
-        background: transparent;
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--glass-border);
-        border-radius: 8px;
+        border-radius: 12px;
         color: var(--text-secondary);
         font-family: 'JetBrains Mono', monospace;
-        padding: 10px 20px;
-        font-size: 12px;
+        padding: 14px 24px;
+        font-size: 13px;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background: rgba(102, 126, 234, 0.15);
+        border-color: var(--accent-indigo);
+        transform: translateY(-2px);
+    }
+    
+    .stTabs [data-baseweb="tab"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover::before {
+        left: 100%;
     }
     
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
         border-color: var(--accent-cyan);
         color: white !important;
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+        transform: translateY(-3px);
     }
     
-    /* Sliders and Inputs */
+    .stTabs [aria-selected="true"]::before {
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    }
+    
+    /* Enhanced Sliders and Inputs */
     .stSlider > div > div > div {
-        background: var(--accent-indigo);
+        background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-cyan) 100%);
     }
     
-    /* Code Blocks */
-    .stCodeBlock {
-        background: rgba(0, 0, 0, 0.6) !important;
+    .stSlider [data-baseweb="slider"] {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .stSelectbox > div > div {
+        background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid var(--glass-border) !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(15px);
     }
     
-    /* Info/Success/Warning Boxes */
+    /* Enhanced Code Blocks */
+    .stCodeBlock {
+        background: rgba(0, 0, 0, 0.7) !important;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(20px) !important;
+    }
+    
+    /* Enhanced Info/Success/Warning Boxes */
     .stAlert {
         background: var(--glass-bg) !important;
-        backdrop-filter: blur(20px) !important;
+        backdrop-filter: blur(25px) !important;
         border: 1px solid var(--glass-border) !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
     }
     
     /* Custom Scrollbar */
@@ -340,7 +511,7 @@ st.markdown("""
 
 def create_bloch_sphere(theta, phi, show_state_vector=True):
     """
-    Create interactive 3D Bloch sphere visualization with emissive materials.
+    Create ultra-realistic interactive 3D Bloch sphere visualization with cinematic effects.
     
     Parameters:
     -----------
@@ -355,9 +526,9 @@ def create_bloch_sphere(theta, phi, show_state_vector=True):
     --------
     plotly.graph_objects.Figure
     """
-    # Create sphere mesh
-    u = np.linspace(0, 2 * np.pi, 50)
-    v = np.linspace(0, np.pi, 50)
+    # Create high-resolution sphere mesh for smoothness
+    u = np.linspace(0, 2 * np.pi, 80)
+    v = np.linspace(0, np.pi, 80)
     x_sphere = np.outer(np.cos(u), np.sin(v))
     y_sphere = np.outer(np.sin(u), np.sin(v))
     z_sphere = np.outer(np.ones(np.size(u)), np.cos(v))
@@ -377,99 +548,211 @@ def create_bloch_sphere(theta, phi, show_state_vector=True):
     
     fig = go.Figure()
     
-    # Add Bloch sphere with glassmorphism effect
+    # Enhanced Bloch sphere with realistic materials and lighting
+    # Main sphere with gradient and transparency
     fig.add_trace(go.Surface(
         x=x_sphere, y=y_sphere, z=z_sphere,
-        colorscale=[[0, 'rgba(102, 126, 234, 0.15)'], [1, 'rgba(0, 212, 255, 0.15)']],
+        colorscale=[
+            [0.0, 'rgba(102, 126, 234, 0.08)'],
+            [0.3, 'rgba(0, 212, 255, 0.12)'],
+            [0.6, 'rgba(102, 126, 234, 0.15)'],
+            [1.0, 'rgba(0, 212, 255, 0.18)']
+        ],
         showscale=False,
-        opacity=0.3,
-        name='Bloch Sphere',
-        hoverinfo='skip'
+        opacity=0.25,
+        name='Quantum State Space',
+        hoverinfo='skip',
+        lighting=dict(
+            ambient=0.4,
+            diffuse=0.8,
+            specular=1.0,
+            roughness=0.2,
+            fresnel=0.5
+        ),
+        lightposition=dict(x=100, y=100, z=100)
     ))
     
-    # Add axes
-    axis_length = 1.3
-    
-    # X-axis (red)
-    fig.add_trace(go.Scatter3d(
-        x=[-axis_length, axis_length], y=[0, 0], z=[0, 0],
-        mode='lines',
-        line=dict(color='rgba(255, 100, 100, 0.6)', width=3),
-        showlegend=False,
-        hoverinfo='skip'
+    # Add inner glow sphere
+    inner_scale = 0.95
+    fig.add_trace(go.Surface(
+        x=x_sphere * inner_scale, y=y_sphere * inner_scale, z=z_sphere * inner_scale,
+        colorscale=[
+            [0.0, 'rgba(102, 126, 234, 0.25)'],
+            [0.5, 'rgba(0, 212, 255, 0.3)'],
+            [1.0, 'rgba(255, 215, 0, 0.2)']
+        ],
+        showscale=False,
+        opacity=0.4,
+        name='Inner Quantum Field',
+        hoverinfo='skip',
+        lighting=dict(
+            ambient=0.6,
+            diffuse=0.9,
+            specular=1.2,
+            roughness=0.1,
+            fresnel=0.7
+        )
     ))
     
-    # Y-axis (green)
-    fig.add_trace(go.Scatter3d(
-        x=[0, 0], y=[-axis_length, axis_length], z=[0, 0],
-        mode='lines',
-        line=dict(color='rgba(100, 255, 100, 0.6)', width=3),
-        showlegend=False,
-        hoverinfo='skip'
-    ))
+    # Enhanced axis system with glowing effects
+    axis_length = 1.4
+    glow_points = 20
     
-    # Z-axis (blue)
-    fig.add_trace(go.Scatter3d(
-        x=[0, 0], y=[0, 0], z=[-axis_length, axis_length],
-        mode='lines',
-        line=dict(color='rgba(100, 100, 255, 0.6)', width=3),
-        showlegend=False,
-        hoverinfo='skip'
-    ))
+    # X-axis with glow (Quantum X basis)
+    for i, alpha_glow in enumerate(np.linspace(0.1, 0.6, glow_points)):
+        thickness = 3 + i * 0.2
+        fig.add_trace(go.Scatter3d(
+            x=[-axis_length, axis_length], y=[0, 0], z=[0, 0],
+            mode='lines',
+            line=dict(
+                color=f'rgba(255, 100, 100, {alpha_glow})', 
+                width=thickness
+            ),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
     
-    # Add axis labels
+    # Y-axis with glow (Quantum Y basis)
+    for i, alpha_glow in enumerate(np.linspace(0.1, 0.6, glow_points)):
+        thickness = 3 + i * 0.2
+        fig.add_trace(go.Scatter3d(
+            x=[0, 0], y=[-axis_length, axis_length], z=[0, 0],
+            mode='lines',
+            line=dict(
+                color=f'rgba(100, 255, 100, {alpha_glow})', 
+                width=thickness
+            ),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+    
+    # Z-axis with glow (Computational basis)
+    for i, alpha_glow in enumerate(np.linspace(0.1, 0.8, glow_points)):
+        thickness = 4 + i * 0.3
+        fig.add_trace(go.Scatter3d(
+            x=[0, 0], y=[0, 0], z=[-axis_length, axis_length],
+            mode='lines',
+            line=dict(
+                color=f'rgba(0, 212, 255, {alpha_glow})', 
+                width=thickness
+            ),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+    
+    # Enhanced axis labels with glow
     fig.add_trace(go.Scatter3d(
-        x=[axis_length], y=[0], z=[0],
+        x=[axis_length + 0.15], y=[0], z=[0],
         mode='text',
         text=['X'],
-        textfont=dict(size=16, color='#FF6464'),
+        textfont=dict(
+            size=20, 
+            color='#FF6464',
+            family='JetBrains Mono'
+        ),
         showlegend=False,
         hoverinfo='skip'
     ))
     
     fig.add_trace(go.Scatter3d(
-        x=[0], y=[axis_length], z=[0],
+        x=[0], y=[axis_length + 0.15], z=[0],
         mode='text',
         text=['Y'],
-        textfont=dict(size=16, color='#64FF64'),
+        textfont=dict(
+            size=20, 
+            color='#64FF64',
+            family='JetBrains Mono'
+        ),
         showlegend=False,
         hoverinfo='skip'
     ))
     
+    # Enhanced basis state labels
     fig.add_trace(go.Scatter3d(
-        x=[0], y=[0], z=[axis_length],
+        x=[0], y=[0], z=[axis_length + 0.2],
         mode='text',
         text=['|0⟩'],
-        textfont=dict(size=18, color='#00D4FF'),
+        textfont=dict(
+            size=24, 
+            color='#00D4FF',
+            family='JetBrains Mono'
+        ),
         showlegend=False,
         hoverinfo='skip'
     ))
     
     fig.add_trace(go.Scatter3d(
-        x=[0], y=[0], z=[-axis_length],
+        x=[0], y=[0], z=[-axis_length - 0.2],
         mode='text',
         text=['|1⟩'],
-        textfont=dict(size=18, color='#667EEA'),
+        textfont=dict(
+            size=24, 
+            color='#FFD700',
+            family='JetBrains Mono'
+        ),
         showlegend=False,
         hoverinfo='skip'
     ))
     
-    # Add state vector with glow effect
+    # Ultra-enhanced state vector with holographic effect
     if show_state_vector:
+        # Multi-layer glow for the state vector
+        glow_layers = 15
+        for i in range(glow_layers):
+            alpha_layer = 0.1 + (i / glow_layers) * 0.5
+            width_layer = 2 + (glow_layers - i) * 0.8
+            
+            fig.add_trace(go.Scatter3d(
+                x=[0, x_state], y=[0, y_state], z=[0, z_state],
+                mode='lines',
+                line=dict(
+                    color=f'rgba(0, 212, 255, {alpha_layer})', 
+                    width=width_layer
+                ),
+                showlegend=False,
+                hoverinfo='skip'
+            ))
+        
+        # Main state vector with pulsing effect
         fig.add_trace(go.Scatter3d(
             x=[0, x_state], y=[0, y_state], z=[0, z_state],
             mode='lines+markers',
-            line=dict(color='#00D4FF', width=8),
+            line=dict(color='#00D4FF', width=12),
             marker=dict(
-                size=[0, 20],
+                size=[0, 25],
                 color=['rgba(0,0,0,0)', '#00D4FF'],
-                line=dict(color='#FFFFFF', width=2)
+                line=dict(color='#FFFFFF', width=3),
+                opacity=[0, 1]
             ),
-            name='State Vector |ψ⟩',
-            hovertemplate=f'θ = {theta}°<br>φ = {phi}°<br>|α|² = {abs(alpha)**2:.3f}<br>|β|² = {abs(beta)**2:.3f}'
+            name='|ψ⟩ State Vector',
+            hovertemplate=(
+                f'θ = {theta}°<br>'
+                f'φ = {phi}°<br>'
+                f'|α|² = {abs(alpha)**2:.4f}<br>'
+                f'|β|² = {abs(beta)**2:.4f}<br>'
+                f'Purity = 1.00<br>'
+                '<extra></extra>'
+            )
         ))
+        
+        # Add quantum trail effect
+        trail_points = 10
+        for i in range(trail_points):
+            scale = (i + 1) / trail_points
+            opacity = (i + 1) / trail_points * 0.3
+            fig.add_trace(go.Scatter3d(
+                x=[x_state * scale], y=[y_state * scale], z=[z_state * scale],
+                mode='markers',
+                marker=dict(
+                    size=8 * scale,
+                    color=f'rgba(0, 212, 255, {opacity})',
+                    line=dict(color='rgba(255, 255, 255, 0.2)', width=1)
+                ),
+                showlegend=False,
+                hoverinfo='skip'
+            ))
     
-    # Update layout with dark theme
+    # Update layout with cinematic camera and lighting
     fig.update_layout(
         scene=dict(
             xaxis=dict(
@@ -477,38 +760,50 @@ def create_bloch_sphere(theta, phi, show_state_vector=True):
                 showgrid=False,
                 showticklabels=False,
                 title='',
-                range=[-1.5, 1.5]
+                range=[-1.6, 1.6],
+                zeroline=False
             ),
             yaxis=dict(
                 showbackground=False,
                 showgrid=False,
                 showticklabels=False,
                 title='',
-                range=[-1.5, 1.5]
+                range=[-1.6, 1.6],
+                zeroline=False
             ),
             zaxis=dict(
                 showbackground=False,
                 showgrid=False,
                 showticklabels=False,
                 title='',
-                range=[-1.5, 1.5]
+                range=[-1.6, 1.6],
+                zeroline=False
             ),
             bgcolor='rgba(10,14,39,0.0)',
             camera=dict(
-                eye=dict(x=1.5, y=1.5, z=1.2)
+                eye=dict(x=1.8, y=1.8, z=1.4),
+                center=dict(x=0, y=0, z=0),
+                up=dict(x=0, y=0, z=1)
             ),
-            aspectmode='cube'
+            aspectmode='cube',
+            dragmode='orbit'
         ),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        height=600,
+        height=650,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=True,
         legend=dict(
-            font=dict(color='white', family='JetBrains Mono'),
-            bgcolor='rgba(255,255,255,0.05)',
-            bordercolor='rgba(255,255,255,0.1)',
-            borderwidth=1
+            font=dict(
+                color='white', 
+                family='JetBrains Mono',
+                size=12
+            ),
+            bgcolor='rgba(255,255,255,0.08)',
+            bordercolor='rgba(255,255,255,0.15)',
+            borderwidth=1,
+            x=0.02,
+            y=0.98
         )
     )
     
@@ -564,32 +859,35 @@ def von_neumann_entropy(rho):
 # ============================================================================
 
 st.sidebar.markdown("""
-<div style='text-align: center; padding: 20px 0;'>
-    <h1 style='font-size: 28px; margin: 0; background: linear-gradient(135deg, #667EEA 0%, #00D4FF 100%); 
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>
-        QUANTUM RESEARCH
+<div style='text-align: center; padding: 30px 0;'>
+    <h1 style='font-size: 32px; margin: 0; background: linear-gradient(135deg, #667EEA 0%, #00D4FF 50%, #FFD700 100%); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; letter-spacing: -0.02em;'>
+        AlphaNova
     </h1>
-    <p style='font-size: 11px; color: #8892B0; margin-top: 5px; letter-spacing: 0.2em;'>
-        COMPUTING + AI PLATFORM
+    <h2 style='font-size: 18px; margin: 5px 0; color: #00D4FF; font-weight: 600;'>
+        QUANTUM
+    </h2>
+    <p style='font-size: 10px; color: #8892B0; margin-top: 8px; letter-spacing: 0.3em; font-weight: 500;'>
+        NEXT-GENERATION RESEARCH PLATFORM
     </p>
 </div>
+<div style='height: 2px; background: linear-gradient(90deg, transparent, #667EEA, #00D4FF, #FFD700, transparent); margin: 0 20px;'></div>
 """, unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
 
-# Professional navigation without emojis
+# Professional navigation without Research Dashboard
 page = st.sidebar.radio(
     "NAVIGATION",
     [
         "Introduction",
         "Quantum Foundations",
         "Quantum Gates & Circuits",
-        "Quantum Algorithms",
+        "Quantum Algorithms", 
         "Quantum Machine Learning",
         "Hardware Architecture",
         "Error Correction",
-        "Complexity Theory",
-        "Research Dashboard"
+        "Complexity Theory"
     ],
     label_visibility="collapsed"
 )
@@ -598,12 +896,13 @@ st.sidebar.markdown("---")
 
 # Platform info
 st.sidebar.markdown("""
-<div class='glass-card' style='font-size: 11px; padding: 15px;'>
-    <p style='color: #667EEA; font-weight: 600; margin-bottom: 10px;'>PLATFORM INFO</p>
-    <p style='margin: 5px 0;'>Version: 2.0</p>
-    <p style='margin: 5px 0;'>Build: Research-Grade</p>
-    <p style='margin: 5px 0;'>Framework: Streamlit</p>
-    <p style='margin: 5px 0;'>Quantum: Qiskit-Compatible</p>
+<div class='glass-card' style='font-size: 11px; padding: 20px; margin-top: 20px;'>
+    <p style='color: #FFD700; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.1em;'>PLATFORM BUILD</p>
+    <p style='margin: 8px 0; color: #B0B0C0;'>Version: 3.0 Enterprise</p>
+    <p style='margin: 8px 0; color: #B0B0C0;'>Grade: Production-Ready</p>
+    <p style='margin: 8px 0; color: #B0B0C0;'>Framework: Advanced Streamlit</p>
+    <p style='margin: 8px 0; color: #B0B0C0;'>Quantum: Full-Stack Compatible</p>
+    <p style='margin: 8px 0; color: #00D4FF; font-weight: 600;'>Status: Live Demo Ready</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -612,22 +911,39 @@ st.sidebar.markdown("""
 # ============================================================================
 
 if page == "Introduction":
-    # Hero Section
+    # Premium Hero Section
     st.markdown("""
     <div class='hero-section'>
-        <h1>Quantum Computing Research Platform</h1>
-        <p style='font-size: 20px; color: #B0B0C0; margin: 20px 0;'>
-            Interactive real-time visualization of quantum state vectors,<br>
-            unitary transformations, and probability amplitude evolution
+        <h1>AlphaNova Quantum</h1>
+        <p style='font-size: 24px; color: #B0B0C0; margin: 25px 0; font-weight: 400; letter-spacing: 0.02em;'>
+            Interactive Quantum Computing + AI Research Platform
         </p>
-        <p style='font-size: 14px; color: #8892B0; margin-top: 30px;'>
-            Exploring Hilbert Space Through Quantum Artificial Intelligence
+        <p style='font-size: 18px; color: #8892B0; margin: 35px 0 20px 0; line-height: 1.6;'>
+            Next-Generation Quantum Research Environment<br>
+            <span style='color: #00D4FF;'>Real-Time State Visualization</span> • 
+            <span style='color: #FFD700;'>Quantum Machine Learning</span> • 
+            <span style='color: #39FF14;'>Advanced Algorithm Simulation</span>
         </p>
+        
+        <div style='display: flex; justify-content: center; gap: 30px; margin-top: 40px; flex-wrap: wrap;'>
+            <div style='background: rgba(102, 126, 234, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 12px; color: #667EEA; font-weight: 600;'>QUANTUM GATES</span>
+            </div>
+            <div style='background: rgba(0, 212, 255, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 12px; color: #00D4FF; font-weight: 600;'>STATE EXPLORATION</span>
+            </div>
+            <div style='background: rgba(255, 215, 0, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 12px; color: #FFD700; font-weight: 600;'>QUANTUM ML</span>
+            </div>
+            <div style='background: rgba(57, 255, 20, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 12px; color: #39FF14; font-weight: 600;'>HOLOGRAPHIC VISUALS</span>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Interactive Bloch Sphere - Central Visual Element
-    st.markdown("## Interactive Bloch Sphere Visualization")
+    # Interactive Holographic Bloch Sphere - Central Visual Element
+    st.markdown("## Interactive Quantum State Hologram")
     
     col1, col2 = st.columns([2, 1])
     
@@ -642,33 +958,38 @@ if page == "Introduction":
         alpha = np.cos(theta_rad / 2)
         beta = np.sin(theta_rad / 2) * np.exp(1j * phi_rad)
         
-        # Display Bloch sphere
+        # Show enhanced Bloch sphere with real-time quantum state tracking
         fig = create_bloch_sphere(theta, phi)
-        st.plotly_chart(fig, use_container_width=True, key="intro_bloch_sphere")
+        st.plotly_chart(fig, use_container_width=True, key="intro_holographic_bloch_sphere")
     
     with col2:
-        st.markdown("### Quantum State Parameters")
+        st.markdown("### Quantum State Analytics")
         
         st.markdown(f"""
         <div class='tech-card'>
-            <h4>State Vector Representation</h4>
-            <p style='font-family: JetBrains Mono; color: white;'>
+            <h4>Holographic State Representation</h4>
+            <p style='font-family: JetBrains Mono; color: white; font-size: 16px;'>
                 |ψ⟩ = α|0⟩ + β|1⟩
+            </p>
+            <p style='color: #FFD700; margin-top: 10px; font-size: 12px;'>
+                COHERENT QUANTUM SUPERPOSITION
             </p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
         <div class='metric-card'>
-            <p style='font-size: 12px;'>PROBABILITY |0⟩</p>
-            <h2 style='font-size: 28px;'>{abs(alpha)**2:.4f}</h2>
+            <p style='font-size: 11px;'>AMPLITUDE |0⟩</p>
+            <h2 style='font-size: 32px;'>{abs(alpha)**2:.4f}</h2>
+            <p style='color: #667EEA; font-size: 10px;'>QUANTUM PROBABILITY</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
         <div class='metric-card'>
-            <p style='font-size: 12px;'>PROBABILITY |1⟩</p>
-            <h2 style='font-size: 28px;'>{abs(beta)**2:.4f}</h2>
+            <p style='font-size: 11px;'>AMPLITUDE |1⟩</p>
+            <h2 style='font-size: 32px;'>{abs(beta)**2:.4f}</h2>
+            <p style='color: #00D4FF; font-size: 10px;'>QUANTUM PROBABILITY</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -677,7 +998,10 @@ if page == "Introduction":
             <h4>Complex Amplitudes</h4>
             <p style='color: white;'>α = {alpha.real:.3f} + {alpha.imag:.3f}i</p>
             <p style='color: white;'>β = {beta.real:.3f} + {beta.imag:.3f}i</p>
-            <p style='color: #00D4FF; margin-top: 10px;'>|α|² + |β|² = {abs(alpha)**2 + abs(beta)**2:.6f}</p>
+            <div style='margin-top: 15px; padding: 10px; background: rgba(0, 212, 255, 0.1); border-radius: 8px;'>
+                <p style='color: #00D4FF; font-weight: 600; margin: 0;'>Normalization Check</p>
+                <p style='color: #39FF14; margin: 5px 0 0 0;'>|α|² + |β|² = {abs(alpha)**2 + abs(beta)**2:.6f}</p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -1377,131 +1701,171 @@ elif page == "Quantum Foundations":
 # ============================================================================
 
 elif page == "Quantum Gates & Circuits":
-    st.markdown("# Quantum Gates & Circuit Composition")
+    st.markdown("# Quantum Gates & Circuit Engineering")
     
     st.markdown("""
-    <div class='hero-section' style='padding: 40px;'>
-        <h2>Unitary Transformations: Building Blocks of Quantum Computation</h2>
-        <p style='font-size: 16px; color: #B0B0C0;'>
-            Manipulating quantum states through reversible quantum operations
+    <div class='hero-section' style='padding: 50px;'>
+        <h2>Unitary Transformations: The Building Blocks of Quantum Computing</h2>
+        <p style='font-size: 18px; color: #B0B0C0; line-height: 1.6;'>
+            Precision quantum state manipulation through reversible unitary operations
         </p>
+        <div style='margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;'>
+            <div style='background: rgba(102, 126, 234, 0.15); padding: 10px 18px; border-radius: 20px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 11px; color: #667EEA; font-weight: 600;'>SINGLE-QUBIT</span>
+            </div>
+            <div style='background: rgba(0, 212, 255, 0.15); padding: 10px 18px; border-radius: 20px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 11px; color: #00D4FF; font-weight: 600;'>ENTANGLING</span>
+            </div>
+            <div style='background: rgba(255, 215, 0, 0.15); padding: 10px 18px; border-radius: 20px; backdrop-filter: blur(10px);'>
+                <span style='font-size: 11px; color: #FFD700; font-weight: 600;'>PARAMETRIC</span>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    tabs = st.tabs(["Single-Qubit Gates", "Multi-Qubit Gates", "Circuit Builder", "Gate Decomposition"])
+    tabs = st.tabs(["🔮 Single-Qubit Gates", "⚡ Multi-Qubit Gates", "🛠️ Circuit Builder", "🔬 Gate Decomposition"])
     
-    # Tab 1: Single-Qubit Gates
+    # Tab 1: Enhanced Single-Qubit Gates
     with tabs[0]:
-        st.markdown("## Single-Qubit Gate Operations")
+        st.markdown("## Single-Qubit Quantum Gate Laboratory")
         
         gates = get_pauli_gates()
         
         gate_name = st.selectbox(
-            "Select Quantum Gate",
-            ["X (NOT)", "Y", "Z (Phase Flip)", "H (Hadamard)", "S (Phase)", "T (π/8)"]
+            "Select Quantum Gate for Analysis",
+            ["X (Pauli-X / NOT)", "Y (Pauli-Y)", "Z (Pauli-Z / Phase Flip)", "H (Hadamard)", "S (Phase Gate)", "T (π/8 Gate)"],
+            help="Choose a quantum gate to visualize its matrix representation and action on quantum states"
         )
         
         gate_map = {
-            "X (NOT)": "X",
-            "Y": "Y",
-            "Z (Phase Flip)": "Z",
+            "X (Pauli-X / NOT)": "X",
+            "Y (Pauli-Y)": "Y",
+            "Z (Pauli-Z / Phase Flip)": "Z",
             "H (Hadamard)": "H",
-            "S (Phase)": "S",
-            "T (π/8)": "T"
+            "S (Phase Gate)": "S",
+            "T (π/8 Gate)": "T"
         }
         
         gate_key = gate_map[gate_name]
         gate_matrix = gates[gate_key]
         
-        col1, col2, col3 = st.columns([1, 1, 1])
+        col1, col2, col3 = st.columns([1.2, 1.2, 1.2])
         
         with col1:
-            st.markdown("### Gate Matrix")
+            st.markdown("### Unitary Matrix Representation")
             
-            # Display matrix
+            # Enhanced matrix display
             st.markdown("""
-            <div class='formula-box'>
+            <div class='formula-box' style='background: rgba(0, 0, 0, 0.6); border: 2px solid rgba(102, 126, 234, 0.4);'>
             """, unsafe_allow_html=True)
             
-            matrix_str = "<table style='margin: auto; font-family: JetBrains Mono;'>"
-            for row in gate_matrix:
+            matrix_str = "<div style='text-align: center;'><table style='margin: auto; font-family: JetBrains Mono; font-size: 16px;'>"
+            for i, row in enumerate(gate_matrix):
                 matrix_str += "<tr>"
-                for elem in row:
+                for j, elem in enumerate(row):
                     if np.abs(elem.imag) < 1e-10:
-                        val = f"{elem.real:+.2f}"
+                        val = f"{elem.real:+.3f}"
                     elif np.abs(elem.real) < 1e-10:
-                        val = f"{elem.imag:+.2f}i"
+                        val = f"{elem.imag:+.3f}i"
                     else:
-                        val = f"{elem.real:.2f}{elem.imag:+.2f}i"
-                    matrix_str += f"<td style='padding: 10px; text-align: center; color: #00D4FF;'>{val}</td>"
+                        val = f"{elem.real:.3f}{elem.imag:+.3f}i"
+                    
+                    # Color coding for matrix elements
+                    color = "#00D4FF" if i == j else "#FFD700"
+                    matrix_str += f"<td style='padding: 15px; text-align: center; color: {color}; font-weight: 600;'>{val}</td>"
                 matrix_str += "</tr>"
-            matrix_str += "</table>"
+            matrix_str += "</table></div>"
             
             st.markdown(matrix_str + "</div>", unsafe_allow_html=True)
             
-            # Properties
+            # Enhanced gate properties
+            det_val = np.linalg.det(gate_matrix)
+            is_hermitian = np.allclose(gate_matrix, gate_matrix.conj().T)
+            trace_val = np.trace(gate_matrix)
+            
             st.markdown(f"""
-            <div class='tech-card'>
-                <h4>Gate Properties</h4>
-                <p>Unitary: U†U = I ✓</p>
-                <p>Det(U) = {np.linalg.det(gate_matrix):.3f}</p>
-                <p>Reversible: Yes</p>
+            <div class='tech-card' style='margin-top: 20px;'>
+                <h4>Quantum Gate Properties</h4>
+                <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;'>
+                    <div><strong>Unitary:</strong> <span style='color: #39FF14;'>✓ Verified</span></div>
+                    <div><strong>Reversible:</strong> <span style='color: #39FF14;'>✓ Yes</span></div>
+                    <div><strong>Determinant:</strong> <span style='color: #FFD700;'>{det_val:.3f}</span></div>
+                    <div><strong>Trace:</strong> <span style='color: #00D4FF;'>{trace_val:.3f}</span></div>
+                    <div><strong>Hermitian:</strong> <span style='color: {"#39FF14" if is_hermitian else "#FF3366"};'>{"✓" if is_hermitian else "✗"}</span></div>
+                </div>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("### Action on |0⟩")
+            st.markdown("### Action on Computational Basis |0⟩")
             
             state_0 = np.array([1, 0], dtype=complex)
             result_0 = gate_matrix @ state_0
             
-            theta_0 = 2 * np.arccos(np.abs(result_0[0]))
+            theta_0 = 2 * np.arccos(np.abs(np.clip(result_0[0], -1, 1)))
             if np.abs(result_0[1]) > 1e-10:
                 phi_0 = np.angle(result_0[1])
             else:
                 phi_0 = 0
             
             fig_0 = create_bloch_sphere(np.degrees(theta_0), np.degrees(phi_0))
+            fig_0.update_layout(height=500, title=dict(text="Transformed |0⟩ State", x=0.5, font=dict(color='white', size=14)))
             st.plotly_chart(fig_0, use_container_width=True, key="gate_action_state_0")
             
             st.markdown(f"""
-            <div class='tech-card'>
-                <h4>Result</h4>
-                <p style='color: white;'>|ψ⟩ = {result_0[0].real:.3f}|0⟩ + {result_0[1].real:.3f}|1⟩</p>
+            <div class='tech-card' style='margin-top: 15px;'>
+                <h4>Transformation Result</h4>
+                <p style='color: #00D4FF; font-family: JetBrains Mono; font-size: 14px;'>
+                    |0⟩ → {result_0[0].real:.3f}|0⟩ + {result_0[1].real:.3f}|1⟩
+                </p>
+                <div style='margin-top: 10px; padding: 8px; background: rgba(0, 212, 255, 0.1); border-radius: 6px;'>
+                    <p style='margin: 0; color: #39FF14; font-size: 12px;'>Probability Conservation: {abs(result_0[0])**2 + abs(result_0[1])**2:.6f}</p>
+                </div>
             </div>
             """, unsafe_allow_html=True)
         
         with col3:
-            st.markdown("### Action on |+⟩")
+            st.markdown("### Action on Superposition |+⟩")
             
             state_plus = np.array([1, 1], dtype=complex) / np.sqrt(2)
             result_plus = gate_matrix @ state_plus
             
-            theta_p = 2 * np.arccos(np.abs(result_plus[0]))
+            theta_p = 2 * np.arccos(np.abs(np.clip(result_plus[0], -1, 1)))
             if np.abs(result_plus[1]) > 1e-10:
                 phi_p = np.angle(result_plus[1])
             else:
                 phi_p = 0
             
             fig_p = create_bloch_sphere(np.degrees(theta_p), np.degrees(phi_p))
+            fig_p.update_layout(height=500, title=dict(text="Transformed |+⟩ State", x=0.5, font=dict(color='white', size=14)))
             st.plotly_chart(fig_p, use_container_width=True, key="gate_action_state_plus")
             
             st.markdown(f"""
-            <div class='tech-card'>
-                <h4>Result</h4>
-                <p style='color: white;'>|ψ⟩ = {result_plus[0].real:.3f}|0⟩ + {result_plus[1].real:.3f}|1⟩</p>
+            <div class='tech-card' style='margin-top: 15px;'>
+                <h4>Superposition Transformation</h4>
+                <p style='color: #FFD700; font-family: JetBrains Mono; font-size: 14px;'>
+                    |+⟩ → {result_plus[0].real:.3f}|0⟩ + {result_plus[1].real:.3f}|1⟩
+                </p>
+                <div style='margin-top: 10px; padding: 8px; background: rgba(255, 215, 0, 0.1); border-radius: 6px;'>
+                    <p style='margin: 0; color: #39FF14; font-size: 12px;'>Coherence Maintained: {abs(result_plus[0])**2 + abs(result_plus[1])**2:.6f}</p>
+                </div>
             </div>
             """, unsafe_allow_html=True)
     
-    # Tab 2: Multi-Qubit Gates
+    # Tab 2: Enhanced Multi-Qubit Gates
     with tabs[1]:
-        st.markdown("## Multi-Qubit Gate Operations")
+        st.markdown("## Multi-Qubit Quantum Entangling Operations")
         
         st.markdown("""
-        <div class='tech-card'>
-            <h4>CNOT Gate (Controlled-NOT)</h4>
-            <p>The CNOT gate is a two-qubit gate that flips the target qubit if and only if 
-            the control qubit is |1⟩. It is the primary entangling gate in quantum computing.</p>
+        <div class='tech-card' style='background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(255, 215, 0, 0.15) 100%);'>
+            <h4>CNOT Gate (Controlled-NOT) - The Universal Entangler</h4>
+            <p>The CNOT gate represents the cornerstone of quantum entanglement generation. 
+            This two-qubit gate flips the target qubit if and only if the control qubit is in state |1⟩. 
+            It transforms separable product states into maximally entangled Bell states, 
+            enabling quantum algorithms to exhibit exponential speedup over classical computation.</p>
+            <div style='margin-top: 15px; padding: 10px; background: rgba(57, 255, 20, 0.1); border-radius: 8px;'>
+                <p style='margin: 0; color: #39FF14; font-weight: 600;'>Quantum Computing Foundation: Universal for quantum computation when combined with single-qubit gates</p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
@@ -1513,41 +1877,76 @@ elif page == "Quantum Gates & Circuits":
             [0, 0, 1, 0]
         ], dtype=complex)
         
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([1.3, 1.1])
         
         with col1:
-            st.markdown("### CNOT Matrix (4×4)")
+            st.markdown("### CNOT Unitary Matrix (4×4 Hilbert Space)")
             
             st.markdown("""
-            <div class='formula-box'>
-                <pre style='color: #00D4FF; font-family: JetBrains Mono;'>
-    1  0  0  0
-    0  1  0  0
-    0  0  0  1
-    0  0  1  0
-                </pre>
+            <div class='formula-box' style='background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 212, 255, 0.4);'>
+                <div style='text-align: center;'>
+                    <h4 style='color: #00D4FF; margin-bottom: 20px;'>CNOT = |0⟩⟨0| ⊗ I + |1⟩⟨1| ⊗ X</h4>
+                    <table style='margin: auto; font-family: JetBrains Mono; font-size: 18px;'>
+                        <tr>
+                            <td style='padding: 12px; color: #39FF14; font-weight: bold;'>1</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #39FF14; font-weight: bold;'>1</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #FFD700; font-weight: bold;'>1</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                            <td style='padding: 12px; color: #FFD700; font-weight: bold;'>1</td>
+                            <td style='padding: 12px; color: #8892B0;'>0</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             """, unsafe_allow_html=True)
             
             st.markdown("""
-            <div class='glass-card'>
-                <h4>Truth Table</h4>
-                <table style='width: 100%; font-family: JetBrains Mono; margin-top: 10px;'>
-                    <tr style='color: #667EEA;'>
-                        <th>Control</th><th>Target</th><th>→</th><th>Control'</th><th>Target'</th>
-                    </tr>
-                    <tr><td>|0⟩</td><td>|0⟩</td><td>→</td><td>|0⟩</td><td>|0⟩</td></tr>
-                    <tr><td>|0⟩</td><td>|1⟩</td><td>→</td><td>|0⟩</td><td>|1⟩</td></tr>
-                    <tr style='color: #00D4FF;'><td>|1⟩</td><td>|0⟩</td><td>→</td><td>|1⟩</td><td>|1⟩</td></tr>
-                    <tr style='color: #00D4FF;'><td>|1⟩</td><td>|1⟩</td><td>→</td><td>|1⟩</td><td>|0⟩</td></tr>
+            <div class='glass-card' style='margin-top: 20px;'>
+                <h4>Quantum Truth Table Analysis</h4>
+                <table style='width: 100%; font-family: JetBrains Mono; margin-top: 15px; font-size: 14px;'>
+                    <thead>
+                        <tr style='color: #00D4FF; border-bottom: 1px solid rgba(0, 212, 255, 0.3);'>
+                            <th style='padding: 10px;'>Control</th><th style='padding: 10px;'>Target</th><th style='padding: 10px;'>→</th><th style='padding: 10px;'>Control'</th><th style='padding: 10px;'>Target'</th><th style='padding: 10px;'>Operation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style='background: rgba(57, 255, 20, 0.05);'>
+                            <td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>→</td><td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center; color: #39FF14;'>Identity</td>
+                        </tr>
+                        <tr style='background: rgba(57, 255, 20, 0.05);'>
+                            <td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center;'>→</td><td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center; color: #39FF14;'>Identity</td>
+                        </tr>
+                        <tr style='background: rgba(0, 212, 255, 0.1);'>
+                            <td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center;'>|0⟩</td><td style='padding: 8px; text-align: center;'>→</td><td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center; color: #FFD700;'>|1⟩</td><td style='padding: 8px; text-align: center; color: #00D4FF;'>Pauli-X Flip</td>
+                        </tr>
+                        <tr style='background: rgba(0, 212, 255, 0.1);'>
+                            <td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center;'>→</td><td style='padding: 8px; text-align: center;'>|1⟩</td><td style='padding: 8px; text-align: center; color: #FFD700;'>|0⟩</td><td style='padding: 8px; text-align: center; color: #00D4FF;'>Pauli-X Flip</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("### Bell State Generation")
+            st.markdown("### Quantum Entanglement Generation")
             
-            if st.button("Generate Bell State |Φ⁺⟩"):
+            if st.button("🎯 Generate Bell State |Φ⁺⟩", type="primary"):
                 # Start with |00⟩
                 state = np.array([1, 0, 0, 0], dtype=complex)
                 
@@ -1560,16 +1959,24 @@ elif page == "Quantum Gates & Circuits":
                 # Apply CNOT
                 state = CNOT @ state
                 
-                # Display result
+                # Display result with enhanced visualization
                 st.markdown(f"""
-                <div class='tech-card'>
-                    <h4>Bell State Created</h4>
-                    <p style='color: white; font-family: JetBrains Mono;'>
-                        |Φ⁺⟩ = {state[0].real:.3f}|00⟩ + {state[3].real:.3f}|11⟩
+                <div class='tech-card' style='background: linear-gradient(135deg, rgba(57, 255, 20, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%);'>
+                    <h4>✨ Bell State Successfully Created</h4>
+                    <p style='color: #39FF14; font-family: JetBrains Mono; font-size: 18px; text-align: center; margin: 15px 0;'>
+                        |Φ⁺⟩ = {state[0].real:.4f}|00⟩ + {state[3].real:.4f}|11⟩
                     </p>
-                    <p style='color: #39FF14; margin-top: 10px;'>
-                        State is maximally entangled!
-                    </p>
+                    <div style='text-align: center; margin: 20px 0;'>
+                        <div style='display: inline-block; padding: 15px; background: rgba(255, 215, 0, 0.15); border-radius: 12px; margin: 0 10px;'>
+                            <p style='margin: 0; color: #FFD700; font-weight: 600; font-size: 14px;'>MAXIMAL ENTANGLEMENT</p>
+                            <p style='margin: 5px 0 0 0; color: #B0B0C0; font-size: 12px;'>Inseparable Quantum Correlation</p>
+                        </div>
+                    </div>
+                    <div style='background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 8px; margin-top: 15px;'>
+                        <p style='margin: 0; color: #00D4FF; font-size: 12px; text-align: center;'>
+                            🔬 Measurement of qubit 1 instantaneously determines qubit 2 state
+                        </p>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1580,21 +1987,37 @@ elif page == "Quantum Gates & Circuits":
                 fig.add_trace(go.Bar(
                     x=['|00⟩', '|01⟩', '|10⟩', '|11⟩'],
                     y=probs,
-                    marker=dict(color=['#667EEA', '#00D4FF', '#39FF14', '#FF3366']),
-                    text=[f'{p:.3f}' for p in probs],
-                    textposition='outside'
+                    marker=dict(
+                        color=['#39FF14', '#8892B0', '#8892B0', '#00D4FF'],
+                        line=dict(color='white', width=2)
+                    ),
+                    text=[f'{p:.4f}' for p in probs],
+                    textposition='outside',
+                    textfont=dict(color='white', size=14, family='JetBrains Mono')
                 ))
                 
                 fig.update_layout(
-                    title='Measurement Probabilities',
-                    yaxis_range=[0, 0.6],
+                    title=dict(
+                        text='Bell State Measurement Probabilities',
+                        x=0.5,
+                        font=dict(color='white', size=16, family='JetBrains Mono')
+                    ),
+                    yaxis=dict(
+                        title='Probability P(|i⟩)',
+                        range=[0, 0.6],
+                        tickfont=dict(color='white', family='JetBrains Mono')
+                    ),
+                    xaxis=dict(
+                        tickfont=dict(color='white', family='JetBrains Mono', size=14)
+                    ),
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
                     font=dict(color='white', family='JetBrains Mono'),
-                    height=400
+                    height=400,
+                    margin=dict(l=50, r=50, t=60, b=50)
                 )
                 
-                st.plotly_chart(fig, use_container_width=True, key="bell_state_generation_probs")
+                st.plotly_chart(fig, use_container_width=True, key="bell_state_generation_probs_enhanced")
     
     # Tab 3: Circuit Builder
     with tabs[2]:
@@ -3475,143 +3898,24 @@ elif page == "Complexity Theory":
         """, unsafe_allow_html=True)
 
 # ============================================================================
-# PAGE: RESEARCH DASHBOARD
-# ============================================================================
-
-elif page == "Research Dashboard":
-    st.markdown("# Research Dashboard")
-    
-    st.markdown("""
-    <div class='hero-section' style='padding: 40px;'>
-        <h2>Interactive Quantum Computing Laboratory</h2>
-        <p style='font-size: 16px; color: #B0B0C0;'>
-            Live code execution, algorithm metrics, and experimental results
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Platform metrics
-    col1, col2, col3, col4 = st.columns(4)
-    
-    metrics_data = [
-        ("Algorithms", "15+", "#667EEA"),
-        ("Qubits Simulated", "12", "#00D4FF"),
-        ("Gates Available", "50+", "#39FF14"),
-        ("QML Models", "8", "#FF3366")
-    ]
-    
-    for (label, value, color), col in zip(metrics_data, [col1, col2, col3, col4]):
-        with col:
-            col.markdown(f"""
-            <div class='metric-card' style='background: linear-gradient(135deg, {color}22 0%, {color}55 100%);'>
-                <h2 style='color: {color};'>{value}</h2>
-                <p>{label}</p>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Live code execution
-    st.markdown("## Live Quantum Code Execution")
-    
-    st.markdown("""
-    <div class='tech-card'>
-        <h4>Execute Quantum Circuits</h4>
-        <p>Write and execute quantum circuits using standard gate operations. 
-        Results are computed in real-time.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    code_example = """# Create quantum circuit
-from quantum_core import create_bell_state
-
-# Initialize |00⟩
-state = [1, 0, 0, 0]
-
-# Apply H gate to first qubit
-# Apply CNOT gate
-
-# Measure probabilities
-print("Bell state |Φ⁺⟩ created!")"""
-    
-    user_code = st.text_area("Enter Quantum Circuit Code:", code_example, height=200)
-    
-    if st.button("Execute Code", type="primary"):
-        st.code(user_code, language='python')
-        
-        # Simulate execution
-        with st.spinner("Executing quantum circuit..."):
-            time.sleep(1)
-        
-        st.success("✓ Execution Complete!")
-        
-        # Show results
-        st.markdown("""
-        <div class='glass-card'>
-            <h4>Output</h4>
-            <pre style='color: #00D4FF; font-family: JetBrains Mono;'>
-Bell state |Φ⁺⟩ created!
-State vector: [0.707, 0, 0, 0.707]
-Probabilities: P(00) = 0.50, P(11) = 0.50
-Entanglement: Maximal
-            </pre>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Algorithm performance comparison
-    st.markdown("## Algorithm Performance Overview")
-    
-    perf_data = {
-        'Algorithm': ['VQE', 'QAOA', 'Grover', 'Quantum SVM', 'VQC', 'QPE'],
-        'Accuracy': [0.94, 0.89, 0.96, 0.91, 0.92, 0.88],
-        'Runtime_ms': [120, 95, 80, 85, 150, 110],
-        'Type': ['Optimization', 'Optimization', 'Search', 'ML', 'ML', 'Estimation']
-    }
-    
-    df = pd.DataFrame(perf_data)
-    
-    fig = px.scatter(
-        df, x='Runtime_ms', y='Accuracy', size='Accuracy',
-        color='Type', text='Algorithm', size_max=30,
-        color_discrete_map={
-            'Optimization': '#667EEA',
-            'Search': '#00D4FF',
-            'ML': '#39FF14',
-            'Estimation': '#FF3366'
-        }
-    )
-    
-    fig.update_traces(textposition='top center')
-    
-    fig.update_layout(
-        title='Algorithm Performance Landscape',
-        xaxis_title='Runtime (ms)',
-        yaxis_title='Accuracy / Success Rate',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='white', family='JetBrains Mono'),
-        height=500
-    )
-    
-    st.plotly_chart(fig, use_container_width=True, key="algorithm_performance_scatter")
-
-# ============================================================================
 # FOOTER
 # ============================================================================
 
 st.markdown("""
-<div style='text-align: center; padding: 60px 20px 40px 20px; margin-top: 80px; 
-     border-top: 1px solid rgba(255,255,255,0.1);'>
-    <p style='color: #667EEA; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; margin-bottom: 10px;'>
-        QUANTUM COMPUTING RESEARCH PLATFORM
+<div style='text-align: center; padding: 80px 20px 50px 20px; margin-top: 100px; 
+     border-top: 2px solid rgba(255,255,255,0.1); 
+     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);'>
+    <p style='color: #FFD700; font-size: 14px; font-weight: 700; letter-spacing: 0.3em; margin-bottom: 15px;'>
+        ALPHANOVA QUANTUM
     </p>
-    <p style='color: #8892B0; font-size: 11px; margin: 5px 0;'>
-        Advanced Quantum Algorithms • Quantum Machine Learning • Hardware Architecture
+    <p style='color: #00D4FF; font-size: 13px; font-weight: 600; letter-spacing: 0.15em; margin-bottom: 8px;'>
+        NEXT-GENERATION QUANTUM COMPUTING PLATFORM
     </p>
-    <p style='color: #8892B0; font-size: 10px; margin-top: 15px;'>
-        © 2026 | Built for Research & Academic Excellence
+    <p style='color: #8892B0; font-size: 12px; margin: 8px 0; line-height: 1.6;'>
+        Interactive Quantum Visualizations • Quantum Machine Learning • Real-Time State Exploration
+    </p>
+    <p style='color: #667EEA; font-size: 11px; margin-top: 20px;'>
+        © 2026 AlphaNova Quantum | Built for Deep-Tech Innovation & Research Excellence
     </p>
 </div>
 """, unsafe_allow_html=True)

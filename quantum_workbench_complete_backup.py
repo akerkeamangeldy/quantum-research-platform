@@ -10,6 +10,12 @@ import json
 import os
 from datetime import datetime
 import base64
+import scipy.linalg
+import time
+from sklearn.datasets import make_moons
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from scipy.optimize import minimize
 
 # Page configuration
 st.set_page_config(
@@ -29,125 +35,68 @@ st.set_page_config(
 )
 
 # Initialize session state
-if 'language' not in st.session_state:
-    st.session_state.language = 'en'
 if 'selected_module_id' not in st.session_state:
     st.session_state.selected_module_id = 'home'
 
-# Load translations from JSON files
-def load_translations():
-    """Load translations from JSON files"""
-    translations = {}
-    translations_dir = os.path.join(os.path.dirname(__file__), 'translations')
-    
-    for lang in ['en', 'ru']:
-        try:
-            with open(os.path.join(translations_dir, f'{lang}.json'), 'r', encoding='utf-8') as f:
-                translations[lang] = json.load(f)
-        except Exception as e:
-            st.error(f"Error loading {lang} translations: {e}")
-            translations[lang] = {}
-    
-    return translations
-
-# Load translations
-TRANSLATIONS = load_translations()
-
-# Translation helper function with dot-notation support
-def t(key, fallback=None):
-    """
-    Get translation for current language with fallback
-    Supports dot notation: t('global.title') or direct access: t('title')
-    """
-    lang = st.session_state.get('language', 'en')
-    lang_dict = TRANSLATIONS.get(lang, TRANSLATIONS.get('en', {}))
-    
-    # Support dot notation for nested JSON structure
-    if '.' in key:
-        keys = key.split('.')
-        value = lang_dict
-        for k in keys:
-            if isinstance(value, dict):
-                value = value.get(k)
-            else:
-                break
-        if value:
-            return value
-    
-    # Try direct key lookup
-    if key in lang_dict:
-        return lang_dict[key]
-    
-    return fallback if fallback else key
-
-# Language selector in sidebar
-col_lang1, col_lang2 = st.sidebar.columns(2)
-with col_lang1:
-    if st.button(t("global.language_en"), key="lang_en"):
-        st.session_state.language = 'en'
-        st.rerun()
-
-with col_lang2:
-    if st.button(t("global.language_ru"), key="lang_ru"):
-        st.session_state.language = 'ru'
-        st.rerun()
-
+# AlphaNova Quantum branding in sidebar
+st.sidebar.markdown("### 🌌 AlphaNova Quantum")
+st.sidebar.markdown("*Interactive Quantum Computing Platform*")
 st.sidebar.markdown("---")
 
 # Professional brand header  
 brand_header = f"""
 <div class='sidebar-brand'>
-    <div class='sidebar-brand-title'>{t('global.title')}</div>
-    <div class='sidebar-brand-subtitle'>Quantum Research Platform</div>
+    <div class='sidebar-brand-title'>AlphaNova Quantum</div>
+    <div class='sidebar-brand-subtitle'>Quantum Computing + AI Research Platform</div>
 </div>
 """
 st.sidebar.markdown(brand_header, unsafe_allow_html=True)
 
 # Navigation structure with organized groups
 nav_groups = [
-    ("navigation.section_home", [
-        ("home", "00", 'modules.home', 'module_subtitles.home'),
+    ("HOME", [
+        ("home", "00", 'Home', 'Platform Overview'),
     ]),
-    ("navigation.section_foundations", [
-        ("bloch", "01", 'modules.bloch', 'module_subtitles.bloch'),
-        ("interference", "02", 'modules.interference', 'module_subtitles.interference'),
+    ("QUANTUM FOUNDATIONS", [
+        ("bloch", "01", 'Hilbert Space Dynamics', 'Single qubit visualization'),
+        ("interference", "02", 'Quantum Interference', 'Coherent superposition effects'),
     ]),
-    ("navigation.section_correlations", [
-        ("entanglement", "03", 'modules.entanglement', 'module_subtitles.entanglement'),
-        ("topological", "04", 'modules.topological', 'module_subtitles.topological'),
+    ("QUANTUM CORRELATIONS", [
+        ("entanglement", "03", 'Bell State Correlations', 'EPR and nonlocality'),
+        ("topological", "04", 'Topological Phases', 'Exotic quantum matter'),
     ]),
-    ("navigation.section_dynamics", [
-        ("noise", "05", 'modules.noise', 'module_subtitles.noise'),
-        ("circuits", "06", 'modules.circuits', 'module_subtitles.circuits'),
+    ("NOISE & DYNAMICS", [
+        ("noise", "05", 'Decoherence Models', 'NISQ noise analysis'),
+        ("circuits", "06", 'Circuit Synthesis', 'Quantum gate operations'),
     ]),
-    ("navigation.section_variational", [
-        ("vqe", "07", 'modules.vqe', 'module_subtitles.vqe'),
-        ("qaoa", "08", 'modules.qaoa', 'module_subtitles.qaoa'),
+    ("VARIATIONAL ALGORITHMS", [
+        ("vqe", "07", 'VQE Architectures', 'Hybrid quantum-classical'),
+        ("qaoa", "08", 'Optimization Manifolds', 'Combinatorial problems'),
     ]),
-    ("navigation.section_qml", [
-        ("qml", "09", 'modules.qml', 'module_subtitles.qml'),
+    ("QUANTUM ML", [
+        ("qml", "09", 'Quantum Neural Networks', 'QML algorithms and kernels'),
     ]),
-    ("navigation.section_hardware", [
-        ("qec", "10", 'modules.qec', 'module_subtitles.qec'),
-        ("hardware", "11", 'modules.hardware', 'module_subtitles.hardware'),
+    ("ERROR CORRECTION & HARDWARE", [
+        ("qec", "10", 'Surface Code Protocols', 'Fault-tolerant computing'),
+        ("hardware", "11", 'QPU Topology Maps', 'Hardware architectures'),
     ]),
-    ("navigation.section_complexity", [
-        ("complexity", "12", 'modules.complexity', 'module_subtitles.complexity'),
+    ("COMPLEXITY THEORY", [
+        ("complexity", "12", 'Complexity Landscapes', 'Quantum advantage analysis'),
     ]),
-    ("navigation.section_export", [
-        ("export", "13", 'modules.export', 'module_subtitles.export'),
+    ("DATA EXPORT", [
+        ("export", "13", 'Research Reproducibility', 'Publication-ready results'),
     ]),
 ]
 
 # Render professional row-based navigation with icons
 for section_key, modules in nav_groups:
-    st.sidebar.markdown(f"<div class='nav-section-label'>{t(section_key)}</div>", unsafe_allow_html=True)
+    st.sidebar.markdown(f"<div class='nav-section-label'>{section_key}</div>", unsafe_allow_html=True)
     
     # Render each module as a clickable row with icon
-    for module_id, number, title_key, subtitle_key in modules:
+    for module_id, number, title, subtitle in modules:
         # Use Streamlit button with custom styling (icons added via CSS)
         if st.sidebar.button(
-            t(title_key),
+            title,
             key=f"nav_{module_id}",
             type="secondary" if st.session_state.selected_module_id != module_id else "primary",
             use_container_width=True
@@ -161,749 +110,1011 @@ st.sidebar.markdown("---")
 sidebar_footer = f"""
 <div class='sidebar-footer'>
     <div class='sidebar-footer-text'>
-        {t('global.platform_name')}<br>
-        <span class='sidebar-footer-version'>{t('global.version')}</span>
+        AlphaNova Quantum<br>
+        <span class='sidebar-footer-version'>v1.0.0</span>
     </div>
 </div>
 """
 st.sidebar.markdown(sidebar_footer, unsafe_allow_html=True)
 
-# Modern Soft Minimalist CSS Styling
+# Modern Dark Futuristic Glassmorphism CSS Styling
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Global Variables for Consistent Design */
+/* Global Dark Theme Variables */
 :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --surface-gradient: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    --glass-bg: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --shadow-light: rgba(255, 255, 255, 0.8);
-    --shadow-dark: rgba(148, 163, 184, 0.4);
-    --border-radius-lg: 32px;
-    --border-radius-md: 24px;
-    --border-radius-sm: 16px;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --bg-primary: #0E1117;
+    --bg-secondary: #161B22;
+    --bg-tertiary: #21262D;
+    --glass-bg: rgba(26, 29, 35, 0.6);
+    --glass-border: rgba(241, 245, 249, 0.1);
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --accent-primary: #6366F1;
+    --accent-secondary: #8B5CF6;
+    --accent-cyan: #06B6D4;
+    --accent-emerald: #059669;
+    --border-radius: 30px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+    --shadow-deep: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
 }
 
-/* Global Typography Enhancement */
+/* Global Reset & Typography */
 * {
     font-family: var(--font-family) !important;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.05em;
 }
 
-/* Main Container Neumorphic Styling */
+/* Dark Theme App Background */
+.stApp {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Main Container Dark Design */
 .main .block-container {
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
+    padding: 2rem 3rem !important;
     max-width: 1400px;
-    background: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
-    border-radius: var(--border-radius-lg);
-    box-shadow: 
-        20px 20px 60px var(--shadow-dark),
-        -20px -20px 60px var(--shadow-light),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-    margin: var(--spacing-md) auto;
+    background: rgba(14, 17, 23, 0.8) !important;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-deep), inset 0 0 0 1px rgba(241, 245, 249, 0.1);
+    margin: 1rem auto;
     backdrop-filter: blur(20px);
-    transition: var(--transition-smooth);
+    border: 1px solid rgba(241, 245, 249, 0.1);
 }
 
-/* Sidebar Neumorphic Design */
+/* Sidebar Dark Glassmorphism */
 .css-1d391kg {
-    background: linear-gradient(145deg, #f1f5f9 0%, #ffffff 100%) !important;
-    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0 !important;
-    box-shadow: 
-        15px 15px 30px var(--shadow-dark),
-        -15px -15px 30px var(--shadow-light);
-    padding: var(--spacing-lg) !important;
-    backdrop-filter: blur(10px);
+    background: linear-gradient(145deg, rgba(14, 17, 23, 0.9) 0%, rgba(22, 27, 34, 0.9) 100%) !important;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0 !important;
+    box-shadow: var(--shadow-deep);
+    padding: 1.5rem !important;
+    backdrop-filter: blur(15px);
+    border-right: 1px solid rgba(241, 245, 249, 0.1);
 }
 
-.nav-section-label {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #64748b;
-    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-sm);
-    box-shadow: 
-        inset 3px 3px 6px rgba(148, 163, 184, 0.2),
-        inset -3px -3px 6px rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: var(--transition-smooth);
-}
-
+/* Professional Dark Sidebar Brand */
 .sidebar-brand {
     text-align: center;
-    padding: var(--spacing-lg) var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-md);
-    box-shadow: 
-        12px 12px 24px var(--shadow-dark),
-        -12px -12px 24px var(--shadow-light);
-    transition: var(--transition-smooth);
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: var(--border-radius);
+    box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.3);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
 }
 
 .sidebar-brand:hover {
     transform: translateY(-2px);
-    box-shadow: 
-        16px 16px 32px var(--shadow-dark),
-        -16px -16px 32px var(--shadow-light);
+    box-shadow: 0 24px 48px -12px rgba(99, 102, 241, 0.4);
 }
 
 .sidebar-brand-title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    background: var(--primary-gradient);
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
 }
 
 .sidebar-brand-subtitle {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--text-secondary);
     font-weight: 500;
-    margin-top: var(--spacing-xs);
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
+/* Navigation Sections Dark */
+.nav-section-label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+    margin: 1.5rem 0 0.75rem 0;
+    padding: 0.5rem 0.75rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    text-align: center;
+}
+
+/* Sidebar Footer Dark */
 .sidebar-footer {
     text-align: center;
-    padding: var(--spacing-lg) var(--spacing-sm);
-    margin-top: var(--spacing-lg);
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-md);
-    box-shadow: 
-        inset 8px 8px 16px rgba(148, 163, 184, 0.15),
-        inset -8px -8px 16px rgba(255, 255, 255, 0.9);
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    background: rgba(14, 17, 23, 0.8);
+    border-radius: 20px;
+    border: 1px solid rgba(241, 245, 249, 0.1);
 }
 
 .sidebar-footer-text {
-    font-size: 0.8rem;
-    color: #64748b;
+    font-size: 0.75rem;
+    color: var(--text-muted);
     font-weight: 500;
 }
 
-.sidebar-footer-version {
-    color: #94a3b8;
-    font-size: 0.75rem;
-    font-weight: 400;
-}
-
-/* Research Cards with Neumorphic Design */
-.research-card {
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl) var(--spacing-lg);
-    margin: var(--spacing-lg) 0;
-    box-shadow: 
-        20px 20px 60px var(--shadow-dark),
-        -20px -20px 60px var(--shadow-light),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
-    transition: var(--transition-smooth);
-    backdrop-filter: blur(10px);
+/* Hero Section Premium Design */
+.hero-section {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border-radius: var(--border-radius);
+    padding: 4rem 3rem;
+    margin: 2rem 0;
+    text-align: center;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--shadow-glow), var(--shadow-deep);
     position: relative;
     overflow: hidden;
 }
 
-.research-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-}
-
-.research-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 
-        25px 25px 75px var(--shadow-dark),
-        -25px -25px 75px var(--shadow-light),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-}
-
-.research-card h3 {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 600;
-    margin-bottom: var(--spacing-md);
-    font-size: 1.5rem;
-}
-
-.research-card p {
-    color: #475569;
-    line-height: 1.7;
-    font-weight: 400;
-    margin-bottom: var(--spacing-sm);
-}
-
-/* Metric Boxes with Soft Design */
-.metric-box {
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-    text-align: center;
-    box-shadow: 
-        15px 15px 30px var(--shadow-dark),
-        -15px -15px 30px var(--shadow-light);
-    transition: var(--transition-smooth);
-    margin: var(--spacing-md) 0;
-    backdrop-filter: blur(5px);
-}
-
-.metric-box:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 
-        20px 20px 40px var(--shadow-dark),
-        -20px -20px 40px var(--shadow-light);
-}
-
-.metric-box h3 {
-    background: var(--secondary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-xs);
-}
-
-.metric-box p {
-    color: #64748b;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-/* Status Badges with Glassmorphism */
-.research-status {
-    display: inline-block;
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: 50px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    backdrop-filter: blur(20px);
-    transition: var(--transition-smooth);
-    margin: var(--spacing-md) 0;
-}
-
-.status-active {
-    background: rgba(34, 197, 94, 0.15);
-    color: #059669;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
-}
-
-.status-frontier {
-    background: rgba(168, 85, 247, 0.15);
-    color: #7c3aed;
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.2);
-}
-
-.status-variational {
-    background: rgba(59, 130, 246, 0.15);
-    color: #2563eb;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
-}
-
-.status-combinatorial {
-    background: rgba(245, 158, 11, 0.15);
-    color: #d97706;
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2);
-}
-
-/* Data Grid Mesh with Modern Design */
-.data-grid-mesh {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-    backdrop-filter: blur(20px);
-    box-shadow: 
-        0 8px 32px rgba(148, 163, 184, 0.15);
-    transition: var(--transition-smooth);
-    margin: var(--spacing-md) 0;
-}
-
-.data-grid-mesh:hover {
-    background: rgba(255, 255, 255, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(148, 163, 184, 0.2);
-}
-
-/* LaTeX Display Enhancement */
-.latex-display {
-    background: var(--surface-gradient);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-lg) 0;
-    box-shadow: 
-        inset 10px 10px 20px rgba(148, 163, 184, 0.1),
-        inset -10px -10px 20px rgba(255, 255, 255, 0.8),
-        0 4px 20px rgba(148, 163, 184, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.latex-display h4 {
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 600;
-    margin-bottom: var(--spacing-md);
-}
-
-.latex-display p {
-    color: #475569;
-    line-height: 1.6;
-    margin-bottom: var(--spacing-sm);
-}
-
-/* Experiment Panel with Glassmorphism */
-.experiment-panel {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-left: 4px solid #6366f1;
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-md) 0;
-    backdrop-filter: blur(15px);
-    transition: var(--transition-smooth);
-}
-
-.experiment-panel:hover {
-    background: rgba(255, 255, 255, 0.35);
-    border-left-color: #4f46e5;
-    transform: translateX(4px);
-}
-
-/* Button Enhancement */
-.stButton > button {
-    background: var(--surface-gradient) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: var(--border-radius-md) !important;
-    padding: var(--spacing-sm) var(--spacing-lg) !important;
-    font-weight: 600 !important;
-    box-shadow: 
-        8px 8px 16px var(--shadow-dark),
-        -8px -8px 16px var(--shadow-light) !important;
-    transition: var(--transition-smooth) !important;
-    color: #475569 !important;
-}
-
-.stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 
-        12px 12px 24px var(--shadow-dark),
-        -12px -12px 24px var(--shadow-light) !important;
-    background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%) !important;
-}
-
-.stButton > button:active {
-    transform: translateY(0px) !important;
-    box-shadow: 
-        inset 4px 4px 8px var(--shadow-dark),
-        inset -4px -4px 8px var(--shadow-light) !important;
-}
-
-/* Primary Button Styling */
-.stButton > button[data-baseweb="button"][aria-label*="primary"] {
-    background: var(--primary-gradient) !important;
-    color: white !important;
-    border: none !important;
-}
-
-/* Module Container Styling */
-.bloch-energy, .vqe-landscape, .circuit-flow {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-lg) 0;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.hero-glow {
-    position: relative;
-}
-
-.hero-glow::before {
+.hero-section::before {
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
     pointer-events: none;
     z-index: -1;
 }
 
-/* Enhanced Input Styling */
-.stSlider > div > div > div > div {
-    background: var(--surface-gradient) !important;
-    border-radius: var(--border-radius-lg) !important;
-    box-shadow: 
-        inset 4px 4px 8px var(--shadow-dark),
-        inset -4px -4px 8px var(--shadow-light) !important;
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-tagline {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-bottom: 3rem;
+}
+
+/* Feature Cards Premium */
+.feature-card {
+    background: rgba(14, 17, 23, 0.6);
+    border-radius: 25px;
+    padding: 2rem;
+    margin: 1rem;
+    border: 1px solid rgba(241, 245, 249, 0.1);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+    text-align: center;
+    box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.6);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.feature-desc {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* Research Cards Dark */
+.research-card {
+    background: rgba(14, 17, 23, 0.8);
+    border-radius: 25px;
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(241, 245, 249, 0.1);
+    backdrop-filter: blur(15px);
+    transition: var(--transition);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+.research-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px -12px rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.research-card h3 {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.research-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+/* Metric Boxes Dark Premium */
+.metric-box {
+    background: rgba(14, 17, 23, 0.9);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(241, 245, 249, 0.1);
+    transition: var(--transition);
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.6);
+}
+
+.metric-box:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 40px -8px rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.metric-box h3 {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-emerald) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.metric-box p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Status Badges Dark */
+.research-status {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(20px);
+    transition: var(--transition);
+    margin: 1rem 0;
+}
+
+.status-active {
+    background: rgba(5, 150, 105, 0.2);
+    color: #10B981;
+    border: 1px solid rgba(5, 150, 105, 0.4);
+    box-shadow: 0 8px 32px rgba(5, 150, 105, 0.2);
+}
+
+.status-frontier {
+    background: rgba(139, 92, 246, 0.2);
+    color: #8B5CF6;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+}
+
+/* Enhanced Button Dark Styling */
+.stButton > button {
+    background: rgba(99, 102, 241, 0.8) !important;
+    border: 1px solid rgba(99, 102, 241, 0.6) !important;
+    border-radius: 20px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: var(--transition) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 10px 25px -8px rgba(99, 102, 241, 0.4) !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 15px 35px -8px rgba(99, 102, 241, 0.5) !important;
+    background: rgba(99, 102, 241, 1) !important;
+}
+
+/* Charts and Visualizations Dark */
+.stPlotlyChart {
+    background: transparent !important;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Input Elements Dark */
+.stSlider > div > div > div {
+    background: rgba(14, 17, 23, 0.8) !important;
+    border-radius: 15px !important;
 }
 
 .stSelectbox > div > div {
-    background: var(--surface-gradient) !important;
-    border-radius: var(--border-radius-md) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    box-shadow: 
-        6px 6px 12px var(--shadow-dark),
-        -6px -6px 12px var(--shadow-light) !important;
+    background: rgba(14, 17, 23, 0.9) !important;
+    border-radius: 15px !important;
+    border: 1px solid rgba(241, 245, 249, 0.2) !important;
+    color: var(--text-primary) !important;
 }
 
-/* Responsive Design */
+/* Hide Streamlit Branding for Immersive Experience */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Responsive Dark Design */
 @media (max-width: 768px) {
-    :root {
-        --border-radius-lg: 24px;
-        --border-radius-md: 18px;
-        --border-radius-sm: 12px;
-        --spacing-xl: 2rem;
-        --spacing-lg: 1.5rem;
-    }
-    
-    .main .block-container {
-        padding: var(--spacing-lg);
-        margin: var(--spacing-sm);
-    }
-    
-    .research-card {
-        padding: var(--spacing-lg);
-    }
+    .hero-title { font-size: 2.5rem; }
+    .hero-subtitle { font-size: 1rem; }
+    .main .block-container { padding: 1rem !important; margin: 0.5rem !important; }
 }
 
-/* Animation Keyframes */
-@keyframes softPulse {
-    0%, 100% {
-        opacity: 0.8;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.02);
-    }
+/* Dark Theme Animations */
+@keyframes quantumGlow {
+    0%, 100% { box-shadow: var(--shadow-glow); }
+    50% { box-shadow: 0 0 60px rgba(99, 102, 241, 0.5); }
 }
 
-@keyframes gentleFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
+.quantum-glow { animation: quantumGlow 3s ease-in-out infinite; }
 
-/* Accessibility Enhancements */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* Focus States */
-*:focus {
-    outline: 2px solid #6366f1;
-    outline-offset: 2px;
-    border-radius: var(--border-radius-sm);
-}
+/* Scroll Bar Dark */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
 
 </style>
 """, unsafe_allow_html=True)
+# Helper Functions for Enhanced 3D Visualizations
 
-# Main content area
+def create_bloch_sphere(theta_deg, phi_deg, show_traces=True, enhanced=True):
+    """Create a premium 3D Bloch sphere visualization with advanced lighting and effects"""
+    theta_rad = np.radians(theta_deg)
+    phi_rad = np.radians(phi_deg)
+    
+    # Calculate state vector on Bloch sphere
+    x = np.sin(theta_rad) * np.cos(phi_rad)
+    y = np.sin(theta_rad) * np.sin(phi_rad)
+    z = np.cos(theta_rad)
+    
+    fig = go.Figure()
+    
+    # Create high-quality Bloch sphere surface
+    u = np.linspace(0, 2 * np.pi, 50)
+    v = np.linspace(0, np.pi, 50)
+    sphere_x = np.outer(np.cos(u), np.sin(v))
+    sphere_y = np.outer(np.sin(u), np.sin(v))
+    sphere_z = np.outer(np.ones(np.size(u)), np.cos(v))
+    
+    # Enhanced sphere with glassmorphism effect
+    fig.add_trace(go.Surface(
+        x=sphere_x, y=sphere_y, z=sphere_z,
+        colorscale=[[0, 'rgba(99, 102, 241, 0.1)'], [1, 'rgba(139, 92, 246, 0.2)']],
+        opacity=0.3,
+        showscale=False,
+        hoverinfo='skip',
+        lighting=dict(
+            ambient=0.3,
+            diffuse=0.8,
+            fresnel=0.1,
+            specular=0.8,
+            roughness=0.05
+        ),
+        name="Quantum State Space"
+    ))
+    
+    # Premium coordinate axes with glow
+    axes_colors = ['#EF4444', '#10B981', '#3B82F6']  # Red, Green, Blue
+    axes_labels = ['X', 'Y', 'Z']
+    
+    for i, (color, label) in enumerate(zip(axes_colors, axes_labels)):
+        fig.add_trace(go.Scatter3d(
+            x=[-1.2, 1.2] if i == 0 else [0, 0],
+            y=[0, 0] if i != 1 else [-1.2, 1.2],
+            z=[0, 0] if i != 2 else [-1.2, 1.2],
+            mode='lines',
+            line=dict(color=color, width=8),
+            opacity=0.8,
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        # Axis labels with enhanced styling
+        pos = [0, 0, 0]
+        pos[i] = 1.3
+        fig.add_trace(go.Scatter3d(
+            x=[pos[0]], y=[pos[1]], z=[pos[2]],
+            mode='text',
+            text=[label],
+            textfont=dict(size=16, color=color, family="Inter"),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+    
+    # Quantum state vector with enhanced visualization
+    fig.add_trace(go.Scatter3d(
+        x=[0, x], y=[0, y], z=[0, z],
+        mode='lines+markers',
+        line=dict(color='#F59E0B', width=12),
+        marker=dict(
+            size=[0, 15],
+            color=['#F59E0B', '#F59E0B'],
+            opacity=[0, 1],
+            line=dict(color='#FBBF24', width=3)
+        ),
+        name='|ψ⟩ State Vector',
+        hovertemplate='<b>Quantum State</b><br>' +
+                     'θ: %{customdata[0]:.1f}°<br>' +
+                     'φ: %{customdata[1]:.1f}°<br>' +
+                     '<extra></extra>',
+        customdata=[[theta_deg, phi_deg], [theta_deg, phi_deg]]
+    ))
+    
+    # Enhanced projection traces if requested
+    if show_traces and enhanced:
+        # XY projection
+        fig.add_trace(go.Scatter3d(
+            x=[x, x], y=[y, y], z=[0, z],
+            mode='lines',
+            line=dict(color='rgba(148, 163, 184, 0.6)', width=3, dash='dot'),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+        
+        # Z projection point
+        fig.add_trace(go.Scatter3d(
+            x=[x], y=[y], z=[0],
+            mode='markers',
+            marker=dict(size=8, color='#64748B', opacity=0.7),
+            showlegend=False,
+            hoverinfo='skip'
+        ))
+    
+    # Premium layout with cinematic lighting
+    fig.update_layout(
+        scene=dict(
+            xaxis=dict(showticklabels=False, showgrid=False, zeroline=False, visible=False),
+            yaxis=dict(showticklabels=False, showgrid=False, zeroline=False, visible=False),
+            zaxis=dict(showticklabels=False, showgrid=False, zeroline=False, visible=False),
+            bgcolor='rgba(0, 0, 0, 0)',
+            camera=dict(
+                eye=dict(x=1.5, y=1.5, z=1.2),
+                projection=dict(type='perspective')
+            ),
+            aspectmode='cube'
+        ),
+        paper_bgcolor='rgba(0, 0, 0, 0)',
+        plot_bgcolor='rgba(0, 0, 0, 0)',
+        font=dict(color='#F1F5F9', family='Inter'),
+        showlegend=True,
+        legend=dict(
+            bgcolor='rgba(14, 17, 23, 0.8)',
+            bordercolor='rgba(241, 245, 249, 0.2)',
+            borderwidth=1
+        ),
+        height=600,
+        margin=dict(l=0, r=0, t=0, b=0)
+    )
+    
+    return fig
+
+def pauli_matrices():
+    """Return Pauli matrices for quantum gate operations"""
+    return {
+        'I': np.eye(2, dtype=complex),
+        'X': np.array([[0, 1], [1, 0]], dtype=complex),
+        'Y': np.array([[0, -1j], [1j, 0]], dtype=complex),
+        'Z': np.array([[1, 0], [0, -1]], dtype=complex)
+    }
+
+def hadamard():
+    """Return Hadamard gate matrix"""
+    return np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
+
+def rotation_gate(axis, angle_deg):
+    """Create rotation gate around specified axis"""
+    angle_rad = np.radians(angle_deg)
+    pauli = pauli_matrices()
+    return scipy.linalg.expm(-1j * angle_rad / 2 * pauli[axis.upper()])
+
+def maxcut_cost(bitstring, adj_matrix):
+    """Calculate MaxCut cost for QAOA optimization"""
+    cost = 0
+    n = len(bitstring)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if adj_matrix[i, j] and bitstring[i] != bitstring[j]:
+                cost += 1
+    return cost
+
+# Main content area with AlphaNova Quantum premium experience
 if st.session_state.selected_module_id == 'home':
-    st.title(t('modules.home'))
-    st.markdown("Welcome to the Quantum Research Workbench")
-    st.info("Please select a module from the sidebar to begin your quantum research journey.")
+    # Premium Hero Section
+    st.markdown("""
+    <div class='hero-section quantum-glow'>
+        <div class='hero-title'>AlphaNova Quantum</div>
+        <div class='hero-subtitle'>Next-Generation Quantum Research Environment</div>
+        <div class='hero-tagline'>Interactive Quantum Computing and AI Visualization Platform</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Feature highlights in premium cards
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+        <div class='feature-card'>
+            <div class='feature-icon'>⚡</div>
+            <div class='feature-title'>Interactive Quantum Visualizations</div>
+            <div class='feature-desc'>Real-time 3D Bloch sphere and quantum state manipulation</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class='feature-card'>
+            <div class='feature-icon'>🔗</div>
+            <div class='feature-title'>Quantum Gates and Circuits</div>
+            <div class='feature-desc'>Build and simulate quantum algorithms with visual feedback</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class='feature-card'>
+            <div class='feature-icon'>🧠</div>
+            <div class='feature-title'>Quantum Machine Learning</div>
+            <div class='feature-desc'>Explore variational quantum circuits and hybrid algorithms</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div class='feature-card'>
+            <div class='feature-icon'>🔬</div>
+            <div class='feature-title'>Real-Time State Exploration</div>
+            <div class='feature-desc'>Advanced quantum dynamics and error correction analysis</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Interactive demo section
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🌌 Experience Quantum Superposition</h3>
+        <p>Manipulate a quantum state in real-time and observe the probability amplitudes evolve on the Bloch sphere. 
+        This interactive visualization demonstrates the fundamental principles of quantum mechanics.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Live Bloch sphere demo
+    col_demo1, col_demo2 = st.columns([3, 2])
+    
+    with col_demo1:
+        theta_demo = st.slider("Polar Angle θ", 0, 180, 45, 5, key="home_theta")
+        phi_demo = st.slider("Azimuthal Angle φ", 0, 360, 45, 5, key="home_phi")
+        
+        fig_demo = create_bloch_sphere(theta_demo, phi_demo, enhanced=True)
+        st.plotly_chart(fig_demo, use_container_width=True, key="home_bloch")
+    
+    with col_demo2:
+        # Calculate quantum state
+        theta_rad = np.radians(theta_demo)
+        phi_rad = np.radians(phi_demo)
+        alpha = np.cos(theta_rad / 2)
+        beta = np.exp(1j * phi_rad) * np.sin(theta_rad / 2)
+        
+        st.markdown("""
+        <div class='metric-box'>
+            <h3>|ψ⟩ = α|0⟩ + β|1⟩</h3>
+            <p>Quantum State Vector</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{abs(alpha)**2:.3f}</h3>
+            <p>P(|0⟩) Probability</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{abs(beta)**2:.3f}</h3>
+            <p>P(|1⟩) Probability</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        phase_deg = np.degrees(np.angle(beta / alpha)) if abs(alpha) > 1e-10 else 0
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{phase_deg:.1f}°</h3>
+            <p>Relative Phase</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Platform capabilities
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🚀 Platform Capabilities</h3>
+        <p><strong>Advanced Quantum Simulations:</strong> From single qubit dynamics to complex many-body systems</p>
+        <p><strong>Machine Learning Integration:</strong> Variational quantum eigensolvers and quantum neural networks</p>
+        <p><strong>Hardware-Aware Design:</strong> NISQ-era algorithms with built-in noise modeling</p>
+        <p><strong>Research-Grade Tools:</strong> Publication-ready visualizations and reproducible experiments</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'bloch':
     st.title(t('modules.bloch'))
     st.markdown("Single qubit dynamics visualization")
 
 elif st.session_state.selected_module_id == 'interference':
-    st.title(t('modules.interference'))
-    st.markdown("Quantum interference phenomena")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🌊 Quantum Interference</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Explore coherent superposition and quantum interference phenomena. 
+        Understand how probability amplitudes interfere to create quantum advantage.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'entanglement':
-    st.title(t('modules.entanglement'))
-    st.markdown("Bell state correlations analysis")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🔗 Bell State Correlations</h3>
+        <span class="status-frontier">Frontier Research</span>
+        <p>Investigate quantum entanglement and Bell state correlations. 
+        Explore EPR paradox, CHSH inequalities, and quantum nonlocality.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'topological':
-    st.title(t('modules.topological'))
-    st.markdown("Topological quantum phases")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🔄 Topological Phases</h3>
+        <span class="status-frontier">Frontier Research</span>
+        <p>Explore topological quantum phases and anyonic computing. 
+        Study exotic quantum matter and fault-tolerant quantum computation.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'noise':
-    st.title(t('modules.noise'))
-    st.markdown("Quantum decoherence models")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>⚡ Quantum Decoherence</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Model quantum noise and decoherence effects in NISQ devices. 
+        Analyze T1, T2 times and implement error mitigation strategies.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'circuits':
-    st.title(t('modules.circuits'))
-    st.markdown("Quantum circuit synthesis")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>⚙️ Quantum Circuits</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Build and simulate quantum circuits with visual gate operations. 
+        Implement quantum algorithms and analyze circuit depth and complexity.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'vqe':
-    st.title(t('modules.vqe'))
-    st.markdown("Variational quantum eigensolvers")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🔬 Variational Quantum Eigensolver</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Implement VQE for quantum chemistry and optimization problems. 
+        Explore hybrid quantum-classical algorithms and energy landscapes.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'qaoa':
-    st.title(t('modules.qaoa'))
-    st.markdown("Quantum approximate optimization")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🎯 Quantum Optimization</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Solve combinatorial optimization with QAOA algorithms. 
+        Maximize cut problems and explore quantum approximate optimization.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'qml':
-    st.title(t('modules.qml'))
-    st.markdown("Quantum machine learning")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🧠 Quantum Machine Learning</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Implement quantum neural networks and variational quantum circuits. 
+        Explore quantum kernels, QML algorithms, and quantum advantage in AI.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'qec':
-    st.title(t('modules.qec'))
-    st.markdown("Quantum error correction")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🛡️ Quantum Error Correction</h3>
+        <span class="status-frontier">Frontier Research</span>
+        <p>Implement quantum error correction codes and fault-tolerant protocols. 
+        Study surface codes, stabilizer formalism, and logical qubit protection.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'hardware':
-    st.title(t('modules.hardware'))
-    st.markdown("Quantum hardware topology")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🔧 Quantum Hardware</h3>
+        <span class="status-frontier">Frontier Research</span>
+        <p>Explore quantum processor architectures and hardware topologies. 
+        Analyze superconducting qubits, trapped ions, and connectivity graphs.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'complexity':
-    st.title(t('modules.complexity'))
-    st.markdown("Quantum complexity theory")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>📊 Complexity Theory</h3>
+        <span class="status-frontier">Frontier Research</span>
+        <p>Study quantum computational complexity and advantage verification. 
+        Explore BQP, quantum supremacy, and complexity class relationships.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == 'export':
-    st.title(t('modules.export'))
-    st.markdown("Research data export and analysis")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>📁 Data Export</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Export research data and analysis for publication-ready results. 
+        Generate reproducible quantum experiments and visualization assets.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 else:
-    st.error(f"Module '{st.session_state.selected_module_id}' not found.")
+    st.markdown("""
+    <div class='research-card'>
+        <h3>⚠️ Module Not Found</h3>
+        <p>The requested quantum research module could not be found. 
+        Please select a valid module from the sidebar navigation.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #64748b; padding: 20px;'>
-    <p><strong>Quantum × AI Research Workbench</strong> | Production Research Platform</p>
-    <p>Academic-Grade Quantum Computing Experiments • Reproducible Results • Publication-Ready Visualizations</p>
+<div style='text-align: center; color: var(--text-secondary); padding: 20px;'>
+    <p><strong>AlphaNova Quantum</strong> | Interactive Quantum Computing and AI Visualization Platform</p>
+    <p>Next-Generation Quantum Research Environment • Real-Time State Exploration • Publication-Ready Visualizations</p>
     <p style='font-size: 12px; margin-top: 12px;'>
-        Built with Streamlit • Qiskit • NumPy • SciPy • Plotly
+        Powered by Advanced Quantum Computing • AI-Enhanced Algorithms • Built with Streamlit
     </p>
 </div>
 """, unsafe_allow_html=True)
 
 elif st.session_state.selected_module_id == "bloch":
-    st.markdown("<div class='bloch-energy hero-glow'>", unsafe_allow_html=True)
-    st.markdown(f"# {t('bloch_module_title')}")
-    st.markdown(f'<span class="research-status status-active">{t("bloch_status_badge")}</span>', unsafe_allow_html=True)
-    
-    st.markdown(f"""
+    # Enhanced Hilbert Space Dynamics Section
+    st.markdown("""
     <div class='research-card'>
-        <h3>{t('bloch_math_title')}</h3>
-        <p style='font-family: "Source Serif Pro", serif; font-size: 15px; line-height: 1.8;'>
-        {t('bloch_math_intro')}
-        </p>
+        <h3>🌌 Hilbert Space Dynamics</h3>
+        <span class="status-active">Active Research Module</span>
+        <p>Explore single qubit dynamics through interactive Bloch sphere visualization. 
+        Manipulate quantum states in real-time and observe unitary evolution, 
+        decoherence effects, and measurement outcomes.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Mathematical Foundation
+    st.markdown("""
+    <div class='research-card'>
+        <h3>Quantum State Mathematics</h3>
+        <p>Every qubit state can be represented as a point on the Bloch sphere using spherical coordinates:</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.latex(r"""
-    |\psi\rangle = \alpha|0\rangle + \beta|1\rangle, \quad \text{where } |\alpha|^2 + |\beta|^2 = 1
+    |\psi\rangle = \cos(\theta/2)|0\rangle + e^{i\phi}\sin(\theta/2)|1\rangle
     """)
     
     st.latex(r"""
-    \alpha = \cos(\theta/2), \quad \beta = e^{i\phi}\sin(\theta/2) \quad \text{(Bloch Parameterization)}
+    \text{Bloch Vector: } \vec{r} = (\sin\theta\cos\phi, \sin\theta\sin\phi, \cos\theta)
     """)
     
-    manifold_title = t('bloch_manifold_title')
-    manifold_desc = t('bloch_manifold_desc')
-    pure_state = t('bloch_pure_state')
-    mixed_state = t('bloch_mixed_state')
-    maximally_mixed = t('bloch_maximally_mixed')
-    
-    st.markdown(f"""
-    <div class='latex-display'>
-        <p style='font-family: "Source Serif Pro", serif;'><strong>{manifold_title}</strong> 
-        {manifold_desc}</p>
-        
-        <p style='font-family: "JetBrains Mono", monospace; font-size: 13px; margin-top: 16px;'>
-        <strong>{pure_state}</strong> <code>|r| = 1</code> (sphere surface)<br>
-        <strong>{mixed_state}</strong> <code>|r| &lt; 1</code> (interior volume, density matrix $\\rho$)<br>
-        <strong>{maximally_mixed}</strong> <code>|r| = 0</code> (sphere center, $\\rho = \\mathbb{{I}}/2$)
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Interactive controls
+    # Interactive Controls Section
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        st.markdown(f"### {t('bloch_config_title')}")
-        st.markdown(f"<p style='font-family: \"Source Serif Pro\", serif; font-size: 13px;'>{t('bloch_config_desc')}</p>", unsafe_allow_html=True)
-        
-        # Glassmorphic slider with data-grid mesh
-        st.markdown(f"""
-        <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(0, 217, 255, 0.25); margin-bottom: 10px;'>
-            <span class='metric-label'>{t('bloch_theta_label')}</span>
-        </div>
-        """, unsafe_allow_html=True)
-        theta_bloch = st.slider("", 0, 180, 90, 5, key="bloch_theta",
-                               help=t('bloch_theta_help'), label_visibility="collapsed")
-        st.markdown(f"""
-        <div style='text-align: center; margin-top: -8px; margin-bottom: 20px;'>
-            <span class='metric-value' style='font-size: 20px;'>{theta_bloch}┬░</span>
-            <span class='metric-label'> | ╬╕ = {np.radians(theta_bloch):.4f} rad</span>
+        st.markdown("""
+        <div class='research-card'>
+            <h3>⚡ Interactive Quantum State Control</h3>
+            <p>Adjust the quantum state parameters and observe real-time changes in the Bloch sphere representation:</p>
         </div>
         """, unsafe_allow_html=True)
         
-        # Rotary dial for phase (laboratory equipment aesthetic)
-        st.markdown(f"""
-        <div class='data-grid-mesh' style='padding: 15px; border-radius: 10px; border: 1px solid rgba(123, 97, 255, 0.25); margin-bottom: 10px;'>
-            <span class='metric-label'>{t('bloch_phi_label')}</span>
-        </div>
-        """, unsafe_allow_html=True)
+        # Enhanced sliders with better styling
+        theta_bloch = st.slider("Polar Angle θ (degrees)", 0, 180, 90, 5, 
+                               key="bloch_theta", help="Controls the |0⟩ vs |1⟩ probability distribution")
+        phi_bloch = st.slider("Azimuthal Angle φ (degrees)", 0, 360, 0, 5, 
+                             key="bloch_phi", help="Controls the relative phase between basis states")
         
-        col_a, col_b, col_c = st.columns([1, 2, 1])
-        with col_b:
-            phi_bloch = st.slider("", 0, 360, 0, 5, key="bloch_phi",
-                                 help=t('bloch_phi_help'), label_visibility="collapsed")
-            
-            # Render rotary dial visualization
-            rotation_angle = phi_bloch - 90  # Adjust to start at top
-            st.markdown(f"""
-            <div class='rotary-dial-container'>
-                <div class='rotary-dial'>
-                    <div class='rotary-indicator' style='transform: rotate({rotation_angle}deg);'></div>
-                    <div class='rotary-value'>{phi_bloch}┬░</div>
-                </div>
-                <div class='rotary-label'>╧Ж = {np.radians(phi_bloch):.4f} rad</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Gate sequence with technical descriptions
-        st.markdown(f"### {t('bloch_gate_title')}")
+        # Advanced gate operations
+        st.markdown("### 🚪 Quantum Gate Operations")
         gate_sequence = st.multiselect(
-            t('bloch_gate_compose'),
-            [t('bloch_gate_h'), t('bloch_gate_x'), t('bloch_gate_y'), 
-             t('bloch_gate_z'), t('bloch_gate_rx'), t('bloch_gate_ry'), 
-             t('bloch_gate_rz'), t('bloch_gate_s'), t('bloch_gate_t')],
+            "Apply Quantum Gates (in sequence):",
+            ["Hadamard (H)", "Pauli-X", "Pauli-Y", "Pauli-Z", "Phase (S)", "T Gate", 
+             "Rotation-X(π/4)", "Rotation-Y(π/4)", "Rotation-Z(π/4)"],
             key="gate_seq_bloch"
         )
         
-        # Measurement basis with tomography context
-        st.markdown(f"### {t('bloch_measure_title')}")
-        meas_basis = st.radio(t('bloch_measure_label'), 
-                             [t('bloch_measure_z'), t('bloch_measure_x'), t('bloch_measure_y')], 
-                             horizontal=True)
-        
-        fig_bloch = create_bloch_sphere(theta_bloch, phi_bloch)
+        # Enhanced Bloch sphere visualization
+        fig_bloch = create_bloch_sphere(theta_bloch, phi_bloch, enhanced=True)
         st.plotly_chart(fig_bloch, use_container_width=True, key="main_bloch")
     
     with col2:
-        # Compute state with density matrix
+        st.markdown("""
+        <div class='research-card'>
+            <h3>📊 Quantum State Metrics</h3>
+            <p>Real-time analysis of the current quantum state:</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Compute quantum state with gate operations
         theta_rad = np.radians(theta_bloch)
         phi_rad = np.radians(phi_bloch)
-        state = np.array([
+        initial_state = np.array([
             np.cos(theta_rad / 2),
             np.exp(1j * phi_rad) * np.sin(theta_rad / 2)
         ], dtype=complex)
         
-        # Apply gates
-        current_state = state.copy()
+        # Apply gates in sequence
+        current_state = initial_state.copy()
         pauli = pauli_matrices()
         
         for gate in gate_sequence:
-            gate_lower = gate.lower()
-            if "h" in gate_lower or "╨░╨┤╨░╨╝╨░╤А" in gate_lower:
+            if "Hadamard" in gate:
                 current_state = hadamard() @ current_state
-            elif "x" in gate_lower and "rx" not in gate_lower:
+            elif "Pauli-X" in gate:
                 current_state = pauli['X'] @ current_state
-            elif "y" in gate_lower and "ry" not in gate_lower:
+            elif "Pauli-Y" in gate:
                 current_state = pauli['Y'] @ current_state
-            elif "z" in gate_lower and "rz" not in gate_lower:
+            elif "Pauli-Z" in gate:
                 current_state = pauli['Z'] @ current_state
-            elif "rx" in gate_lower:
+            elif "Phase" in gate:
+                S = np.array([[1, 0], [0, 1j]], dtype=complex)
+                current_state = S @ current_state
+            elif "T Gate" in gate:
+                T = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=complex)
+                current_state = T @ current_state
+            elif "Rotation-X" in gate:
                 current_state = rotation_gate('X', 45) @ current_state
-            elif "ry" in gate_lower:
+            elif "Rotation-Y" in gate:
                 current_state = rotation_gate('Y', 45) @ current_state
-            elif "rz" in gate_lower:
+            elif "Rotation-Z" in gate:
                 current_state = rotation_gate('Z', 45) @ current_state
         
-        # Display metrics
+        # Display enhanced metrics
         st.markdown(f"""
         <div class='metric-box'>
-            <h3>{np.linalg.norm(current_state):.4f}</h3>
-            <p>{t('bloch_metric_norm')}</p>
+            <h3>{np.linalg.norm(current_state):.6f}</h3>
+            <p>State Norm</p>
         </div>
-        """.format(np.linalg.norm(current_state)), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
         st.markdown(f"""
         <div class='metric-box'>
-            <h3>{abs(current_state[0])**2:.3f}</h3>
-            <p>{t('bloch_metric_p0')}</p>
+            <h3>{abs(current_state[0])**2:.4f}</h3>
+            <p>P(|0⟩) Probability</p>
         </div>
-        """.format(abs(current_state[0])**2), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
         st.markdown(f"""
         <div class='metric-box'>
-            <h3>{abs(current_state[1])**2:.3f}</h3>
-            <p>{t('bloch_metric_p1')}</p>
+            <h3>{abs(current_state[1])**2:.4f}</h3>
+            <p>P(|1⟩) Probability</p>
         </div>
-        """.format(abs(current_state[1])**2), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
-        # Phase
-        phase_deg = np.degrees(np.angle(current_state[1] / current_state[0]))
+        # Relative phase calculation
+        if abs(current_state[0]) > 1e-10:
+            rel_phase = np.angle(current_state[1] / current_state[0])
+            phase_deg = np.degrees(rel_phase)
+        else:
+            phase_deg = 0
+        
         st.markdown(f"""
         <div class='metric-box'>
-            <h3>{phase_deg if not np.isnan(phase_deg) else 0:.1f}┬░</h3>
-            <p>{t('bloch_metric_phase')}</p>
+            <h3>{phase_deg:.1f}°</h3>
+            <p>Relative Phase</p>
         </div>
-        """.format(phase_deg if not np.isnan(phase_deg) else 0), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        # Fidelity with initial state
+        fidelity = abs(np.vdot(initial_state, current_state))**2
+        st.markdown(f"""
+        <div class='metric-box'>
+            <h3>{fidelity:.4f}</h3>
+            <p>Fidelity w/ Initial</p>
+        </div>
+        """, unsafe_allow_html=True)
     
-    # Code panel
-    st.markdown(f"### {t('bloch_code_title')}")
-    gates_str = ', '.join(gate_sequence) if gate_sequence else t('common_none')
-    code = f"""
-import numpy as np
-from scipy.linalg import expm
+    # Advanced Analysis Section
+    st.markdown("""
+    <div class='research-card'>
+        <h3>🔬 Advanced Quantum State Analysis</h3>
+        <p><strong>Current State Vector:</strong></p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Display state in multiple representations
+    col_repr1, col_repr2 = st.columns(2)
+    
+    with col_repr1:
+        st.markdown("**Computational Basis:**")
+        alpha, beta = current_state[0], current_state[1]
+        st.markdown(f"""
+        |ψ⟩ = ({alpha.real:.3f} + {alpha.imag:.3f}i)|0⟩ + ({beta.real:.3f} + {beta.imag:.3f}i)|1⟩
+        """)
+        
+        st.markdown("**Bloch Vector Components:**")
+        # Calculate Bloch vector from state
+        bloch_x = 2 * np.real(np.conj(current_state[0]) * current_state[1])
+        bloch_y = 2 * np.imag(np.conj(current_state[0]) * current_state[1])
+        bloch_z = abs(current_state[0])**2 - abs(current_state[1])**2
+        
+        st.markdown(f"**x:** {bloch_x:.3f}")
+        st.markdown(f"**y:** {bloch_y:.3f}")
+        st.markdown(f"**z:** {bloch_z:.3f}")
+    
+    with col_repr2:
+        # Density matrix
+        rho = np.outer(current_state, np.conj(current_state))
+        st.markdown("**Density Matrix ρ:**")
+        st.markdown(f"""
+        ρ = [[{rho[0,0].real:.3f} + {rho[0,0].imag:.3f}i, {rho[0,1].real:.3f} + {rho[0,1].imag:.3f}i],
+             [{rho[1,0].real:.3f} + {rho[1,0].imag:.3f}i, {rho[1,1].real:.3f} + {rho[1,1].imag:.3f}i]]
+        """)
+        
+        # Purity
+        purity = np.trace(rho @ rho).real
+        st.markdown(f"**Purity:** {purity:.4f}")
+        st.markdown(f"**Entropy:** {-np.trace(rho @ scipy.linalg.logm(rho + 1e-12 * np.eye(2))).real:.4f}")
 
-{t('bloch_code_comment_state')}
-theta = {theta_bloch} * np.pi / 180
-phi = {phi_bloch} * np.pi / 180
-state = np.array([np.cos(theta/2), np.exp(1j*phi) * np.sin(theta/2)])
-
-{t('bloch_code_comment_gates')} {gates_str}
-# ... gate operations ...
-
-{t('bloch_code_comment_measure')}
-prob_0 = abs(state[0])**2
-prob_1 = abs(state[1])**2
-print(f"P(|0тЯй) = {{prob_0:.3f}}, P(|1тЯй) = {{prob_1:.3f}}")
-"""
-    st.code(code, language="python")
-
-elif module_id == "interference":
+elif st.session_state.selected_module_id == 'interference':
     # Add wave animation
     add_wave_animation()
     
