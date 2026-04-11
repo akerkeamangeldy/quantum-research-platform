@@ -208,6 +208,41 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
     }
     
+    /* Hide Sidebar Collapse Button */
+    [data-testid="collapsedControl"] {
+        display: none !important;
+    }
+    
+    [data-testid="stSidebarNav"] [data-testid="stMarkdownContainer"] {
+        display: none !important;
+    }
+    
+    button[title*="collapse"] {
+        display: none !important;
+    }
+    
+    button[aria-label*="collapse"] {
+        display: none !important;
+    }
+    
+    /* Hide sidebar toggle button with various possible selectors */
+    [data-testid="stSidebar"] button[kind="secondary"] {
+        display: none !important;
+    }
+    
+    [data-testid="stSidebar"] > button {
+        display: none !important;
+    }
+    
+    .stApp > header button {
+        display: none !important;
+    }
+    
+    /* Hide the sidebar toggle icon */
+    .css-1v0mbdj, .css-1rs6os, .e1tzin5v0 {
+        display: none !important;
+    }
+    
     /* Premium Enhanced Cards */
     .glass-card {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
