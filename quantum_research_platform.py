@@ -1,7 +1,7 @@
-https://quantum-research-platform-[hash].streamlit.app/"""
-Advanced Quantum Computing + AI Research Platform
-===================================================
-Professional-grade interactive platform for quantum computing research,
+"""
+AlphaNova Quantum Research Platform
+===================================
+Advanced interactive platform for quantum computing research,
 quantum machine learning, and quantum algorithm visualization.
 
 Target Audience: Researchers, academics, quantum computing professionals
@@ -30,8 +30,8 @@ import matplotlib.pyplot as plt
 # ============================================================================
 
 st.set_page_config(
-    page_title="AlphaNova Quantum - Next-Generation Quantum Computing Platform",
-    page_icon="⚛️",
+    page_title="AlphaNova Quantum - Advanced Quantum Research Platform",
+    page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -90,12 +90,27 @@ st.markdown("""
         z-index: 0;
     }
     
-    /* Typography */
+    /* Enhanced Typography */
     h1, h2, h3 {
         font-family: 'JetBrains Mono', monospace !important;
         color: var(--text-primary) !important;
         font-weight: 700 !important;
         letter-spacing: -0.02em;
+    }
+    
+    h1 {
+        font-size: 2.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    h2 {
+        font-size: 2rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+    
+    h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.6rem !important;
     }
     
     p, div, span, label {
@@ -105,10 +120,22 @@ st.markdown("""
     
     /* Enhanced Professional Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, rgba(10,14,39,0.98) 0%, rgba(13,17,23,0.99) 100%);
-        border-right: 2px solid rgba(0, 212, 255, 0.2);
-        backdrop-filter: blur(30px);
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(180deg, rgba(10,14,39,0.95) 0%, rgba(13,17,23,0.97) 100%);
+        border-right: 3px solid rgba(102, 126, 234, 0.3);
+        backdrop-filter: blur(40px);
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.4);
+        position: relative;
+    }
+    
+    [data-testid="stSidebar"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+        pointer-events: none;
     }
     
     [data-testid="stSidebar"] h1, 
@@ -121,60 +148,87 @@ st.markdown("""
         font-weight: 700 !important;
     }
     
-    /* Sidebar radio buttons */
+    /* Enhanced Sidebar Navigation */
     [data-testid="stSidebar"] .stRadio > label {
-        background: rgba(255, 255, 255, 0.05);
-        margin: 4px 0;
-        padding: 12px 16px;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
+        margin: 6px 0;
+        padding: 16px 20px;
+        border-radius: 12px;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(102, 126, 234, 0.15);
+        backdrop-filter: blur(10px);
+        font-weight: 500;
+        letter-spacing: 0.02em;
     }
     
     [data-testid="stSidebar"] .stRadio > label:hover {
-        background: rgba(0, 212, 255, 0.1);
-        border-color: rgba(0, 212, 255, 0.3);
-        transform: translateX(5px);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(0, 212, 255, 0.1));
+        border-color: rgba(102, 126, 234, 0.4);
+        transform: translateX(8px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
     }
     
-    /* Premium Glassmorphism Cards */
+    /* Premium Enhanced Cards */
     .glass-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(25px);
-        border: 1px solid var(--glass-border);
-        border-radius: 16px;
-        padding: 30px;
-        margin: 25px 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+        border-radius: 20px;
+        padding: 35px;
+        margin: 30px 0;
         box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
+            0 12px 40px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            0 0 0 1px rgba(102, 126, 234, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+    }
+    
+    .glass-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(0, 212, 255, 0.05));
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
     }
     
     .glass-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-5px);
         box-shadow: 
-            0 12px 40px rgba(0, 212, 255, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        border-color: rgba(0, 212, 255, 0.3);
+            0 20px 60px rgba(102, 126, 234, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 0 0 1px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.4);
     }
     
-    /* Premium Hero Section */
+    .glass-card:hover::before {
+        opacity: 1;
+    }
+    
+    /* Enhanced Premium Hero Section */
     .hero-section {
         background: 
-            linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(0, 212, 255, 0.15) 100%),
-            radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
-        border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 80px 50px;
+            linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(0, 212, 255, 0.18) 50%, rgba(255, 215, 0, 0.1) 100%),
+            radial-gradient(ellipse at top center, rgba(102, 126, 234, 0.1) 0%, transparent 70%),
+            radial-gradient(ellipse at bottom center, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+        border: 2px solid rgba(102, 126, 234, 0.25);
+        border-radius: 28px;
+        padding: 100px 60px;
         text-align: center;
-        margin: 40px 0;
+        margin: 50px 0;
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(30px);
+        backdrop-filter: blur(40px);
         box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.5),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            0 25px 80px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 0 100px rgba(102, 126, 234, 0.15);
     }
     
     .hero-section::before {
@@ -722,7 +776,7 @@ def create_bloch_sphere(theta, phi, show_state_vector=True):
                 size=[0, 25],
                 color=['rgba(0,0,0,0)', '#00D4FF'],
                 line=dict(color='#FFFFFF', width=3),
-                opacity=[0, 1]
+                opacity=0.8
             ),
             name='|ψ⟩ State Vector',
             hovertemplate=(
@@ -859,19 +913,24 @@ def von_neumann_entropy(rho):
 # ============================================================================
 
 st.sidebar.markdown("""
-<div style='text-align: center; padding: 30px 0;'>
-    <h1 style='font-size: 32px; margin: 0; background: linear-gradient(135deg, #667EEA 0%, #00D4FF 50%, #FFD700 100%); 
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; letter-spacing: -0.02em;'>
-        AlphaNova
-    </h1>
-    <h2 style='font-size: 18px; margin: 5px 0; color: #00D4FF; font-weight: 600;'>
-        QUANTUM
-    </h2>
-    <p style='font-size: 10px; color: #8892B0; margin-top: 8px; letter-spacing: 0.3em; font-weight: 500;'>
-        NEXT-GENERATION RESEARCH PLATFORM
-    </p>
+<div style='text-align: center; padding: 40px 0 35px 0;'>
+    <div style='position: relative;'>
+        <h1 style='font-size: 36px; margin: 0; background: linear-gradient(135deg, #667EEA 0%, #00D4FF 50%, #FFD700 100%); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; letter-spacing: -0.03em;
+        text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);'>
+            AlphaNova
+        </h1>
+        <h2 style='font-size: 22px; margin: 8px 0; color: #00D4FF; font-weight: 700; letter-spacing: 0.15em;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);'>
+            QUANTUM
+        </h2>
+        <p style='font-size: 11px; color: #B0B0C0; margin-top: 12px; letter-spacing: 0.4em; font-weight: 600;'>
+            ADVANCED RESEARCH PLATFORM
+        </p>
+    </div>
 </div>
-<div style='height: 2px; background: linear-gradient(90deg, transparent, #667EEA, #00D4FF, #FFD700, transparent); margin: 0 20px;'></div>
+<div style='height: 3px; background: linear-gradient(90deg, transparent, #667EEA 20%, #00D4FF 50%, #FFD700 80%, transparent); 
+margin: 0 15px; border-radius: 2px; box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);'></div>
 """, unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
@@ -894,15 +953,17 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 
-# Platform info
+# Enhanced Platform Info
 st.sidebar.markdown("""
-<div class='glass-card' style='font-size: 11px; padding: 20px; margin-top: 20px;'>
-    <p style='color: #FFD700; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.1em;'>PLATFORM BUILD</p>
-    <p style='margin: 8px 0; color: #B0B0C0;'>Version: 3.0 Enterprise</p>
-    <p style='margin: 8px 0; color: #B0B0C0;'>Grade: Production-Ready</p>
-    <p style='margin: 8px 0; color: #B0B0C0;'>Framework: Advanced Streamlit</p>
-    <p style='margin: 8px 0; color: #B0B0C0;'>Quantum: Full-Stack Compatible</p>
-    <p style='margin: 8px 0; color: #00D4FF; font-weight: 600;'>Status: Live Demo Ready</p>
+<div class='glass-card' style='font-size: 12px; padding: 25px; margin-top: 25px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(0, 212, 255, 0.08)); border-color: rgba(102, 126, 234, 0.2);'>
+    <p style='color: #FFD700; font-weight: 800; margin-bottom: 18px; letter-spacing: 0.15em; font-size: 11px;'>PLATFORM STATUS</p>
+    <p style='margin: 10px 0; color: #E2E8F0; font-weight: 500;'>• Version: 4.0 Enterprise</p>
+    <p style='margin: 10px 0; color: #E2E8F0; font-weight: 500;'>• Level: Production-Ready</p>
+    <p style='margin: 10px 0; color: #E2E8F0; font-weight: 500;'>• Framework: Advanced Streamlit</p>
+    <p style='margin: 10px 0; color: #E2E8F0; font-weight: 500;'>• Quantum: Full-Stack Compatible</p>
+    <div style='margin-top: 20px; padding: 12px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border: 1px solid rgba(0, 212, 255, 0.2);'>
+        <p style='margin: 0; color: #00D4FF; font-weight: 700; font-size: 11px; letter-spacing: 0.1em;'>✨ LIVE DEMO READY</p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -911,39 +972,60 @@ st.sidebar.markdown("""
 # ============================================================================
 
 if page == "Introduction":
-    # Premium Hero Section
+    # Enhanced Premium Hero Section
     st.markdown("""
     <div class='hero-section'>
-        <h1>AlphaNova Quantum</h1>
-        <p style='font-size: 24px; color: #B0B0C0; margin: 25px 0; font-weight: 400; letter-spacing: 0.02em;'>
-            Interactive Quantum Computing + AI Research Platform
+        <h1 style='font-size: 58px; margin-bottom: 20px; background: linear-gradient(135deg, #667EEA, #00D4FF, #FFD700);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; letter-spacing: -0.02em;
+        text-shadow: 0 0 40px rgba(102, 126, 234, 0.3);'>AlphaNova Quantum</h1>
+        <p style='font-size: 28px; color: #E2E8F0; margin: 30px 0; font-weight: 500; letter-spacing: 0.02em;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);'>
+            Next-Generation Quantum Research Platform
         </p>
-        <p style='font-size: 18px; color: #8892B0; margin: 35px 0 20px 0; line-height: 1.6;'>
-            Next-Generation Quantum Research Environment<br>
-            <span style='color: #00D4FF;'>Real-Time State Visualization</span> • 
-            <span style='color: #FFD700;'>Quantum Machine Learning</span> • 
-            <span style='color: #39FF14;'>Advanced Algorithm Simulation</span>
+        <p style='font-size: 20px; color: #94A3B8; margin: 40px 0 30px 0; line-height: 1.7; font-weight: 400;'>
+            Professional-Grade Quantum Research Environment<br>
+            <span style='color: #00D4FF; font-weight: 600;'>Real-Time State Visualization</span> • 
+            <span style='color: #FFD700; font-weight: 600;'>Quantum Machine Learning</span> • 
+            <span style='color: #39FF14; font-weight: 600;'>Advanced Algorithm Simulation</span>
         </p>
         
-        <div style='display: flex; justify-content: center; gap: 30px; margin-top: 40px; flex-wrap: wrap;'>
-            <div style='background: rgba(102, 126, 234, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
-                <span style='font-size: 12px; color: #667EEA; font-weight: 600;'>QUANTUM GATES</span>
+        <div style='display: flex; justify-content: center; gap: 25px; margin-top: 50px; flex-wrap: wrap;'>
+            <div style='background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1)); 
+            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
+            border: 1px solid rgba(102, 126, 234, 0.3); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);'>
+                <span style='font-size: 13px; color: #667EEA; font-weight: 700; letter-spacing: 0.1em;'>QUANTUM GATES</span>
             </div>
-            <div style='background: rgba(0, 212, 255, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
-                <span style='font-size: 12px; color: #00D4FF; font-weight: 600;'>STATE EXPLORATION</span>
+            <div style='background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1)); 
+            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);'>
+                <span style='font-size: 13px; color: #00D4FF; font-weight: 700; letter-spacing: 0.1em;'>STATE EXPLORATION</span>
             </div>
-            <div style='background: rgba(255, 215, 0, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
-                <span style='font-size: 12px; color: #FFD700; font-weight: 600;'>QUANTUM ML</span>
+            <div style='background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1)); 
+            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);'>
+                <span style='font-size: 13px; color: #FFD700; font-weight: 700; letter-spacing: 0.1em;'>QUANTUM ML</span>
             </div>
-            <div style='background: rgba(57, 255, 20, 0.15); padding: 12px 20px; border-radius: 25px; backdrop-filter: blur(10px);'>
-                <span style='font-size: 12px; color: #39FF14; font-weight: 600;'>HOLOGRAPHIC VISUALS</span>
+            <div style='background: linear-gradient(135deg, rgba(57, 255, 20, 0.2), rgba(57, 255, 20, 0.1)); 
+            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
+            border: 1px solid rgba(57, 255, 20, 0.3); box-shadow: 0 8px 25px rgba(57, 255, 20, 0.2);'>
+                <span style='font-size: 13px; color: #39FF14; font-weight: 700; letter-spacing: 0.1em;'>HOLOGRAPHIC VISUALS</span>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Interactive Holographic Bloch Sphere - Central Visual Element
-    st.markdown("## Interactive Quantum State Hologram")
+    # Enhanced Interactive Holographic Bloch Sphere - Central Visual Element
+    st.markdown("""
+    <div style='margin: 50px 0 30px 0;'>
+        <h2 style='color: #E2E8F0; font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 15px;
+        background: linear-gradient(135deg, #667EEA, #00D4FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>
+            Interactive Quantum State Hologram
+        </h2>
+        <p style='text-align: center; color: #94A3B8; font-size: 16px; margin-bottom: 40px;'>
+            Real-time visualization of quantum superposition states on the Bloch sphere
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
@@ -963,41 +1045,50 @@ if page == "Introduction":
         st.plotly_chart(fig, use_container_width=True, key="intro_holographic_bloch_sphere")
     
     with col2:
-        st.markdown("### Quantum State Analytics")
+        st.markdown("""
+        <div style='margin-bottom: 25px;'>
+            <h3 style='color: #00D4FF; font-size: 24px; font-weight: 700; margin-bottom: 20px;'>
+                Quantum State Analytics
+            </h3>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.markdown(f"""
-        <div class='tech-card'>
-            <h4>Holographic State Representation</h4>
-            <p style='font-family: JetBrains Mono; color: white; font-size: 16px;'>
+        <div class='glass-card' style='padding: 25px; margin: 20px 0; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(102, 126, 234, 0.08));'>
+            <h4 style='color: #667EEA; margin-bottom: 15px; font-size: 18px; font-weight: 700;'>Holographic State Representation</h4>
+            <p style='font-family: JetBrains Mono; color: #FFFFFF; font-size: 18px; margin: 15px 0; text-align: center;
+            background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.3);'>
                 |ψ⟩ = α|0⟩ + β|1⟩
             </p>
-            <p style='color: #FFD700; margin-top: 10px; font-size: 12px;'>
+            <p style='color: #FFD700; margin-top: 12px; font-size: 12px; text-align: center; font-weight: 600; letter-spacing: 0.1em;'>
                 COHERENT QUANTUM SUPERPOSITION
             </p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
-        <div class='metric-card'>
-            <p style='font-size: 11px;'>AMPLITUDE |0⟩</p>
-            <h2 style='font-size: 32px;'>{abs(alpha)**2:.4f}</h2>
-            <p style='color: #667EEA; font-size: 10px;'>QUANTUM PROBABILITY</p>
+        <div class='glass-card' style='padding: 20px; margin: 15px 0; background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(102, 126, 234, 0.06)); text-align: center;'>
+            <p style='font-size: 11px; color: #B0B0C0; margin-bottom: 8px; letter-spacing: 0.1em; font-weight: 600;'>AMPLITUDE |0⟩</p>
+            <h2 style='font-size: 36px; color: #667EEA; margin: 8px 0; font-weight: 800;'>{abs(alpha)**2:.4f}</h2>
+            <p style='color: #667EEA; font-size: 10px; letter-spacing: 0.1em; font-weight: 500;'>QUANTUM PROBABILITY</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
-        <div class='metric-card'>
-            <p style='font-size: 11px;'>AMPLITUDE |1⟩</p>
-            <h2 style='font-size: 32px;'>{abs(beta)**2:.4f}</h2>
-            <p style='color: #00D4FF; font-size: 10px;'>QUANTUM PROBABILITY</p>
+        <div class='glass-card' style='padding: 20px; margin: 15px 0; background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 212, 255, 0.06)); text-align: center;'>
+            <p style='font-size: 11px; color: #B0B0C0; margin-bottom: 8px; letter-spacing: 0.1em; font-weight: 600;'>AMPLITUDE |1⟩</p>
+            <h2 style='font-size: 36px; color: #00D4FF; margin: 8px 0; font-weight: 800;'>{abs(beta)**2:.4f}</h2>
+            <p style='color: #00D4FF; font-size: 10px; letter-spacing: 0.1em; font-weight: 500;'>QUANTUM PROBABILITY</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown(f"""
-        <div class='tech-card'>
-            <h4>Complex Amplitudes</h4>
-            <p style='color: white;'>α = {alpha.real:.3f} + {alpha.imag:.3f}i</p>
-            <p style='color: white;'>β = {beta.real:.3f} + {beta.imag:.3f}i</p>
+        <div class='glass-card' style='padding: 25px; margin: 20px 0; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 215, 0, 0.08));'>
+            <h4 style='color: #00D4FF; margin-bottom: 15px; font-size: 18px; font-weight: 700;'>Complex Amplitudes</h4>
+            <div style='background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 212, 255, 0.2);'>
+                <p style='color: #FFFFFF; font-family: JetBrains Mono; font-size: 14px; margin: 8px 0;'>α = {alpha.real:.3f} + {alpha.imag:.3f}i</p>
+                <p style='color: #FFFFFF; font-family: JetBrains Mono; font-size: 14px; margin: 8px 0;'>β = {beta.real:.3f} + {beta.imag:.3f}i</p>
+            </div>
             <div style='margin-top: 15px; padding: 10px; background: rgba(0, 212, 255, 0.1); border-radius: 8px;'>
                 <p style='color: #00D4FF; font-weight: 600; margin: 0;'>Normalization Check</p>
                 <p style='color: #39FF14; margin: 5px 0 0 0;'>|α|² + |β|² = {abs(alpha)**2 + abs(beta)**2:.6f}</p>

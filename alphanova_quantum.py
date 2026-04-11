@@ -20,7 +20,6 @@ import time
 import json
 from datetime import datetime
 import hashlib
-import pandas as pd
 
 # AlphaNova Quantum Configuration
 st.set_page_config(
@@ -2167,7 +2166,7 @@ elif section_id == "quantum_ml":
     st.markdown("# 🧠 Quantum Machine Learning")
     st.markdown('<span class="alphanova-status status-emerging">Emerging Research</span>', unsafe_allow_html=True)
     
-    ml_tabs = st.tabs(["QML Fundamentals", "Variational Circuits", "Quantum Kernels", "Hybrid Models"])
+    ml_tabs = st.tabs(["QML Fundamentals", "Variational Circuits", "Quantum Kernels", "QAOA Optimization", "Tensor Networks"])
     
     with ml_tabs[0]:
         st.markdown("""
@@ -2181,55 +2180,473 @@ elif section_id == "quantum_ml":
         
         with col1:
             st.markdown("""
-            ### Key Concepts
+            ### Mathematical Foundations
             
-            **Quantum Feature Maps:**
-            - Encode classical data into quantum states
-            - Potentially exponential feature space
-            - Non-linear transformations through quantum evolution
+            **Quantum Feature Maps φ(x):**
             
-            **Variational Quantum Circuits:**
-            - Parameterized quantum circuits (PQCs)
-            - Classical optimization of quantum parameters
-            - Hybrid quantum-classical approach
+            Classical data x ∈ ℝⁿ mapped to quantum states:
+            |φ(x)⟩ = U(x)|0⟩⊗ⁿ
             
-            **Quantum Advantage Sources:**
-            - **Exponential Hilbert space:** 2^n dimensions
-            - **Quantum interference:** Constructive/destructive amplitudes
-            - **Entanglement:** Non-local correlations in data
+            Common encodings:
+            - **Angle encoding:** RY(xᵢ)|0⟩ 
+            - **Amplitude encoding:** Σᵢ xᵢ|i⟩/||x||
+            - **Basis encoding:** |x₁x₂...xₙ⟩
+            
+            **Quantum Kernels:**
+            
+            K(x,x') = |⟨φ(x)|φ(x')⟩|²
+            
+            Potentially exponential separation from classical kernels.
+            
+            **Parameterized Quantum Circuits:**
+            
+            f(x;θ) = ⟨0|U†(θ)†φ(x)†OU(θ)φ(x)|0⟩
+            
+            Where O is the observable operator.
             """)
             
         with col2:
-            # QML landscape visualization
-            st.markdown("### QML Algorithm Classes")
+            st.markdown("### Quantum Advantage Analysis")
             
-            qml_types = ["Quantum Kernels", "Variational QML", "Quantum GANs", "Quantum RL"]
-            advantages = [85, 70, 60, 45]  # Relative advantage scores
+            # Feature space dimension comparison
+            n_features = st.slider("Number of Features", 2, 10, 4, key="qml_features")
+            
+            classical_dim = n_features  # Linear feature map
+            polynomial_dim = n_features**2  # Polynomial kernel
+            quantum_dim = 2**n_features  # Quantum Hilbert space
             
             fig = go.Figure(data=[
-                go.Bar(x=qml_types, y=advantages, 
-                       marker_color=['#22D3EE', '#3B82F6', '#8B5CF6', '#F59E0B'])
+                go.Bar(name='Classical Linear', x=['Feature Space Dimension'], y=[classical_dim], marker_color='#EF4444'),
+                go.Bar(name='Polynomial Kernel', x=['Feature Space Dimension'], y=[polynomial_dim], marker_color='#F59E0B'),
+                go.Bar(name='Quantum Hilbert', x=['Feature Space Dimension'], y=[quantum_dim], marker_color='#22D3EE')
             ])
+            
             fig.update_layout(
-                title="QML Potential Advantage by Algorithm Type",
-                yaxis_title="Potential Advantage (%)",
+                title=f"Feature Space Comparison (n={n_features})",
+                yaxis_title="Dimension",
+                yaxis_type="log",
+                barmode='group',
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
                 font_color='#E2E8F0'
             )
             st.plotly_chart(fig, width='stretch')
+            
+            # Quantum advantage metrics
+            if quantum_dim > 100:
+                advantage = quantum_dim / max(classical_dim, polynomial_dim)
+                st.metric("Quantum Advantage", f"{advantage:.1f}x", 
+                         delta=f"Exponential scaling: 2^{n_features}")
+    
+    with ml_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Variational Quantum Circuits (VQCs)</h3>
+            <p>Parameterized quantum circuits optimized classically for machine learning tasks.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### VQC Architecture Design
+            
+            **Layer Structure:**
+            1. **Data Encoding:** U_enc(x)
+            2. **Variational Layer:** U_var(θ)
+            3. **Entangling Gates:** CNOT, CZ, etc.
+            4. **Measurement:** ⟨Z⟩, ⟨X⟩, ⟨Y⟩
+            
+            **Training Process:**
+            
+            Cost function: C(θ) = 1/N Σᵢ L(f(xᵢ;θ), yᵢ)
+            
+            Gradient: ∂C/∂θⱼ via parameter-shift rule:
+            
+            ∂f/∂θⱼ = [f(θ + π/2·eⱼ) - f(θ - π/2·eⱼ)]/2
+            
+            **Expressivity vs Trainability:**
+            - More parameters → Higher expressivity
+            - Deeper circuits → Barren plateaus
+            - Circuit design critical for performance
+            """)
+            
+            # VQC parameters
+            st.markdown("### Circuit Configuration")
+            vqc_layers = st.slider("Number of Layers", 1, 8, 3, key="vqc_layers")
+            vqc_qubits = st.slider("Number of Qubits", 2, 6, 4, key="vqc_qubits")
+            entangling_type = st.selectbox(
+                "Entangling Pattern",
+                ["Linear", "Circular", "All-to-All"],
+                key="entangle_type"
+            )
+            
+        with col2:
+            # Gradient visualization
+            st.markdown("### Gradient Landscape Analysis")
+            
+            # Simulate barren plateau effect
+            layer_range = np.arange(1, 11)
+            gradient_magnitude = np.exp(-layer_range / 3) + 0.01 * np.random.random(len(layer_range))
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=layer_range, y=gradient_magnitude,
+                mode='lines+markers',
+                name='Gradient Magnitude',
+                line=dict(color='#EF4444', width=3),
+                marker=dict(size=8)
+            ))
+            
+            # Highlight barren plateau region
+            fig.add_hrect(y0=0, y1=0.05, 
+                         fillcolor="rgba(239, 68, 68, 0.2)", 
+                         annotation_text="Barren Plateau", 
+                         annotation_position="top left")
+            
+            fig.update_layout(
+                title="Barren Plateau Effect vs Circuit Depth",
+                xaxis_title="Number of Layers",
+                yaxis_title="Gradient Magnitude",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Circuit complexity metrics
+            total_params = vqc_layers * vqc_qubits * 3  # 3 rotation gates per qubit per layer
+            circuit_depth = vqc_layers * 2  # Approx depth including entangling
+            
+            st.metric("Total Parameters", total_params)
+            st.metric("Circuit Depth", circuit_depth)
+            
+            if circuit_depth > 20:
+                st.warning("⚠️ Deep circuit may suffer from barren plateaus")
+            else:
+                st.info("✅ Circuit depth suitable for training")
+    
+    with ml_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Kernel Methods</h3>
+            <p>Quantum-enhanced kernel methods for classification and regression tasks.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Quantum Kernel Theory
+            
+            **Quantum Kernel Definition:**
+            
+            K_q(xᵢ, xⱼ) = |⟨φ(xᵢ)|φ(xⱼ)⟩|²
+            
+            where φ(x) is the quantum feature map.
+            
+            **Kernel Properties:**
+            - Positive semi-definite by construction
+            - Symmetric: K_q(xᵢ, xⱼ) = K_q(xⱼ, xᵢ)
+            - Bounded: 0 ≤ K_q(x,x') ≤ 1
+            
+            **Feature Map Examples:**
+            
+            1. **IQP (Instantaneous Quantum Polynomial):**
+               U_IQP(x) = ∏ᵢ RZ(xᵢ) ∏ᵢ,ⱼ RZZ(xᵢxⱼ)
+            
+            2. **Data Re-uploading:**
+               U(x) = ∏ₗ [∏ᵢ RY(θₗᵢ + xᵢ) ∏ᵢ CNOT_{i,i+1}]
+            
+            **Quantum Advantage Sources:**
+            - Non-classical correlations
+            - Exponential feature space dimension
+            - Interference effects in computation
+            """)
+            
+        with col2:
+            st.markdown("### Kernel Comparison Experiment")
+            
+            # Generate synthetic dataset
+            kernel_demo = st.button("Generate Quantum vs Classical Kernel Comparison", key="kernel_demo")
+            
+            if kernel_demo:
+                np.random.seed(42)
+                n_samples = 50
+                
+                # Create XOR-like dataset that's hard for linear kernels
+                angles = np.random.uniform(0, 2*np.pi, n_samples)
+                radii = np.random.uniform(0.5, 1.5, n_samples)
+                X = np.column_stack([radii * np.cos(angles), radii * np.sin(angles)])
+                y = ((X[:, 0] > 0) == (X[:, 1] > 0)).astype(int)
+                
+                # Simulate quantum vs classical kernels
+                classical_margin = 0.3 + 0.1 * np.random.random()
+                quantum_margin = 0.8 + 0.1 * np.random.random()
+                
+                # Visualization
+                colors = ['#EF4444', '#22D3EE']
+                fig = go.Figure()
+                
+                for class_idx in [0, 1]:
+                    mask = y == class_idx
+                    fig.add_trace(go.Scatter(
+                        x=X[mask, 0], y=X[mask, 1],
+                        mode='markers',
+                        name=f'Class {class_idx}',
+                        marker=dict(color=colors[class_idx], size=10, opacity=0.7)
+                    ))
+                
+                fig.update_layout(
+                    title="XOR-like Dataset for Kernel Comparison",
+                    xaxis_title="Feature 1",
+                    yaxis_title="Feature 2",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#E2E8F0'
+                )
+                st.plotly_chart(fig, width='stretch')
+                
+                # Performance comparison
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("RBF Kernel Accuracy", f"{65 + 10*classical_margin:.1f}%")
+                with col_b:
+                    st.metric("Quantum Kernel Accuracy", f"{75 + 15*quantum_margin:.1f}%")
+                
+                improvement = (75 + 15*quantum_margin) - (65 + 10*classical_margin)
+                if improvement > 10:
+                    st.success(f"✅ Quantum kernel shows {improvement:.1f}% improvement!")
+    
+    with ml_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Approximate Optimization Algorithm (QAOA)</h3>
+            <p>Hybrid quantum-classical algorithm for combinatorial optimization problems.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### QAOA Framework
+            
+            **Problem Setup:**
+            
+            Optimize: ⟨ψ(γ,β)|C|ψ(γ,β)⟩
+            
+            where C is the cost Hamiltonian.
+            
+            **Ansatz State:**
+            
+            |ψ(γ,β)⟩ = e^(-iβₚH_B)e^(-iγₚH_C)...e^(-iβ₁H_B)e^(-iγ₁H_C)|+⟩^⊗n
+            
+            **Components:**
+            - **H_C:** Cost Hamiltonian (problem-specific)
+            - **H_B:** Mixer Hamiltonian (typically Σᵢ Xᵢ)
+            - **γ, β:** Variational parameters
+            - **p:** QAOA depth (number of layers)
+            
+            **Max-Cut Example:**
+            
+            H_C = ½ Σ_{(i,j)∈E} (1 - ZᵢZⱼ)
+            
+            Classical solution: NP-hard
+            QAOA approximation ratio: > 0.6924 for p=1
+            """)
+            
+            # QAOA parameters
+            st.markdown("### QAOA Configuration")
+            qaoa_p = st.slider("QAOA Depth (p)", 1, 5, 2, key="qaoa_depth")
+            graph_size = st.slider("Graph Size (vertices)", 3, 8, 4, key="graph_size")
+            edge_probability = st.slider("Edge Probability", 0.3, 1.0, 0.6, key="edge_prob")
+            
+        with col2:
+            st.markdown("### Max-Cut QAOA Simulation")
+            
+            # Generate random graph
+            if st.button("Run QAOA Max-Cut", key="qaoa_run"):
+                # Simulate QAOA optimization
+                np.random.seed(42)
+                
+                # Generate adjacency matrix
+                adj_matrix = np.random.random((graph_size, graph_size)) < edge_probability
+                adj_matrix = np.triu(adj_matrix) + np.triu(adj_matrix).T  # Make symmetric
+                np.fill_diagonal(adj_matrix, 0)
+                
+                num_edges = np.sum(adj_matrix) // 2
+                
+                # Simulate QAOA convergence
+                iterations = np.arange(0, 50)
+                
+                # Theoretical max-cut value (upper bound)
+                max_cut_upper = num_edges
+                classical_greedy = int(0.85 * num_edges)  # Greedy approximation
+                
+                # QAOA approximation (starts random, converges)
+                qaoa_values = classical_greedy * 0.5 + (classical_greedy * 0.4) * (
+                    1 - np.exp(-iterations / 15)) + 0.05 * num_edges * np.random.random(len(iterations))
+                
+                fig = go.Figure()
+                
+                fig.add_trace(go.Scatter(
+                    x=iterations, y=qaoa_values,
+                    mode='lines+markers',
+                    name=f'QAOA (p={qaoa_p})',
+                    line=dict(color='#22D3EE', width=3)
+                ))
+                
+                fig.add_hline(y=classical_greedy, line_dash="dash", 
+                             line_color="#F59E0B", annotation_text="Classical Greedy")
+                fig.add_hline(y=max_cut_upper, line_dash="dash", 
+                             line_color="#10B981", annotation_text="Optimal Upper Bound")
+                
+                fig.update_layout(
+                    title=f"QAOA Max-Cut Optimization ({num_edges} edges)",
+                    xaxis_title="Iteration",
+                    yaxis_title="Cut Value",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#E2E8F0'
+                )
+                st.plotly_chart(fig, width='stretch')
+                
+                # Performance metrics
+                final_qaoa = qaoa_values[-1]
+                approximation_ratio = final_qaoa / max_cut_upper
+                classical_ratio = classical_greedy / max_cut_upper
+                
+                col_a, col_b, col_c = st.columns(3)
+                with col_a:
+                    st.metric("QAOA Cut Value", f"{final_qaoa:.1f}")
+                with col_b:
+                    st.metric("Approximation Ratio", f"{approximation_ratio:.3f}")
+                with col_c:
+                    improvement = approximation_ratio - classical_ratio
+                    st.metric("vs Classical", f"{improvement:+.3f}")
+    
+    with ml_tabs[4]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Tensor Networks for ML</h3>
+            <p>Matrix Product States and tensor decomposition methods for quantum machine learning.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Matrix Product States (MPS)
+            
+            **MPS Representation:**
+            
+            |ψ⟩ = Σ_{i₁...iₙ} A¹ᵢ₁ A²ᵢ₂ ... Aⁿᵢₙ |i₁i₂...iₙ⟩
+            
+            where Aᵏᵢₖ are rank-3 tensors.
+            
+            **Key Advantages:**
+            - Efficient classical representation
+            - Polynomial memory scaling
+            - Natural for 1D correlations
+            - DMRG optimization
+            
+            **Bond Dimension χ:**
+            - Controls entanglement capacity
+            - Exponential scaling: χ = 2^(S_EE)
+            - Compression vs accuracy tradeoff
+            
+            **Tree Tensor Networks (TTN):**
+            - Hierarchical structure
+            - Better for higher-dimensional problems
+            - Reduced bond dimensions
+            """)
+            
+            # TN parameters
+            st.markdown("### Tensor Network Configuration")
+            tn_qubits = st.slider("System Size (qubits)", 4, 12, 8, key="tn_qubits")
+            bond_dim = st.slider("Bond Dimension χ", 2, 32, 8, key="bond_dim")
+            tn_type = st.selectbox("Network Type", ["MPS", "Tree TN", "PEPS"], key="tn_type")
+            
+        with col2:
+            st.markdown("### Entanglement Scaling Analysis")
+            
+            # Entanglement area law visualization
+            system_sizes = np.arange(4, 21)
+            
+            # Different scaling laws
+            area_law = np.log2(bond_dim) * np.ones_like(system_sizes)  # Constant for area law
+            volume_law = 0.5 * system_sizes  # Linear scaling
+            efficient_rep = np.minimum(area_law, system_sizes/4)  # MPS efficiency limit
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=system_sizes, y=area_law,
+                mode='lines',
+                name='Area Law (MPS efficient)',
+                line=dict(color='#10B981', width=3)
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=system_sizes, y=volume_law,
+                mode='lines',
+                name='Volume Law (exponential)',
+                line=dict(color='#EF4444', width=3, dash='dash')
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=system_sizes, y=efficient_rep,
+                mode='lines',
+                name=f'MPS χ={bond_dim}',
+                line=dict(color='#22D3EE', width=3)
+            ))
+            
+            fig.update_layout(
+                title="Entanglement Scaling in Tensor Networks",
+                xaxis_title="System Size (qubits)",
+                yaxis_title="Entanglement Entropy",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Memory requirements
+            mps_memory = tn_qubits * bond_dim**2 * 2  # Complex numbers
+            exact_memory = 2**tn_qubits * 2
+            
+            compression_ratio = exact_memory / mps_memory if mps_memory > 0 else float('inf')
+            
+            st.metric("MPS Memory (complex numbers)", f"{mps_memory:,}")
+            st.metric("Exact Memory", f"{exact_memory:,}")
+            if compression_ratio < 1e6:
+                st.metric("Compression Ratio", f"{compression_ratio:.0f}x")
+            else:
+                st.metric("Compression Ratio", ">1M x")
+            
+            if compression_ratio > 100:
+                st.success("✅ Significant memory advantage for MPS")
+            elif compression_ratio > 10:
+                st.info("✅ Moderate memory savings")
+            else:
+                st.warning("⚠️ Limited compression benefit")
 
 elif section_id == "hardware_arch":
-    st.markdown("# 🔩 Hardware Architecture")
+    st.markdown("# 🔩 Quantum Hardware Architecture")
     st.markdown('<span class="alphanova-status status-research">Physical Systems Module</span>', unsafe_allow_html=True)
     
-    hardware_tabs = st.tabs(["Qubit Technologies", "Superconducting Systems", "Trapped Ions", "NISQ Limitations"])
+    hardware_tabs = st.tabs(["Qubit Technologies", "Superconducting Systems", "Trapped Ion Platforms", "Photonic Quantum Computing", "NISQ Characteristics"])
     
     with hardware_tabs[0]:
         st.markdown("""
         <div class="alphanova-card">
             <h3>Physical Qubit Implementation Technologies</h3>
-            <p>Overview of different physical systems used to realize quantum bits and quantum computation.</p>
+            <p>Comprehensive overview of different physical systems used to realize quantum bits and quantum computation.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -2237,38 +2654,505 @@ elif section_id == "hardware_arch":
         
         with col1:
             st.markdown("""
-            ### Major Qubit Technologies
+            ### Major Qubit Technologies Comparison
             
-            **Superconducting Qubits:**
-            - Josephson junctions in superconducting circuits
-            - Fast gates (~10-100 ns)
-            - Electrical control and readout
-            - Leading commercial approach (IBM, Google)
+            **Superconducting Qubits (Josephson Junctions):**
+            - **Energy Scale:** ħω ≈ 1-10 GHz (5-50 μeV)
+            - **Operating Temperature:** 10-50 mK (dilution refrigerator)
+            - **Gate Times:** 10-100 ns
+            - **Coherence:** T₁ ≈ 10-100 μs, T₂* ≈ 1-50 μs
+            - **Connectivity:** Planar nearest-neighbor
+            - **Readout:** Microwave cavity QND measurement
             
             **Trapped Ion Qubits:**
-            - Atomic ions confined by electromagnetic fields
-            - Long coherence times (~100 μs - 1 ms)
-            - Laser-based control
-            - High-fidelity two-qubit gates
+            - **Species:** ⁹⁰Be⁺, ¹³³Ba⁺, ⁴³Ca⁺, ¹³Yb⁺
+            - **Trap Frequency:** ωᵣ ≈ 1-5 MHz
+            - **Gate Times:** 10-100 μs (laser pulses)
+            - **Coherence:** T₁ > 1 ms, T₂ ≈ 100 μs - 1 ms
+            - **Connectivity:** All-to-all via Coulomb interaction
+            - **Two-qubit Gates:** Mølmer-Sørensen, CNOT via motional modes
             
-            **Photonic Qubits:**
-            - Polarization or path encoding of photons
-            - Room temperature operation
-            - Network connectivity advantages
-            - Challenging for universal computation
+            **Neutral Atom Qubits:**
+            - **Species:** Cs, Rb, Sr (optical tweezers)
+            - **Gate Mechanism:** Rydberg blockade interaction
+            - **Connectivity:** Reconfigurable via optical lattices
+            - **Scalability:** 100+ qubits demonstrated
             """)
-
+            
+        with col2:
+            st.markdown("### Performance Comparison")
+            
+            # Technology comparison metrics
+            tech_names = ["Superconducting", "Trapped Ion", "Neutral Atom", "Photonic"]
+            gate_speeds = [50, 50000, 10000, 100]  # Gate time in ns
+            coherence_times = [50, 1000, 100, float('inf')]  # T2 in microseconds
+            connectivity = [4, 20, 100, 10]  # Relative connectivity score
+            
+            # Gate speed comparison
+            fig_speed = go.Figure(data=[
+                go.Bar(x=tech_names, y=gate_speeds, 
+                       marker_color=['#22D3EE', '#10B981', '#F59E0B', '#8B5CF6'])
+            ])
+            fig_speed.update_layout(
+                title="Gate Times (ns) - Lower is Better",
+                yaxis_title="Gate Time (ns)",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig_speed, width='stretch')
+            
+            # Coherence comparison
+            fig_coherence = go.Figure(data=[
+                go.Bar(x=tech_names[:3], y=coherence_times[:3],  # Exclude infinite photonic
+                       marker_color=['#22D3EE', '#10B981', '#F59E0B'])
+            ])
+            fig_coherence.update_layout(
+                title="Coherence Times T₂ (μs) - Higher is Better",
+                yaxis_title="T₂ (μs)",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig_coherence, width='stretch')
+    
+    with hardware_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Superconducting Quantum Processors</h3>
+            <p>Detailed analysis of Josephson junction-based quantum computers and their operating principles.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Superconducting Qubit Physics
+            
+            **Josephson Junction Hamiltonian:**
+            
+            H = 4E_C(n - n_g)² - E_J cos(φ)
+            
+            - **E_C = e²/2C:** Charging energy
+            - **E_J:** Josephson coupling energy  
+            - **φ:** Superconducting phase difference
+            - **n:** Cooper pair number operator
+            
+            **Qubit Types:**
+            
+            1. **Transmon (E_J ≫ E_C):**
+               - Charge noise insensitive
+               - ω₁₀ ≈ 4-8 GHz
+               - Anharmonicity α ≈ -200 to -300 MHz
+            
+            2. **Flux Qubit:**
+               - Persistent current states
+               - Flux noise sensitivity
+               - Large dipole moment
+            
+            3. **Fluxonium (E_C ≈ E_J):**
+               - Protected against charge and flux noise
+               - Long coherence times
+               - Lower frequency operation
+            """)
+            
+            # Superconducting qubit parameters
+            st.markdown("### Transmon Parameters")
+            ej_over_ec = st.slider("E_J/E_C Ratio", 10, 100, 50, key="ej_ec_ratio")
+            charging_energy = st.slider("Charging Energy E_C (MHz)", 100, 500, 300, key="ec_mhz")
+            
+        with col2:
+            # Calculate transmon properties
+            josephson_energy = ej_over_ec * charging_energy
+            
+            # Transmon frequency (approximate)
+            qubit_freq = np.sqrt(8 * josephson_energy * charging_energy) * 1e-3  # Convert to GHz
+            anharmonicity = -charging_energy  # Approximate anharmonicity
+            
+            st.markdown("### Calculated Properties")
+            st.metric("Qubit Frequency", f"{qubit_freq:.2f} GHz")
+            st.metric("Anharmonicity", f"{anharmonicity:.0f} MHz")
+            
+            # Sweet spot analysis
+            flux_range = np.linspace(-0.1, 0.1, 100)  # Flux deviation from sweet spot
+            freq_sensitivity = qubit_freq + 0.01 * flux_range**2  # Quadratic sensitivity
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=flux_range, y=freq_sensitivity,
+                mode='lines',
+                name='Qubit Frequency',
+                line=dict(color='#22D3EE', width=3)
+            ))
+            
+            fig.update_layout(
+                title="Transmon Frequency vs Flux Noise",
+                xaxis_title="Flux Deviation (Φ₀)",
+                yaxis_title="Frequency (GHz)",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # State-of-the-art systems
+            st.markdown("### Current Superconducting Systems")
+            
+            systems_data = {
+                "IBM Condor": {"qubits": 1121, "connectivity": "Heavy-hex", "year": 2023},
+                "Google Sycamore": {"qubits": 70, "connectivity": "2D grid", "year": 2019},
+                "Rigetti Aspen-M": {"qubits": 80, "connectivity": "Octagonal", "year": 2022},
+                "IonQ Forte": {"qubits": 32, "connectivity": "All-to-all", "year": 2023}
+            }
+            
+            for system, specs in systems_data.items():
+                st.write(f"**{system}:** {specs['qubits']} qubits, {specs['connectivity']} ({specs['year']})")
+    
+    with hardware_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Trapped Ion Quantum Computers</h3>
+            <p>Ion trap quantum computing systems using electromagnetic confinement and laser-driven operations.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Ion Trap Physics
+            
+            **Paul Trap Confinement:**
+            
+            Effective potential: V_eff = ½ mω²r²
+            
+            **Trap frequency:** ω = (qV/mr₀²)√(α/2Ω²)
+            
+            where:
+            - q: ion charge
+            - V: RF voltage amplitude  
+            - r₀: electrode spacing
+            - Ω: RF drive frequency
+            
+            **Qubit Encoding:**
+            
+            1. **Hyperfine States:** |0⟩ = |F=0, m_F=0⟩, |1⟩ = |F=1, m_F=0⟩
+            2. **Zeeman States:** Magnetic field insensitive transitions
+            3. **Optical Transitions:** ²S₁/₂ ↔ ²D₅/₂ (clock transitions)
+            
+            **Gate Operations:**
+            
+            - **Single-qubit:** Laser pulses (Rabi oscillations)
+            - **Two-qubit:** Mølmer-Sørensen gates via motional modes
+            - **Readout:** State-dependent fluorescence
+            
+            **Key Advantages:**
+            - Identical qubits (same atomic species)
+            - Long coherence times
+            - High-fidelity gates (>99.9%)
+            - All-to-all connectivity
+            """)
+            
+            # Ion trap parameters
+            st.markdown("### Trap Configuration")
+            num_ions = st.slider("Number of Ions", 2, 32, 8, key="num_ions")
+            trap_freq = st.slider("Trap Frequency (MHz)", 0.5, 5.0, 2.0, step=0.1, key="trap_freq")
+            ion_species = st.selectbox(
+                "Ion Species", 
+                ["⁹⁰Be⁺", "¹³³Ba⁺", "⁴³Ca⁺", "¹³Yb⁺"],
+                key="ion_species"
+            )
+            
+        with col2:
+            st.markdown("### Motional Mode Analysis")
+            
+            # Calculate normal modes for ion chain
+            mode_freqs = []
+            for k in range(num_ions):
+                # Approximate mode frequencies for linear chain
+                mode_freq = trap_freq * np.sqrt(1 + 2 * np.sin(np.pi * k / (2 * num_ions))**2)
+                mode_freqs.append(mode_freq)
+            
+            # Visualization of normal modes
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=list(range(num_ions)), y=mode_freqs,
+                mode='lines+markers',
+                name='Normal Mode Frequencies',
+                line=dict(color='#22D3EE', width=3),
+                marker=dict(size=8)
+            ))
+            
+            fig.update_layout(
+                title=f"Normal Mode Spectrum ({num_ions} ions)",
+                xaxis_title="Mode Number",
+                yaxis_title="Frequency (MHz)",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Gate time analysis
+            # Two-qubit gate time scales with mode frequency
+            fastest_mode_freq = min(mode_freqs)
+            gate_time = 1 / (2 * fastest_mode_freq)  # Approximate scaling
+            
+            st.markdown("### Performance Metrics")
+            st.metric("Center-of-Mass Mode", f"{mode_freqs[0]:.2f} MHz")
+            st.metric("Breathing Mode", f"{mode_freqs[-1]:.2f} MHz")
+            st.metric("Typical Gate Time", f"{gate_time*1000:.1f} μs")
+            
+            # Ion spacing
+            # Equilibrium spacing scales as n^(2/3) for long chains
+            spacing_microns = 5.0 * (num_ions/8)**(2/3)  # Approximate scaling
+            st.metric("Ion Spacing", f"{spacing_microns:.1f} μm")
+            
+            # Decoherence analysis
+            if num_ions <= 10:
+                st.success("✅ Small chain: Excellent coherence")
+            elif num_ions <= 20:
+                st.info("✅ Medium chain: Good performance")
+            else:
+                st.warning("⚠️ Large chain: Challenging mode control")
+    
+    with hardware_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Photonic Quantum Computing</h3>
+            <p>Quantum computation using photons as information carriers with linear optical elements.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Photonic Quantum Information
+            
+            **Encoding Schemes:**
+            
+            1. **Polarization Encoding:**
+               - |0⟩ = |H⟩ (horizontal), |1⟩ = |V⟩ (vertical)
+               - Single-photon qubits
+               - Easy manipulation with wave plates
+            
+            2. **Dual-Rail Encoding:**
+               - |0⟩ = |10⟩, |1⟩ = |01⟩ (spatial modes)
+               - More resources but better for computation
+               - Natural for interference-based gates
+            
+            3. **Time-Bin Encoding:**
+               - Early/late arrival times
+               - Robust against decoherence
+               - Compatible with fiber networks
+            
+            **Linear Optical Elements:**
+            
+            - **Beam Splitters:** Hadamard-like operations
+            - **Phase Shifters:** Z rotations
+            - **Wave Plates:** Polarization rotations
+            - **Mirrors/Prisms:** Routing and delays
+            
+            **Advantages:**
+            - Room temperature operation
+            - Natural for networking
+            - Low decoherence (no T₁, T₂ limits)
+            - Compatible with telecommunications
+            """)
+            
+            # Photonic system parameters
+            st.markdown("### System Configuration")
+            encoding_type = st.selectbox(
+                "Encoding Type",
+                ["Polarization", "Dual-Rail", "Time-Bin"],
+                key="photonic_encoding"
+            )
+            
+            num_modes = st.slider("Number of Spatial Modes", 2, 16, 8, key="photonic_modes")
+            photon_rate = st.slider("Photon Generation Rate (MHz)", 1, 100, 10, key="photon_rate")
+            
+        with col2:
+            st.markdown("### Linear Optical Quantum Computing")
+            
+            # Success probability for linear optical gates
+            if encoding_type == "Dual-Rail":
+                # Two-qubit gates in dual-rail have low success probability
+                n_qubits = num_modes // 2
+                gate_success_prob = 1/9  # CNOT gate success probability
+            else:
+                n_qubits = num_modes
+                gate_success_prob = 0.5
+            
+            # Circuit depth vs success probability
+            depths = np.arange(1, 21)
+            circuit_success = gate_success_prob ** depths
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=depths, y=circuit_success,
+                mode='lines+markers',
+                name='Circuit Success Probability',
+                line=dict(color='#EF4444', width=3),
+                marker=dict(size=6)
+            ))
+            
+            # Add threshold lines
+            fig.add_hline(y=0.5, line_dash="dash", line_color="#F59E0B", 
+                         annotation_text="50% threshold")
+            fig.add_hline(y=0.1, line_dash="dash", line_color="#64748B", 
+                         annotation_text="10% threshold")
+            
+            fig.update_layout(
+                title=f"Linear Optics Success Rate ({encoding_type})",
+                xaxis_title="Circuit Depth",
+                yaxis_title="Success Probability",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Performance metrics
+            st.metric("Effective Qubits", n_qubits)
+            st.metric("Gate Success Rate", f"{gate_success_prob:.1%}")
+            
+            # Resource requirements
+            if encoding_type == "Dual-Rail":
+                photons_per_qubit = 1
+                classical_postprocessing = "High"
+            else:
+                photons_per_qubit = 1  
+                classical_postprocessing = "Medium"
+            
+            st.metric("Photons per Qubit", photons_per_qubit)
+            st.write(f"**Classical Postprocessing:** {classical_postprocessing}")
+            
+            # Current limitations
+            if gate_success_prob < 0.2:
+                st.warning("⚠️ Low gate success rate requires significant overhead")
+            else:
+                st.info("✅ Reasonable success rate for near-term applications")
+    
+    with hardware_tabs[4]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>NISQ Era Characteristics and Limitations</h3>
+            <p>Understanding the current capabilities and constraints of Noisy Intermediate-Scale Quantum devices.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### NISQ Regime Definition
+            
+            **Scale:** 10-1000 qubits
+            **Noise:** No error correction
+            **Depth:** Limited by decoherence
+            **Applications:** Heuristic algorithms
+            
+            **Key Limitations:**
+            
+            1. **Quantum Volume:**
+               QV = min(n, d)² where n = qubits, d = depth
+               Current record: QV = 524,288 (IonQ)
+            
+            2. **Gate Fidelity:**
+               - Single-qubit: 99.8-99.95%
+               - Two-qubit: 99.0-99.8%
+               - Measurement: 99.5-99.9%
+            
+            3. **Coherence Time:**
+               - Limits circuit depth
+               - T₁: Energy relaxation
+               - T₂*: Dephasing time
+               - T₂ᵉ: Hahn echo time
+            
+            4. **Connectivity:**
+               - Limited qubit-qubit interactions
+               - SWAP overhead for distant operations
+               - Topology-dependent performance
+            """)
+            
+        with col2:
+            st.markdown("### NISQ Performance Analysis")
+            
+            # NISQ system parameters
+            system_qubits = st.slider("System Qubits", 10, 1000, 100, key="nisq_qubits")
+            gate_fidelity = st.slider("Two-Qubit Gate Fidelity", 0.90, 0.999, 0.995, step=0.001, format="%.3f", key="nisq_fidelity")
+            t2_time = st.slider("T₂* Time (μs)", 1, 200, 50, key="nisq_t2")
+            gate_time = st.slider("Gate Time (ns)", 10, 1000, 100, key="nisq_gate_time")
+            
+            # Calculate maximum coherent depth
+            max_gates = (t2_time * 1000) / gate_time  # Convert μs to ns
+            
+            # Quantum volume estimation
+            max_depth = min(50, max_gates / 5)  # Conservative estimate
+            quantum_volume = min(system_qubits, max_depth)**2
+            
+            # Error accumulation
+            circuit_depths = np.arange(1, 51)
+            error_prob = 1 - gate_fidelity
+            total_error = 1 - (gate_fidelity ** circuit_depths)
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=circuit_depths, y=total_error,
+                mode='lines+markers',
+                name='Circuit Error Rate',
+                line=dict(color='#EF4444', width=3)
+            ))
+            
+            # Error threshold lines
+            fig.add_hline(y=0.1, line_dash="dash", line_color="#F59E0B", 
+                         annotation_text="10% error")
+            fig.add_hline(y=0.5, line_dash="dash", line_color="#64748B", 
+                         annotation_text="50% error")
+            
+            fig.update_layout(
+                title="Error Accumulation vs Circuit Depth",
+                xaxis_title="Circuit Depth (gates)",
+                yaxis_title="Total Error Probability",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Performance metrics
+            st.metric("Estimated Quantum Volume", f"{quantum_volume:,.0f}")
+            st.metric("Max Coherent Gates", f"{max_gates:.0f}")
+            st.metric("Practical Circuit Depth", f"{max_depth:.0f}")
+            
+            # Quality assessment
+            if quantum_volume > 100000:
+                st.success("🏆 Excellent quantum volume for NISQ applications")
+            elif quantum_volume > 10000:
+                st.info("✅ Good quantum volume for near-term algorithms")
+            elif quantum_volume > 1000:
+                st.warning("⚠️ Limited quantum volume - simple problems only")
+            else:
+                st.error("❌ Very limited quantum volume")
 elif section_id == "error_correction":
     st.markdown("# 🛡️ Quantum Error Correction")
     st.markdown('<span class="alphanova-status status-research">Critical Systems Module</span>', unsafe_allow_html=True)
     
-    error_tabs = st.tabs(["Error Types", "Repetition Codes", "Stabilizer Theory", "Fault Tolerance"])
+    error_tabs = st.tabs(["Error Types & Models", "Stabilizer Codes", "Surface Codes", "Fault Tolerance", "Threshold Analysis"])
     
     with error_tabs[0]:
         st.markdown("""
         <div class="alphanova-card">
-            <h3>Quantum Error Types and Decoherence</h3>
-            <p>Understanding the fundamental sources of errors in quantum computation and their impacts on quantum information.</p>
+            <h3>Quantum Error Types and Noise Models</h3>
+            <p>Understanding the fundamental sources of errors in quantum computation and their mathematical description.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -2276,49 +3160,71 @@ elif section_id == "error_correction":
         
         with col1:
             st.markdown("""
-            ### Types of Quantum Errors
+            ### Quantum Error Classification
             
-            **Bit-flip (X) Errors:**
-            - Classical analogy: 0 ↔ 1 flips
-            - Pauli-X rotation on Bloch sphere
-            - Caused by relaxation processes
+            **Pauli Errors (Discrete):**
             
-            **Phase-flip (Z) Errors:**
-            - No classical analogy
-            - Relative phase changes: α|0⟩ + β|1⟩ → α|0⟩ - β|1⟩
-            - Caused by dephasing interactions
-            
-            **Y Errors:**
-            - Combination of bit-flip and phase-flip
-            - Y = iXZ rotation
-            - Less common but still problematic
+            - **X Error (Bit-flip):** X|ψ⟩ = α|1⟩ + β|0⟩
+            - **Z Error (Phase-flip):** Z|ψ⟩ = α|0⟩ - β|1⟩  
+            - **Y Error:** Y = iXZ (both bit and phase flip)
+            - **I Error:** No error (identity)
             
             **Continuous Errors:**
-            - Small rotation errors around any axis
-            - Discretizable into Pauli errors
-            - More realistic than perfect discrete flips
+            
+            Arbitrary rotation: R_n(θ) = cos(θ/2)I - i sin(θ/2)(σ · n)
+            
+            **Error Model:** ε(ρ) = Σ_i p_i σ_i ρ σ_i†
+            
+            **Decoherence Channels:**
+            
+            1. **Amplitude Damping (T₁ process):**
+               ε_AD(ρ) = E_0ρE_0† + E_1ρE_1†
+               E_0 = |0⟩⟨0| + √(1-γ)|1⟩⟨1|, E_1 = √γ|0⟩⟨1|
+            
+            2. **Dephasing (T₂ process):**
+               ε_D(ρ) = (1-p)ρ + pZρZ
+            
+            3. **Depolarizing Channel:**
+               ε_dep(ρ) = (1-p)ρ + (p/3)(XρX + YρY + ZρZ)
             """)
             
         with col2:
-            # Error rate visualization
+            # Error rate simulation
             st.markdown("### Error Rate Analysis")
             
-            error_rate = st.slider("Physical Error Rate", 0.001, 0.1, 0.01, step=0.001, format="%.3f", key="error_rate")
+            error_rate = st.slider("Physical Error Rate (p)", 0.001, 0.1, 0.01, step=0.001, format="%.3f", key="error_rate_qec")
+            error_model = st.selectbox(
+                "Error Model",
+                ["Depolarizing", "Bit-flip only", "Phase-flip only", "Amplitude damping"],
+                key="error_model"
+            )
             
-            # Calculate error probabilities
-            prob_x = error_rate / 3
-            prob_y = error_rate / 3  
-            prob_z = error_rate / 3
-            prob_i = 1 - error_rate  # No error
+            # Calculate error probabilities based on model
+            if error_model == "Depolarizing":
+                p_i = 1 - error_rate
+                p_x = p_y = p_z = error_rate / 3
+            elif error_model == "Bit-flip only":
+                p_i = 1 - error_rate
+                p_x = error_rate
+                p_y = p_z = 0
+            elif error_model == "Phase-flip only":
+                p_i = 1 - error_rate  
+                p_z = error_rate
+                p_x = p_y = 0
+            else:  # Amplitude damping
+                p_i = 1 - error_rate/2
+                p_x = error_rate/2
+                p_y = p_z = error_rate/4
             
+            # Visualization
             fig = go.Figure(data=[
-                go.Bar(x=['No Error (I)', 'Bit-flip (X)', 'Y Error', 'Phase-flip (Z)'], 
-                       y=[prob_i, prob_x, prob_y, prob_z],
+                go.Bar(x=['I (No Error)', 'X (Bit-flip)', 'Y (Both)', 'Z (Phase-flip)'], 
+                       y=[p_i, p_x, p_y, p_z],
                        marker_color=['#10B981', '#EF4444', '#8B5CF6', '#F59E0B'])
             ])
             
             fig.update_layout(
-                title=f"Error Distribution (p = {error_rate:.3f})",
+                title=f"{error_model} Error Distribution",
                 yaxis_title="Probability",
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
@@ -2328,23 +3234,19 @@ elif section_id == "error_correction":
             
             # Error thresholds
             if error_rate < 0.001:
-                st.success("🎯 Excellent error rate for fault tolerance")
+                st.success("🏆 Excellent: Below fault-tolerant threshold")
             elif error_rate < 0.01:
-                st.info("✅ Good error rate, approaching fault-tolerant threshold")
+                st.info("✅ Good: Approaching threshold for surface codes")
+            elif error_rate < 0.1:
+                st.warning("⚠️ Challenging: Above most QEC thresholds")
             else:
-                st.warning("⚠️ High error rate, challenging for error correction")
-
-elif section_id == "complexity_theory":
-    st.markdown("# 📊 Complexity Theory") 
-    st.markdown('<span class="alphanova-status status-research">Theoretical Foundations</span>', unsafe_allow_html=True)
+                st.error("❌ Very high error rate: QEC infeasible")
     
-    complexity_tabs = st.tabs(["Classical vs Quantum", "BQP Complexity Class", "Quantum Speedups", "Limitations"])
-    
-    with complexity_tabs[0]:
+    with error_tabs[1]:
         st.markdown("""
         <div class="alphanova-card">
-            <h3>Classical vs Quantum Computational Complexity</h3>
-            <p>Fundamental differences between classical and quantum computational complexity classes and their implications.</p>
+            <h3>Stabilizer Quantum Error Correction Codes</h3>
+            <p>Mathematical framework for quantum error correction using stabilizer formalism.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -2352,22 +3254,503 @@ elif section_id == "complexity_theory":
         
         with col1:
             st.markdown("""
-            ### Classical Complexity Classes
+            ### Stabilizer Formalism
+            
+            **Stabilizer Group S:**
+            
+            Set of Pauli operators that commute with codewords:
+            S|ψ_L⟩ = +|ψ_L⟩ for all |ψ_L⟩ in code space
+            
+            **Code Parameters [[n,k,d]]:**
+            - n: Total number of physical qubits
+            - k: Number of logical qubits  
+            - d: Code distance (minimum weight error detectable)
+            
+            **Error Detection:**
+            
+            Syndrome s = (s_1, s_2, ..., s_{n-k})
+            s_i = ⟨ψ|g_i|ψ⟩ where g_i are stabilizer generators
+            
+            **Error Correction:**
+            1. Measure syndrome s
+            2. Determine error E from syndrome
+            3. Apply correction E†
+            
+            **Examples:**
+            
+            1. **Shor's 9-qubit code [[9,1,3]]:**
+               Corrects any single qubit error
+               
+            2. **Steane code [[7,1,3]]:**
+               CSS code, more efficient than Shor's
+               
+            3. **Surface code [[d²,1,d]]:**
+               2D topological code, highest threshold
+            """)
+            
+        with col2:
+            st.markdown("### Code Comparison")
+            
+            # Code selection
+            code_type = st.selectbox(
+                "Select Stabilizer Code",
+                ["Shor [[9,1,3]]", "Steane [[7,1,3]]", "Surface [[d²,1,d]]", "Color [[15,1,3]]"],
+                key="stabilizer_code"
+            )
+            
+            # Code properties
+            code_properties = {
+                "Shor [[9,1,3]]": {"n": 9, "k": 1, "d": 3, "threshold": 0.001, "overhead": 9},
+                "Steane [[7,1,3]]": {"n": 7, "k": 1, "d": 3, "threshold": 0.002, "overhead": 7},
+                "Surface [[d²,1,d]]": {"n": 25, "k": 1, "d": 5, "threshold": 0.006, "overhead": 25},
+                "Color [[15,1,3]]": {"n": 15, "k": 1, "d": 3, "threshold": 0.003, "overhead": 15}
+            }
+            
+            props = code_properties[code_type]
+            
+            # Display properties
+            col_a, col_b = st.columns(2)
+            with col_a:
+                st.metric("Physical Qubits (n)", props["n"])
+                st.metric("Logical Qubits (k)", props["k"])
+            with col_b:
+                st.metric("Code Distance (d)", props["d"])
+                st.metric("Error Threshold", f"{props['threshold']:.1%}")
+            
+            # Error correction capability
+            correctable_errors = (props["d"] - 1) // 2
+            st.metric("Correctable Errors", correctable_errors)
+            
+            # Overhead analysis
+            overhead_ratio = props["overhead"] / props["k"]
+            st.metric("Qubit Overhead", f"{overhead_ratio:.0f}x")
+            
+            # Logical error rate
+            p_phys = st.slider("Physical Error Rate", 0.001, 0.05, 0.01, step=0.001, key="stab_error_rate")
+            
+            if p_phys < props["threshold"]:
+                # Below threshold: exponential suppression
+                p_logical = (p_phys / props["threshold"])**(props["d"]+1) / 2
+                st.metric("Logical Error Rate", f"{p_logical:.2e}")
+                st.success("✅ Below threshold: Exponential error suppression")
+            else:
+                # Above threshold: error correction fails
+                p_logical = 0.5  # Random logical state
+                st.metric("Logical Error Rate", "~50%")
+                st.error("❌ Above threshold: Error correction fails")
+    
+    with error_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Surface Codes - Topological Quantum Error Correction</h3>
+            <p>The leading candidate for fault-tolerant quantum computation with highest error thresholds.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Surface Code Architecture
+            
+            **2D Lattice Structure:**
+            
+            - **Data qubits:** On lattice vertices
+            - **Ancilla qubits:** On lattice faces (Z-type) and edges (X-type)
+            - **Distance d:** Linear size of lattice
+            - **Physical qubits:** n = d² + (d-1)² ≈ 2d²
+            
+            **Stabilizer Types:**
+            
+            1. **Plaquette (Z-type):** ∏_{v∈p} Z_v
+            2. **Star (X-type):** ∏_{v∈s} X_v
+            
+            **Error Detection:**
+            
+            - Z errors create X-syndrome violations
+            - X errors create Z-syndrome violations  
+            - Error chains connecting boundaries are logical errors
+            
+            **Key Advantages:**
+            
+            - **Highest threshold:** ~0.6-1% for various noise models
+            - **Local interactions:** Only nearest-neighbor operations
+            - **Parallelizable:** Fast syndrome measurement
+            - **Scalable:** Modular construction
+            
+            **Limitations:**
+            
+            - High qubit overhead: Ω(d²) physical qubits per logical
+            - Only Clifford gates transversally
+            - Magic state distillation needed for universal computation
+            """)
+            
+            # Surface code parameters
+            st.markdown("### Surface Code Configuration")
+            code_distance_surface = st.slider("Code Distance (d)", 3, 15, 5, step=2, key="surface_distance")
+            syndrome_rounds = st.slider("Syndrome Rounds", 1, 10, 3, key="syndrome_rounds")
+            
+        with col2:
+            st.markdown("### Resources and Performance")
+            
+            # Calculate surface code resources
+            data_qubits = code_distance_surface**2
+            z_ancilla = (code_distance_surface - 1)**2
+            x_ancilla = (code_distance_surface - 1)**2
+            total_qubits = data_qubits + z_ancilla + x_ancilla
+            
+            # Performance metrics
+            st.metric("Data Qubits", data_qubits)
+            st.metric("Z-Ancilla Qubits", z_ancilla)
+            st.metric("X-Ancilla Qubits", x_ancilla)  
+            st.metric("Total Physical Qubits", total_qubits)
+            
+            # Error correction performance
+            surface_threshold = 0.006  # Approximate threshold for surface codes
+            
+            # Logical error rate scaling
+            distances = np.arange(3, 16, 2)
+            log_error_rates = []
+            
+            p_phys_surface = st.slider("Physical Error Rate", 0.001, 0.02, 0.005, step=0.001, key="surface_phys_error")
+            
+            for d in distances:
+                if p_phys_surface < surface_threshold:
+                    # Below threshold: α^d scaling
+                    alpha = p_phys_surface / surface_threshold
+                    p_log = alpha**d
+                else:
+                    # Above threshold
+                    p_log = 0.1
+                log_error_rates.append(p_log)
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=distances, y=log_error_rates,
+                mode='lines+markers',
+                name='Logical Error Rate',
+                line=dict(color='#22D3EE', width=3),
+                marker=dict(size=8)
+            ))
+            
+            fig.update_layout(
+                title="Surface Code Error Suppression",
+                xaxis_title="Code Distance",
+                yaxis_title="Logical Error Rate",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Current distance performance
+            current_log_error = log_error_rates[distances.tolist().index(code_distance_surface)]
+            st.metric(f"Logical Error (d={code_distance_surface})", f"{current_log_error:.2e}")
+            
+            # Overhead analysis
+            overhead = total_qubits
+            if p_phys_surface < surface_threshold:
+                st.success(f"✅ Below threshold: {overhead}x overhead for distance {code_distance_surface}")
+            else:
+                st.error(f"❌ Above threshold: Error correction ineffective")
+    
+    with error_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Fault-Tolerant Quantum Computation</h3>
+            <p>Protocols for quantum computation that maintain logical fidelity even with noisy operations.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Fault Tolerance Requirements
+            
+            **Threshold Condition:**
+            
+            Physical error rate p < p_th ⟹ P_L(coded) < P_L(uncoded)
+            
+            **Fault-Tolerant Operations:**
+            
+            1. **Transversal Gates:**
+               U_L = U⊗n (bitwise application)
+               - Error propagation is limited
+               - CNOT, Pauli gates for stabilizer codes
+               
+            2. **Magic State Injection:**
+               |T⟩ = (|0⟩ + e^{iπ/4}|1⟩)/√2
+               - Enables non-Clifford gates
+               - Requires magic state distillation
+               
+            3. **Code Deformation:**
+               - Braiding for topological codes
+               - Lattice surgery for surface codes
+            
+            **Universal Gate Set:**
+            
+            - **Clifford gates:** Transversal (H, S, CNOT)
+            - **T gate:** Magic state injection + measurement
+            - **Arbitrary rotations:** Approximation sequences
+            
+            **Error Budget:**
+            
+            Total logical error ≈ (Gate errors) + (Syndrome errors) + (Idle errors)
+            """)
+            
+        with col2:
+            st.markdown("### Magic State Distillation")
+            
+            # Magic state parameters
+            input_fidelity = st.slider("Input Magic State Fidelity", 0.85, 0.99, 0.90, step=0.01, key="magic_fidelity")
+            distillation_level = st.slider("Distillation Levels", 1, 4, 2, key="distill_levels")
+            
+            # Simulate distillation protocol
+            # Simplified model: each level squares the error rate
+            input_error = 1 - input_fidelity
+            
+            fidelities = [input_fidelity]
+            overhead_costs = [1]
+            
+            for level in range(distillation_level):
+                # Bravyi-Kitaev distillation: error rate roughly squares
+                current_error = 1 - fidelities[-1]
+                new_error = current_error**2 * 10  # Simplified scaling
+                new_fidelity = max(1 - new_error, fidelities[-1])  # Ensure improvement
+                fidelities.append(new_fidelity)
+                
+                # Overhead: ~15 magic states per output magic state
+                overhead_costs.append(overhead_costs[-1] * 15)
+            
+            # Visualization
+            levels = list(range(distillation_level + 1))
+            
+            fig = go.Figure()
+            
+            # Fidelity improvement
+            fig.add_trace(go.Scatter(
+                x=levels, y=fidelities,
+                mode='lines+markers',
+                name='Magic State Fidelity',
+                line=dict(color='#22D3EE', width=3),
+                yaxis='y'
+            ))
+            
+            # Overhead cost
+            fig.add_trace(go.Scatter(
+                x=levels, y=overhead_costs,
+                mode='lines+markers',
+                name='Resource Overhead',
+                line=dict(color='#F59E0B', width=3),
+                yaxis='y2'
+            ))
+            
+            fig.update_layout(
+                title="Magic State Distillation",
+                xaxis_title="Distillation Level",
+                yaxis=dict(title="Fidelity", side='left'),
+                yaxis2=dict(title="Resource Overhead", side='right', overlaying='y', type='log'),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Final metrics
+            final_fidelity = fidelities[-1]
+            final_overhead = overhead_costs[-1]
+            
+            st.metric("Output Fidelity", f"{final_fidelity:.6f}")
+            st.metric("Resource Overhead", f"{final_overhead:,}x")
+            
+            if final_fidelity > 0.9999:
+                st.success("✅ Excellent: High fidelity magic states")
+            elif final_fidelity > 0.999:
+                st.info("✅ Good: Suitable for fault-tolerant computation")
+            else:
+                st.warning("⚠️ May need higher input fidelity or more levels")
+    
+    with error_tabs[4]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Fault Tolerance Threshold Analysis</h3>
+            <p>Understanding the critical error rates below which quantum error correction becomes beneficial.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Threshold Theory
+            
+            **Definition:** Critical error rate p_th where:
+            
+            p < p_th: Larger codes have lower logical error rates
+            p > p_th: Larger codes perform worse than smaller codes
+            
+            **Physical Interpretation:**
+            
+            - **Below threshold:** Exponential error suppression α^d
+            - **At threshold:** Polynomial error suppression αd^{-ν}
+            - **Above threshold:** Error correction fails
+            
+            **Known Thresholds:**
+            
+            1. **Shor's code:** p_th ≈ 0.1% (perfect syndrome)
+            2. **Steane code:** p_th ≈ 0.2% (perfect syndrome)
+            3. **Surface code:** p_th ≈ 0.6% (depolarizing noise)
+            4. **Color codes:** p_th ≈ 0.3% (2D) to 0.5% (3D)
+            
+            **Factors Affecting Threshold:**
+            
+            - Noise model (depolarizing vs. coherent)
+            - Syndrome measurement errors
+            - Gate scheduling and parallelization
+            - Decoder efficiency
+            
+            **Practical Considerations:**
+            
+            p_effective = p_gate + ε_syndrome + ε_idle + ε_crosstalk
+            """)
+            
+        with col2:
+            st.markdown("### Threshold Simulation")
+            
+            # Code comparison for threshold
+            code_for_threshold = st.selectbox(
+                "QEC Code",
+                ["Surface Code", "Color Code", "Steane Code"],
+                key="threshold_code"
+            )
+            
+            # Threshold values (approximate)
+            thresholds = {
+                "Surface Code": 0.006,
+                "Color Code": 0.003, 
+                "Steane Code": 0.002
+            }
+            
+            p_th = thresholds[code_for_threshold]
+            
+            # Error rate range
+            error_rates = np.logspace(-4, -1, 50)  # 0.01% to 10%
+            distances = [3, 5, 7, 9]
+            
+            fig = go.Figure()
+            
+            for d in distances:
+                logical_errors = []
+                for p in error_rates:
+                    if p < p_th:
+                        # Below threshold: exponential suppression
+                        alpha = p / p_th
+                        p_logical = alpha**(d//2)
+                    else:
+                        # Above threshold: polynomial growth
+                        p_logical = min(0.5, p * (d/3))
+                    logical_errors.append(p_logical)
+                
+                fig.add_trace(go.Scatter(
+                    x=error_rates, y=logical_errors,
+                    mode='lines',
+                    name=f'd={d}',
+                    line=dict(width=2)
+                ))
+            
+            # Add threshold line
+            fig.add_vline(x=p_th, line_dash="dash", line_color="#EF4444", 
+                         annotation_text=f"Threshold: {p_th:.1%}")
+            
+            # Add no-coding baseline
+            fig.add_trace(go.Scatter(
+                x=error_rates, y=error_rates,
+                mode='lines',
+                name='No QEC',
+                line=dict(color='black', dash='dot', width=2)
+            ))
+            
+            fig.update_layout(
+                title=f"{code_for_threshold} Threshold Behavior",
+                xaxis_title="Physical Error Rate",  
+                yaxis_title="Logical Error Rate",
+                xaxis_type="log",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+            
+            # Current technology assessment
+            current_tech_error = st.slider(
+                "Current Technology Error Rate", 
+                0.001, 0.1, 0.01, 
+                step=0.001, 
+                format="%.3f",
+                key="current_tech_error"
+            )
+            
+            # Distance needed for target logical error
+            target_logical = 1e-6
+            if current_tech_error < p_th:
+                alpha = current_tech_error / p_th
+                needed_distance = 2 * np.log(target_logical) / np.log(alpha)
+                needed_distance = max(3, int(np.ceil(needed_distance)))
+                
+                st.metric("Needed Distance", needed_distance)
+                st.metric("Required Qubits", f"{2 * needed_distance**2:,}")
+                st.success(f"✅ Below threshold: {needed_distance}x{needed_distance} surface code needed")
+            else:
+                st.metric("Status", "Above Threshold")
+                st.error("❌ Error correction ineffective at current error rates")
+
+elif section_id == "complexity_theory":
+    st.markdown("# 📊 Quantum Computational Complexity") 
+    st.markdown('<span class="alphanova-status status-research">Theoretical Foundations</span>', unsafe_allow_html=True)
+    
+    complexity_tabs = st.tabs(["Complexity Classes", "BQP vs Classical", "Quantum Speedups", "Oracle Separations", "Fundamental Limits"])
+    
+    with complexity_tabs[0]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Computational Complexity Classes</h3>
+            <p>The landscape of computational complexity from classical to quantum information processing.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Classical Complexity Hierarchy
             
             **P (Polynomial Time):**
-            - Problems solvable efficiently on classical computers
-            - Polynomial time: O(n^k) for some k
-            - Example: Sorting, matrix multiplication
+            - Problems solvable in time O(n^k)
+            - Examples: Sorting, matrix multiplication, linear programming
+            - Fundamental for "efficient" computation
             
             **NP (Nondeterministic Polynomial):**
             - Problems verifiable in polynomial time
-            - May require exponential time to solve
-            - Example: Boolean satisfiability, traveling salesman
+            - NP-complete: SAT, Graph Coloring, TSP
+            - P vs NP: Millennium Prize problem
             
-            **PSPACE:**
-            - Problems solvable using polynomial space
+            **PSPACE (Polynomial Space):**
+            - Solvable using polynomial space
+            - PSPACE-complete: Quantified Boolean Formula (QBF)
             - P ⊆ NP ⊆ PSPACE
-            - Includes many game-theoretic problems
+            
+            **EXP (Exponential Time):**
+            - Requires exponential time: O(2^{n^k})
+            - Examples: Generalized chess, Go on n×n board
+            - PSPACE ⊆ EXP
+            
+            **#P (Sharp-P):**
+            - Counting versions of NP problems
+            - #P-complete: Permanent of matrix
+            - Believed: NP ⊆ #P
             """)
             
         with col2:
@@ -2375,42 +3758,691 @@ elif section_id == "complexity_theory":
             ### Quantum Complexity Classes
             
             **BQP (Bounded-error Quantum Polynomial):**
-            - Problems solvable efficiently on quantum computers
-            - Polynomial time with bounded error probability
-            - Believed: P ⊆ BQP, BQP ⊄ NP
+            - Quantum algorithms with ≤ 1/3 error probability
+            - Examples: Factoring (Shor), Search (Grover)
+            - Time: poly(n), Space: poly(n)
             
             **QMA (Quantum Merlin-Arthur):**
             - Quantum analog of NP
-            - Quantum verification of classical proofs
-            - Local Hamiltonian problem is QMA-complete
+            - Quantum verification of quantum witnesses
+            - QMA-complete: Local Hamiltonian problem
             
             **PostBQP:**
-            - BQP with classical post-processing
-            - Conjectured to equal PP (probabilistic polynomial)
+            - BQP + classical postprocessing
+            - Believed: PostBQP = PP (Probabilistic Polynomial)
             - Upper bound for quantum computational power
+            
+            **QPSPACE:**
+            - Quantum polynomial space
+            - QPSPACE = PSPACE (due to simulation)
+            - Quantum doesn't help for space-bounded computation
+            
+            **QIP (Quantum Interactive Proofs):**
+            - QIP = PSPACE (surprising equality)
+            - Quantum verifier, classical prover
+            
+            **Conjectured Relationships:**
+            - P ⊆ BQP ⊆ QMA ⊆ PP ⊆ PSPACE
+            - BQP ≠ NP (believed but unproven)
             """)
         
-        # Complexity landscape visualization
+        # Complexity hierarchy visualization
         st.markdown("### Computational Complexity Landscape")
         
-        complexity_classes = ["P", "BQP", "NP", "MA", "QMA", "PSPACE", "EXP"]
-        relative_power = [1, 1.5, 2, 2.2, 2.5, 4, 8]  # Relative computational power (logarithmic scale)
+        # Define complexity classes and their approximate "power" levels
+        classes = {
+            "P": {"level": 1, "type": "classical", "color": "#22D3EE"},
+            "BQP": {"level": 1.8, "type": "quantum", "color": "#10B981"},
+            "NP": {"level": 2.5, "type": "classical", "color": "#EF4444"},
+            "MA": {"level": 2.8, "type": "classical", "color": "#F59E0B"},
+            "QMA": {"level": 3.2, "type": "quantum", "color": "#8B5CF6"},
+            "PP": {"level": 4, "type": "classical", "color": "#3B82F6"},
+            "PSPACE": {"level": 5, "type": "both", "color": "#64748B"},
+            "EXP": {"level": 8, "type": "classical", "color": "#DC2626"}
+        }
         
-        fig = go.Figure(data=[
-            go.Bar(x=complexity_classes, y=relative_power,
-                   marker_color=['#22D3EE', '#10B981', '#EF4444', '#F59E0B', '#8B5CF6', '#3B82F6', '#64748B'])
-        ])
+        # Create scatter plot for complexity hierarchy
+        classical_classes = [name for name, info in classes.items() if info["type"] == "classical"]
+        quantum_classes = [name for name, info in classes.items() if info["type"] == "quantum"]
+        both_classes = [name for name, info in classes.items() if info["type"] == "both"]
+        
+        fig = go.Figure()
+        
+        # Classical classes
+        fig.add_trace(go.Scatter(
+            x=[i for i, name in enumerate(classical_classes)],
+            y=[classes[name]["level"] for name in classical_classes],
+            mode='markers+text',
+            text=classical_classes,
+            textposition="middle center",
+            name='Classical',
+            marker=dict(size=40, color='#EF4444', symbol='square'),
+            textfont=dict(color='white', size=10)
+        ))
+        
+        # Quantum classes
+        fig.add_trace(go.Scatter(
+            x=[i + 0.3 for i, name in enumerate(quantum_classes)],
+            y=[classes[name]["level"] for name in quantum_classes],
+            mode='markers+text',
+            text=quantum_classes,
+            textposition="middle center",
+            name='Quantum',
+            marker=dict(size=40, color='#10B981', symbol='circle'),
+            textfont=dict(color='white', size=10)
+        ))
+        
+        # Both
+        fig.add_trace(go.Scatter(
+            x=[0.15],
+            y=[classes["PSPACE"]["level"]],
+            mode='markers+text',
+            text=["PSPACE"],
+            textposition="middle center",
+            name='Both',
+            marker=dict(size=40, color='#64748B', symbol='diamond'),
+            textfont=dict(color='white', size=10)
+        ))
         
         fig.update_layout(
-            title="Relative Computational Power of Complexity Classes",
-            xaxis_title="Complexity Class",
-            yaxis_title="Relative Power (log scale)",
+            title="Complexity Class Hierarchy",
+            xaxis_title="Alphabetical Order (Classical) / Quantum",
+            yaxis_title="Computational Power (log scale)",
             yaxis_type="log",
+            showlegend=True,
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            font_color='#E2E8F0'
+            font_color='#E2E8F0',
+            xaxis=dict(showticklabels=False)
         )
         st.plotly_chart(fig, width='stretch')
+    
+    with complexity_tabs[1]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>BQP vs Classical Complexity Classes</h3>
+            <p>Understanding the relationship between quantum polynomial time and classical complexity.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### BQP Characterization
+            
+            **Definition:** BQP is the class of decision problems solvable by a quantum computer in polynomial time with bounded error probability ≤ 1/3.
+            
+            **Formal Definition:**
+            
+            L ∈ BQP if ∃ uniform family {Q_n} of quantum circuits where:
+            
+            1. |Q_n| = poly(n) (polynomial size)
+            2. For x ∈ L: Pr[Q_{|x|}(x) accepts] ≥ 2/3
+            3. For x ∉ L: Pr[Q_{|x|}(x) accepts] ≤ 1/3
+            
+            **Key Properties:**
+            
+            - **Error Reduction:** Amplification to exponentially small error
+            - **Uniformity:** Efficient classical description of circuits
+            - **Reversibility:** Unitary evolution preserves |||ψ||| = 1
+            
+            **Complete Problems for BQP:**
+            
+            Currently no natural BQP-complete problems known!
+            
+            **Candidates:**
+            - Quantum circuit evaluation
+            - Approximating Jones polynomial
+            - Quantum satisfiability (QSAT)
+            """)
+            
+        with col2:
+            st.markdown("### Relationship Analysis")
+            
+            # Problem classification simulation
+            problem_type = st.selectbox(
+                "Analyze Problem Type",
+                ["Integer Factorization", "Graph Isomorphism", "Discrete Logarithm", "Boolean Satisfiability"],
+                key="bqp_problem"
+            )
+            
+            # Problem complexity analysis
+            problem_info = {
+                "Integer Factorization": {
+                    "classical_best": "Subexp (GNFS)",
+                    "quantum": "Polynomial (Shor)", 
+                    "classical_class": "NP ∩ co-NP",
+                    "quantum_class": "BQP",
+                    "speedup": "Exponential"
+                },
+                "Graph Isomorphism": {
+                    "classical_best": "Quasipolynomial",
+                    "quantum": "No known speedup",
+                    "classical_class": "NP",
+                    "quantum_class": "BQP",
+                    "speedup": "None known"
+                },
+                "Discrete Logarithm": {
+                    "classical_best": "Subexp (Index Calculus)",
+                    "quantum": "Polynomial (Shor)",
+                    "classical_class": "NP", 
+                    "quantum_class": "BQP",
+                    "speedup": "Exponential"
+                },
+                "Boolean Satisfiability": {
+                    "classical_best": "Exponential",
+                    "quantum": "Quadratic (Grover)",
+                    "classical_class": "NP-complete",
+                    "quantum_class": "BQP (?)",
+                    "speedup": "Polynomial only"
+                }
+            }
+            
+            info = problem_info[problem_type]
+            
+            # Display problem analysis
+            st.markdown(f"### {problem_type} Analysis")
+            
+            col_a, col_b = st.columns(2)
+            with col_a:
+                st.metric("Classical Best", info["classical_best"])
+                st.metric("Classical Class", info["classical_class"])
+            with col_b:
+                st.metric("Quantum Best", info["quantum"])
+                st.metric("Quantum Class", info["quantum_class"])
+            
+            st.metric("Quantum Speedup", info["speedup"])
+            
+            # Complexity relationship visualization
+            if problem_type == "Integer Factorization":
+                st.success("✅ Major quantum advantage: Breaks RSA cryptography")
+            elif problem_type == "Boolean Satisfiability":
+                st.info("ℹ️ Polynomial speedup only: Still exponential scaling")
+            elif problem_type == "Graph Isomorphism":
+                st.warning("⚠️ No known quantum speedup despite classical progress")
+            else:
+                st.success("✅ Exponential quantum speedup for cryptographically relevant problem")
+        
+        # BQP inclusion relationships
+        st.markdown("### Known Complexity Relationships")
+        
+        relationships = [
+            ("P ⊆ BQP", "Any classical polynomial algorithm can be simulated quantumly"),
+            ("BQP ⊆ PSPACE", "Quantum circuits can be simulated classically in polynomial space"),
+            ("BQP vs NP", "Unknown relationship - major open problem"),
+            ("NP ⊆? BQP", "Unresolved: Does quantum computation solve all NP problems efficiently?"),
+            ("BQP ⊆ PP", "Quantum computers are contained in probabilistic polynomial time")
+        ]
+        
+        for relation, description in relationships:
+            st.write(f"**{relation}:** {description}")
+    
+    with complexity_tabs[2]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Quantum Computational Speedups</h3>
+            <p>Systematic analysis of quantum advantages across different problem domains.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Types of Quantum Speedups
+            
+            **Exponential Speedups:**
+            
+            1. **Period Finding (Shor's Algorithm):**
+               - Classical: O(exp(∛n log a)) - subexponential
+               - Quantum: O((log n)³) - polynomial
+               - Applications: Factoring, discrete log
+            
+            2. **Quantum Simulation:**
+               - Classical: O(exp(n)) for n-qubit systems
+               - Quantum: O(poly(n)) with efficient Hamiltonians
+               - Advantage: Exponential for specific systems
+            
+            **Polynomial Speedups:**
+            
+            1. **Unstructured Search (Grover):**
+               - Classical: O(N) = O(2^n)
+               - Quantum: O(√N) = O(2^{n/2})
+               - Optimal: Quadratic speedup is best possible
+            
+            2. **Collision Finding:**
+               - Classical: O(N^{2/3}) using random walk
+               - Quantum: O(N^{1/3}) using quantum walk
+               - Applications: Hash function analysis
+            
+            **Constant Factor Speedups:**
+            
+            - Database search with partial information
+            - Some optimization problems
+            - Often not practically significant
+            """)
+            
+        with col2:
+            st.markdown("### Speedup Analysis Tool")
+            
+            problem_size = st.slider("Input Size (n)", 10, 100, 50, key="speedup_n")
+            
+            # Calculate complexities for different problems
+            problems = {
+                "Factoring": {
+                    "classical": problem_size**(1.5) * np.exp(0.1 * problem_size**(1/3)),  # Simplified GNFS
+                    "quantum": problem_size**3,  # Shor's algorithm
+                    "type": "Exponential"
+                },
+                "Search": {
+                    "classical": 2**problem_size,
+                    "quantum": 2**(problem_size/2),
+                    "type": "Polynomial"
+                },
+                "Simulation": {
+                    "classical": 2**problem_size,
+                    "quantum": problem_size**4,  # Efficient Hamiltonian simulation
+                    "type": "Exponential"
+                }
+            }
+            
+            selected_problem = st.selectbox(
+                "Select Problem",
+                ["Factoring", "Search", "Simulation"],
+                key="speedup_problem"
+            )
+            
+            classical_time = problems[selected_problem]["classical"]
+            quantum_time = problems[selected_problem]["quantum"]
+            speedup_factor = classical_time / quantum_time
+            speedup_type = problems[selected_problem]["type"]
+            
+            # Display metrics
+            if classical_time > 1e10:
+                classical_str = f"{classical_time:.2e}"
+            else:
+                classical_str = f"{classical_time:,.0f}"
+            
+            if quantum_time > 1e10:
+                quantum_str = f"{quantum_time:.2e}"
+            else:
+                quantum_str = f"{quantum_time:,.0f}"
+                
+            st.metric("Classical Time", classical_str)
+            st.metric("Quantum Time", quantum_str)
+            
+            if speedup_factor > 1e10:
+                speedup_str = f"{speedup_factor:.2e}x"
+            else:
+                speedup_str = f"{speedup_factor:,.0f}x"
+            
+            st.metric("Speedup Factor", speedup_str)
+            st.metric("Speedup Type", speedup_type)
+            
+            # Scaling visualization
+            sizes = np.arange(10, 101, 10)
+            classical_times = []
+            quantum_times = []
+            
+            for n in sizes:
+                if selected_problem == "Factoring":
+                    c_time = n**(1.5) * np.exp(0.05 * n**(1/3))
+                    q_time = n**3
+                elif selected_problem == "Search":
+                    c_time = 2**min(n, 50)  # Cap to prevent overflow
+                    q_time = 2**min(n/2, 25)
+                else:  # Simulation
+                    c_time = 2**min(n, 50)
+                    q_time = n**4
+                
+                classical_times.append(c_time)
+                quantum_times.append(q_time)
+            
+            fig = go.Figure()
+            
+            fig.add_trace(go.Scatter(
+                x=sizes, y=classical_times,
+                mode='lines+markers',
+                name='Classical',
+                line=dict(color='#EF4444', width=3)
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=sizes, y=quantum_times,
+                mode='lines+markers', 
+                name='Quantum',
+                line=dict(color='#10B981', width=3)
+            ))
+            
+            fig.update_layout(
+                title=f"{selected_problem} Complexity Scaling",
+                xaxis_title="Problem Size (n)",
+                yaxis_title="Time Complexity",
+                yaxis_type="log",
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font_color='#E2E8F0'
+            )
+            st.plotly_chart(fig, width='stretch')
+    
+    with complexity_tabs[3]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Oracle Separations and Black-Box Results</h3>
+            <p>Understanding fundamental separations between classical and quantum computing using oracle methods.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Oracle Complexity Theory
+            
+            **Black-Box Model:**
+            
+            Algorithm has access to unknown function f via oracle queries.
+            Goal: Determine property of f using minimal queries.
+            
+            **Key Results:**
+            
+            1. **Deutsch-Jozsa Separation:**
+               - Problem: Determine if f: {0,1}ⁿ → {0,1} is constant or balanced
+               - Classical: Ω(2ⁿ⁻¹) queries (worst case)
+               - Quantum: 1 query (exactly!)
+               - Separation: Exponential
+            
+            2. **Simon's Problem:**
+               - Problem: Find hidden period s where f(x) = f(x ⊕ s)
+               - Classical: Ω(2ⁿ/²) queries
+               - Quantum: O(n) queries
+               - Separation: Exponential
+            
+            3. **Bernstein-Vazirani:**
+               - Problem: Find hidden string s where f(x) = s · x (mod 2)
+               - Classical: n queries (adaptive)
+               - Quantum: 1 query
+            
+            4. **Grover's Optimality:**
+               - Unstructured search is Ω(√N) for quantum
+               - No better than quadratic speedup possible
+               - Tight bound: quantum optimal
+            """)
+            
+        with col2:
+            st.markdown("### Oracle Simulation")
+            
+            oracle_problem = st.selectbox(
+                "Select Oracle Problem",
+                ["Deutsch-Jozsa", "Simon's Problem", "Bernstein-Vazirani", "Search Lower Bound"],
+                key="oracle_problem"
+            )
+            
+            if oracle_problem == "Deutsch-Jozsa":
+                n_bits = st.slider("Function Input Bits (n)", 2, 12, 6, key="dj_bits_oracle")
+                
+                classical_worst = 2**(n_bits-1) + 1
+                quantum_queries = 1
+                
+                st.metric("Classical Worst Case", f"{classical_worst:,} queries")
+                st.metric("Quantum Required", "1 query")
+                st.metric("Separation", f"{classical_worst:,}x")
+                
+                # Scaling visualization
+                sizes = np.arange(2, 13)
+                classical_scaling = 2**(sizes-1) + 1
+                quantum_scaling = np.ones_like(sizes)
+                
+            elif oracle_problem == "Simon's Problem":
+                n_bits = st.slider("Function Input Bits (n)", 4, 16, 8, key="simon_bits")
+                
+                classical_expected = 2**(n_bits/2) * np.sqrt(np.pi/2)  # Birthday paradox
+                quantum_queries = 2 * n_bits  # O(n) with some constant
+                
+                st.metric("Classical Expected", f"{classical_expected:,.0f} queries")
+                st.metric("Quantum Required", f"{quantum_queries} queries")
+                separation = classical_expected / quantum_queries
+                st.metric("Separation", f"{separation:,.1f}x")
+                
+                # Scaling
+                sizes = np.arange(4, 17)
+                classical_scaling = 2**(sizes/2) * np.sqrt(np.pi/2)
+                quantum_scaling = 2 * sizes
+                
+            elif oracle_problem == "Bernstein-Vazirani":
+                n_bits = st.slider("Hidden String Length (n)", 3, 20, 10, key="bv_bits")
+                
+                classical_adaptive = n_bits
+                quantum_queries = 1
+                
+                st.metric("Classic (Adaptive)", f"{classical_adaptive} queries")
+                st.metric("Quantum Required", "1 query")
+                st.metric("Separation", f"{classical_adaptive}x")
+                
+                # Scaling
+                sizes = np.arange(3, 21)
+                classical_scaling = sizes
+                quantum_scaling = np.ones_like(sizes)
+            
+            else:  # Search Lower Bound
+                database_size = st.selectbox("Database Size (N)", [16, 64, 256, 1024, 4096], index=2, key="search_db_size")
+                
+                classical_expected = database_size // 2
+                quantum_optimal = int(np.pi * np.sqrt(database_size) / 4)
+                
+                st.metric("Classical Expected", f"{classical_expected} queries")
+                st.metric("Quantum Optimal", f"{quantum_optimal} queries")
+                separation = classical_expected / quantum_optimal
+                st.metric("Speedup", f"{separation:.1f}x (quadratic)")
+                
+                # Scaling for search
+                sizes = [16, 64, 256, 1024, 4096]
+                classical_scaling = np.array(sizes) // 2
+                quantum_scaling = [int(np.pi * np.sqrt(N) / 4) for N in sizes]
+            
+            # Plot scaling comparison
+            if oracle_problem != "Search Lower Bound":
+                fig = go.Figure()
+                
+                fig.add_trace(go.Scatter(
+                    x=sizes, y=classical_scaling,
+                    mode='lines+markers',
+                    name='Classical',
+                    line=dict(color='#EF4444', width=3),
+                    marker=dict(size=8)
+                ))
+                
+                fig.add_trace(go.Scatter(
+                    x=sizes, y=quantum_scaling,
+                    mode='lines+markers',
+                    name='Quantum',
+                    line=dict(color='#10B981', width=3),
+                    marker=dict(size=8)
+                ))
+                
+                fig.update_layout(
+                    title=f"{oracle_problem} Query Complexity",
+                    xaxis_title="Input Size (n)",
+                    yaxis_title="Queries Required",
+                    yaxis_type="log",
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='#E2E8F0'
+                )
+                
+                st.plotly_chart(fig, width='stretch')
+            
+            # Oracle insights
+            if oracle_problem in ["Deutsch-Jozsa", "Simon's Problem"]:
+                st.success("✅ Exponential separation: Oracle access extremely powerful")
+            elif oracle_problem == "Bernstein-Vazirani":
+                st.info("ℹ️ Linear separation: Still demonstrates quantum advantage")
+            else:
+                st.warning("⚠️ Quadratic optimal: Fundamental limit for unstructured search")
+    
+    with complexity_tabs[4]:
+        st.markdown("""
+        <div class="alphanova-card">
+            <h3>Fundamental Limitations of Quantum Computing</h3>
+            <p>Understanding the theoretical boundaries and impossibility results for quantum computation.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            ### Quantum Computing Limitations
+            
+            **No-Cloning Theorem:**
+            
+            Cannot create perfect copies of unknown quantum states.
+            
+            Proof: If cloning possible → ∀ᵢ |ψᵢ⟩ = U|ψ⟩|0⟩ = |ψ⟩⊗|ψ⟩
+            
+            But unitarity requires linearity → contradiction.
+            
+            **No-Communication Theorem:**
+            
+            Quantum entanglement cannot transmit information.
+            Local measurements show random outcomes regardless of distant operations.
+            
+            **Holevo Bound:**
+            
+            n qubits can store at most n classical bits of accessible information.
+            χ({ρᵢ, pᵢ}) ≤ S(Σᵢ pᵢρᵢ) - Σᵢ pᵢ S(ρᵢ)
+            
+            **Search Lower Bounds:**
+            
+            - Grover's √N is optimal for unstructured search
+            - Bennett et al.: Ω(√N) lower bound proven
+            - No quantum algorithm can do better
+            
+            **NP vs BQP:**
+            
+            Unknown if BQP = NP, but unlikely:
+            - Bennett et al.: Relative to oracle, NP ⊄ BQP
+            - Quantum advantage seems limited to specific structure
+            """)
+            
+        with col2:
+            st.markdown("### Limitation Analysis")
+            
+            limitation_type = st.selectbox(
+                "Analyze Limitation",
+                ["Search Lower Bound", "Information vs Qubits", "Communication Complexity", "Factoring Limitations"],
+                key="limitation_type"
+            )
+            
+            if limitation_type == "Search Lower Bound":
+                # Grover optimality demonstration
+                search_size = st.slider("Search Space Size (N)", 16, 10000, 1000, step=50, key="search_limit_size")
+                
+                classical_avg = search_size // 2
+                quantum_optimal = int(np.pi * np.sqrt(search_size) / 4)
+                theoretical_limit = np.sqrt(search_size) / 2  # Theoretical lower bound
+                
+                st.metric("Classical Average", f"{classical_avg:,} queries")
+                st.metric("Grover's Algorithm", f"{quantum_optimal:,} queries")
+                st.metric("Theoretical Limit", f"{theoretical_limit:.1f} queries")
+                
+                optimality = quantum_optimal / theoretical_limit
+                st.metric("Grover Optimality", f"{optimality:.2f} (near optimal)")
+                
+            elif limitation_type == "Information vs Qubits":
+                # Holevo bound illustration
+                n_qubits = st.slider("Number of Qubits", 1, 10, 5, key="holevo_qubits")
+                
+                quantum_dof = 2**(n_qubits) - 1  # Degrees of freedom in n-qubit state
+                classical_bits = n_qubits  # Holevo bound
+                
+                st.metric("Quantum State DoF", f"{quantum_dof:,}")
+                st.metric("Accessible Information", f"{classical_bits} bits")
+                
+                if quantum_dof > 100:
+                    compression = quantum_dof / classical_bits
+                    st.metric("Information Compression", f"{compression:,.0f}:1")
+                
+                st.info("ℹ️ Holevo bound: Exponential quantum state space, linear accessible info")
+                
+            elif limitation_type == "Communication Complexity":
+                # Communication complexity with entanglement
+                comm_problem = st.selectbox(
+                    "Communication Problem",
+                    ["Equality Function", "Disjointness", "Inner Product"],
+                    key="comm_problem"
+                )
+                
+                input_bits = st.slider("Input Size per Party", 5, 20, 10, key="comm_input_bits")
+                
+                if comm_problem == "Equality Function":
+                    classical_comm = input_bits + 1  # Simple protocol
+                    quantum_comm = input_bits + 1    # No advantage known
+                elif comm_problem == "Disjointness":
+                    classical_comm = int(np.sqrt(input_bits) * np.log(input_bits))
+                    quantum_comm = int(np.sqrt(input_bits))  # Some advantage
+                else:  # Inner Product
+                    classical_comm = input_bits  # Must send full vector
+                    quantum_comm = input_bits     # No advantage for exact version
+                
+                st.metric("Classical Communication", f"{classical_comm} bits")
+                st.metric("Quantum Communication", f"{quantum_comm} bits")
+                
+                if quantum_comm < classical_comm:
+                    advantage = classical_comm / quantum_comm
+                    st.metric("Quantum Advantage", f"{advantage:.1f}x")
+                else:
+                    st.metric("Quantum Advantage", "None")
+            
+            else:  # Factoring Limitations
+                # RSA key size analysis
+                rsa_bits = st.slider("RSA Key Size (bits)", 512, 4096, 2048, step=256, key="rsa_bits")
+                
+                # Classical factoring complexity (GNFS)
+                classical_time = np.exp(1.923 * (rsa_bits * np.log(2))**(1/3) * (np.log(rsa_bits * np.log(2)))**(2/3))
+                
+                # Quantum factoring (Shor's algorithm)
+                quantum_time = rsa_bits**3
+                
+                if classical_time > 1e50:
+                    classical_str = "∞ (infeasible)"
+                else:
+                    classical_str = f"{classical_time:.2e}"
+                
+                st.metric("Classical Time (ops)", classical_str)
+                st.metric("Quantum Time (ops)", f"{quantum_time:,}")
+                
+                # Quantum resource requirements
+                logical_qubits = 2 * rsa_bits  # Approximate for Shor's
+                
+                # Error correction overhead (surface code with d=13)
+                physical_qubits = logical_qubits * 169  # 13^2 overhead per logical
+                
+                st.metric("Logical Qubits Needed", f"{logical_qubits:,}")
+                st.metric("Physical Qubits (d=13)", f"{physical_qubits:,}")
+                
+                if physical_qubits > 1e6:
+                    st.warning("⚠️ Requires millions of physical qubits")
+                elif physical_qubits > 10000:
+                    st.info("ℹ️ Challenging but potentially achievable scale")
+                else:
+                    st.success("✅ Within reach of near-term quantum computers")
+        
+        # Summary of fundamental limits
+        st.markdown("### Quantum Computing: What We Cannot Do")
+        
+        limitations_summary = [
+            "❌ **Solve NP-complete problems efficiently** (probably)",
+            "❌ **Transmit information faster than light** (no-communication theorem)",
+            "❌ **Clone arbitrary quantum states** (no-cloning theorem)",
+            "❌ **Search unstructured databases faster than O(√N)** (Grover optimal)",
+            "❌ **Access exponential information from polynomial qubits** (Holevo bound)",
+            "✅ **But we CAN achieve exponential speedups for structured problems!**"
+        ]
+        
+        for limitation in limitations_summary:
+            st.markdown(limitation)
 
 # Default section for undefined sections
 else:
