@@ -127,6 +127,20 @@ st.markdown("""
         backdrop-filter: blur(40px);
         box-shadow: 8px 0 30px rgba(0, 0, 0, 0.4);
         position: relative;
+        overflow: hidden !important;
+    }
+    
+    /* Hide Sidebar Scrollbar */
+    [data-testid="stSidebar"] > div:first-child {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        scrollbar-width: none !important;  /* Firefox */
+        -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
+        padding-right: 10px !important;
+    }
+    
+    [data-testid="stSidebar"] > div:first-child::-webkit-scrollbar {
+        display: none !important;  /* Safari and Chrome */
     }
     
     [data-testid="stSidebar"]::before {
