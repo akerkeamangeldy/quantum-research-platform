@@ -150,24 +150,48 @@ st.markdown("""
         font-weight: 700 !important;
     }
     
+    /* Navigation Title Styling */
+    [data-testid="stSidebar"] legend {
+        color: #FFD700 !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.2em !important;
+        margin-bottom: 15px !important;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+    }
+    
     /* Enhanced Sidebar Navigation */
     [data-testid="stSidebar"] .stRadio > label {
-        background: rgba(255, 255, 255, 0.08);
-        margin: 6px 0;
-        padding: 16px 20px;
-        border-radius: 12px;
-        transition: all 0.4s ease;
-        border: 1px solid rgba(102, 126, 234, 0.15);
-        backdrop-filter: blur(10px);
-        font-weight: 500;
-        letter-spacing: 0.02em;
+        background: rgba(255, 255, 255, 0.08) !important;
+        margin: 6px 0 !important;
+        padding: 16px 20px !important;
+        border-radius: 12px !important;
+        transition: all 0.4s ease !important;
+        border: 1px solid rgba(102, 126, 234, 0.15) !important;
+        backdrop-filter: blur(10px) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.02em !important;
+        cursor: pointer !important;
+        display: block !important;
     }
     
     [data-testid="stSidebar"] .stRadio > label:hover {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(0, 212, 255, 0.1));
-        border-color: rgba(102, 126, 234, 0.4);
-        transform: translateX(8px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(0, 212, 255, 0.1)) !important;
+        border-color: rgba(102, 126, 234, 0.4) !important;
+        transform: translateX(8px) !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2) !important;
+    }
+    
+    [data-testid="stSidebar"] .stRadio input[type="radio"] {
+        display: none !important;
+    }
+    
+    [data-testid="stSidebar"] .stRadio input[type="radio"]:checked + label {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(0, 212, 255, 0.15)) !important;
+        border-color: rgba(102, 126, 234, 0.6) !important;
+        color: #00D4FF !important;
+        font-weight: 700 !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3) !important;
     }
     
     /* Premium Enhanced Cards */
@@ -558,6 +582,17 @@ st.markdown("""
         transform: translate(2px, 0);
         mix-blend-mode: screen;
     }
+    
+    /* Feature Tags Styling */
+    .feature-tag {
+        display: inline-block;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -937,9 +972,9 @@ margin: 0 15px; border-radius: 2px; box-shadow: 0 0 10px rgba(102, 126, 234, 0.3
 
 st.sidebar.markdown("---")
 
-# Professional navigation without Research Dashboard
+# Professional navigation without Research Dashboard  
 page = st.sidebar.radio(
-    "NAVIGATION",
+    "🚀 NAVIGATION",
     [
         "Introduction",
         "Quantum Foundations", 
@@ -951,8 +986,7 @@ page = st.sidebar.radio(
         "Complexity Theory"
     ],
     index=0,
-    key="main_navigation",
-    label_visibility="collapsed"
+    key="main_navigation"
 )
 
 st.sidebar.markdown("---")
@@ -993,30 +1027,53 @@ if page == "Introduction":
             <span style='color: #39FF14; font-weight: 600;'>Advanced Algorithm Simulation</span>
         </p>
         
-        <div style='display: flex; justify-content: center; gap: 25px; margin-top: 50px; flex-wrap: wrap;'>
-            <div style='background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1)); 
-            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
-            border: 1px solid rgba(102, 126, 234, 0.3); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);'>
-                <span style='font-size: 13px; color: #667EEA; font-weight: 700; letter-spacing: 0.1em;'>QUANTUM GATES</span>
-            </div>
-            <div style='background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1)); 
-            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);'>
-                <span style='font-size: 13px; color: #00D4FF; font-weight: 700; letter-spacing: 0.1em;'>STATE EXPLORATION</span>
-            </div>
-            <div style='background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1)); 
-            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);'>
-                <span style='font-size: 13px; color: #FFD700; font-weight: 700; letter-spacing: 0.1em;'>QUANTUM ML</span>
-            </div>
-            <div style='background: linear-gradient(135deg, rgba(57, 255, 20, 0.2), rgba(57, 255, 20, 0.1)); 
-            padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px);
-            border: 1px solid rgba(57, 255, 20, 0.3); box-shadow: 0 8px 25px rgba(57, 255, 20, 0.2);'>
-                <span style='font-size: 13px; color: #39FF14; font-weight: 700; letter-spacing: 0.1em;'>HOLOGRAPHIC VISUALS</span>
-            </div>
-        </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Feature Tags Row
+    st.markdown("""
+    <div style='display: flex; justify-content: center; gap: 25px; margin-top: 50px; margin-bottom: 50px; flex-wrap: wrap;'>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Feature Tags - Individual blocks to avoid rendering issues
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+        <div class="feature-tag" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1)); 
+        padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
+        border: 1px solid rgba(102, 126, 234, 0.3); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2); text-align: center;">
+            <span style="font-size: 13px; color: #667EEA; font-weight: 700; letter-spacing: 0.1em;">QUANTUM GATES</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="feature-tag" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1)); 
+        padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
+        border: 1px solid rgba(0, 212, 255, 0.3); box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2); text-align: center;">
+            <span style="font-size: 13px; color: #00D4FF; font-weight: 700; letter-spacing: 0.1em;">STATE EXPLORATION</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div class="feature-tag" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1)); 
+        padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
+        border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2); text-align: center;">
+            <span style="font-size: 13px; color: #FFD700; font-weight: 700; letter-spacing: 0.1em;">QUANTUM ML</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div class="feature-tag" style="background: linear-gradient(135deg, rgba(57, 255, 20, 0.2), rgba(57, 255, 20, 0.1)); 
+        padding: 16px 24px; border-radius: 30px; backdrop-filter: blur(15px); 
+        border: 1px solid rgba(57, 255, 20, 0.3); box-shadow: 0 8px 25px rgba(57, 255, 20, 0.2); text-align: center;">
+            <span style="font-size: 13px; color: #39FF14; font-weight: 700; letter-spacing: 0.1em;">HOLOGRAPHIC VISUALS</span>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Enhanced Interactive Holographic Bloch Sphere - Central Visual Element
     st.markdown("""
@@ -1139,26 +1196,26 @@ if page == "Introduction":
     # Key Formulas
     st.markdown("## Mathematical Framework")
     
-    st.markdown("""
-    <div class='formula-box'>
-        <h4 style='color: #667EEA; margin-bottom: 15px;'>Fundamental Quantum Mechanics</h4>
-        
-        <p style='margin: 10px 0;'><strong>1. Qubit State Vector:</strong></p>
-        <p style='margin-left: 20px;'>|ψ⟩ = α|0⟩ + β|1⟩, where α,β ∈ ℂ and |α|² + |β|² = 1</p>
-        
-        <p style='margin: 15px 0 10px 0;'><strong>2. Bloch Sphere Representation:</strong></p>
-        <p style='margin-left: 20px;'>|ψ⟩ = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩</p>
-        
-        <p style='margin: 15px 0 10px 0;'><strong>3. Unitary Evolution:</strong></p>
-        <p style='margin-left: 20px;'>|ψ(t)⟩ = U(t)|ψ(0)⟩ = e^(-iHt/ℏ)|ψ(0)⟩</p>
-        
-        <p style='margin: 15px 0 10px 0;'><strong>4. Born Rule (Measurement):</strong></p>
-        <p style='margin-left: 20px;'>P(outcome = |i⟩) = |⟨i|ψ⟩|²</p>
-        
-        <p style='margin: 15px 0 10px 0;'><strong>5. Density Matrix (Mixed States):</strong></p>
-        <p style='margin-left: 20px;'>ρ = Σᵢ pᵢ|ψᵢ⟩⟨ψᵢ|, where Tr(ρ) = 1</p>
-    </div>
-    """, unsafe_allow_html=True)
+    # Quantum Fundamentals Section
+    st.markdown("""<div class="formula-box">""", unsafe_allow_html=True)
+    st.markdown("""<h4 style="color: #667EEA; margin-bottom: 15px;">Fundamental Quantum Mechanics</h4>""", unsafe_allow_html=True)
+    
+    st.markdown("""<p style="margin: 10px 0;"><strong>1. Qubit State Vector:</strong></p>""", unsafe_allow_html=True)
+    st.markdown("""<p style="margin-left: 20px;">|ψ⟩ = α|0⟩ + β|1⟩, where α,β ∈ ℂ and |α|² + |β|² = 1</p>""", unsafe_allow_html=True)
+    
+    st.markdown("""<p style="margin: 15px 0 10px 0;"><strong>2. Bloch Sphere Representation:</strong></p>""", unsafe_allow_html=True)
+    st.markdown("""<p style="margin-left: 20px;">|ψ⟩ = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩</p>""", unsafe_allow_html=True)
+    
+    st.markdown("""<p style="margin: 15px 0 10px 0;"><strong>3. Unitary Evolution:</strong></p>""", unsafe_allow_html=True)
+    st.markdown("""<p style="margin-left: 20px;">|ψ(t)⟩ = U(t)|ψ(0)⟩ = e^(-iHt/ℏ)|ψ(0)⟩</p>""", unsafe_allow_html=True)
+    
+    st.markdown("""<p style="margin: 15px 0 10px 0;"><strong>4. Born Rule (Measurement):</strong></p>""", unsafe_allow_html=True)
+    st.markdown("""<p style="margin-left: 20px;">P(outcome = |i⟩) = |⟨i|ψ⟩|²</p>""", unsafe_allow_html=True)
+    
+    st.markdown("""<p style="margin: 15px 0 10px 0;"><strong>5. Density Matrix (Mixed States):</strong></p>""", unsafe_allow_html=True)
+    st.markdown("""<p style="margin-left: 20px;">ρ = Σᵢ pᵢ|ψᵢ⟩⟨ψᵢ|, where Tr(ρ) = 1</p>""", unsafe_allow_html=True)
+    
+    st.markdown("""</div>""", unsafe_allow_html=True)
     
     # Platform Capabilities
     st.markdown("---")
