@@ -238,10 +238,89 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Hide the sidebar toggle icon */
+    /* Hide the sidebar toggle icon - aggressive approach */
     .css-1v0mbdj, .css-1rs6os, .e1tzin5v0 {
         display: none !important;
     }
+    
+    /* Hide ANY button containing keyboard_double_arrow text */
+    button:contains("keyboard_double_arrow_right"),
+    button:contains("keyboard_double_arrow"),
+    span:contains("keyboard_double_arrow_right"),
+    span:contains("keyboard_double_arrow"),
+    div:contains("keyboard_double_arrow_right"),
+    div:contains("keyboard_double_arrow") {
+        display: none !important;
+    }
+    
+    /* Hide buttons and elements by content */
+    [data-testid="stHeader"] button {
+        display: none !important;
+    }
+    
+    [data-testid="stToolbar"] {
+        display: none !important;
+    }
+    
+    /* More aggressive hiding - all header buttons */
+    header button,
+    .stApp header button,
+    [role="banner"] button {
+        display: none !important;
+    }
+    
+    /* Hide elements with specific text content */
+    *[title*="keyboard"],
+    *[aria-label*="keyboard"],
+    *[title*="collapse"],
+    *[aria-label*="collapse"] {
+        display: none !important;
+    }
+    
+    /* Nuclear option - hide everything at the top level that might be the toggle button */
+    .main > div:first-child > div:first-child button,
+    .stApp > div:first-child button,
+    [data-testid="stDecoration"] {
+        display: none !important;
+    }
+    
+    /* Hide any Material Design Icons */
+    .material-icons,
+    span[class*="material"],
+    *[data-icon*="keyboard"] {
+        display: none !important;
+    }
+    </style>
+    
+    <script>
+    // JavaScript to remove any remaining toggle buttons
+    function hideToggleButtons() {
+        // Remove elements containing keyboard text
+        const elements = document.querySelectorAll('*');
+        elements.forEach(el => {
+            if (el.textContent && el.textContent.includes('keyboard_double_arrow')) {
+                el.style.display = 'none';
+                el.remove();
+            }
+            if (el.textContent && el.textContent.includes('keyboard_double_arrow_right')) {
+                el.style.display = 'none'; 
+                el.remove();
+            }
+        });
+        
+        // Remove any buttons in header area
+        const headerButtons = document.querySelectorAll('header button, [data-testid="stHeader"] button');
+        headerButtons.forEach(btn => btn.remove());
+        
+        // Hide toolbar
+        const toolbar = document.querySelector('[data-testid="stToolbar"]');
+        if (toolbar) toolbar.style.display = 'none';
+    }
+    
+    // Run immediately and on DOM changes
+    hideToggleButtons();
+    new MutationObserver(hideToggleButtons).observe(document.body, {childList: true, subtree: true});
+    </script>
     
     /* Premium Enhanced Cards */
     .glass-card {
