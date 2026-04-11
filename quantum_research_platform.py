@@ -56,7 +56,7 @@ st.markdown("""
         --accent-gold: #FFD700;
         --text-primary: #FFFFFF;
         --text-secondary: #B0B0C0;
-        --grid-color: rgba(26, 31, 58, 0.2);
+        --grid-color: rgba(102, 126, 234, 0.08);
         --glass-bg: rgba(255, 255, 255, 0.08);
         --glass-border: rgba(255, 255, 255, 0.15);
         --neon-glow: 0 0 20px rgba(102, 126, 234, 0.3);
@@ -65,15 +65,17 @@ st.markdown("""
     
     /* Main Background - Premium Futuristic */
     .stApp {
-        background: 
+        background: #0A0E27;
+        background-image: 
             radial-gradient(ellipse at top, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
             radial-gradient(ellipse at bottom, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
             linear-gradient(135deg, #0A0E27 0%, #0e1a27 30%, #1a0e27 70%, #270e1a 100%);
         background-attachment: fixed;
         position: relative;
+        min-height: 100vh;
     }
     
-    /* Mathematical Grid Background */
+    /* Subtle Mathematical Grid Background - Reduced Opacity */
     .stApp::before {
         content: "";
         position: fixed;
@@ -86,7 +88,7 @@ st.markdown("""
             linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
         background-size: 50px 50px;
         pointer-events: none;
-        opacity: 0.4;
+        opacity: 0.1;
         z-index: 0;
     }
     
