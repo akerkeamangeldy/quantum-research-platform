@@ -942,14 +942,16 @@ page = st.sidebar.radio(
     "NAVIGATION",
     [
         "Introduction",
-        "Quantum Foundations",
+        "Quantum Foundations", 
         "Quantum Gates & Circuits",
-        "Quantum Algorithms", 
+        "Quantum Algorithms",
         "Quantum Machine Learning",
-        "Hardware Architecture",
+        "Hardware Architecture", 
         "Error Correction",
         "Complexity Theory"
     ],
+    index=0,
+    key="main_navigation",
     label_visibility="collapsed"
 )
 
